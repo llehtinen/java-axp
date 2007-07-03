@@ -1,0 +1,53 @@
+<project name="xps-jaxb" default="jabx-compile">
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	  <classpath>
+	    <fileset dir="lib/" includes="*.jar" />
+	  </classpath>
+	</taskdef>
+
+
+    <target name="jabx-compile">
+    	<xjc 	package="xps.document.jaxb"
+    			destdir="src/">
+   			    <!-- 
+   			    schema="../doc/schemas/RDKey.xsd">
+    			-->
+    			 <schema dir="doc/schemas" includes="*.xsd" />
+
+    	</xjc>
+    </target>
+	
+    <target name="clean">
+    	<delete>
+    		<fileset dir="bin/"/>	
+    	</delete>
+    </target>
+    	
+    <target name="compile">
+    	<antcall target="compile-java-1.6"/>
+    </target>
+    	
+	<target name="compile-java-1.6">
+		<mkdir dir="bin"/>
+		<javac srcdir="src/" destdir="bin"/>	
+	</target>
+
+	<target name="compile-java-1.5">
+		<mkdir dir="bin"/>
+		<javac srcdir="src/" destdir="bin">
+    		<classpath>
+    			<fileset includes="lib/*.jar"/>
+    		</classpath>
+    	</javac>
+	</target>
+    	
+    <target name="jar" depends="compile">
+    	<jar destfile="java-xps.jar" basedir="bin/">
+			<manifest>
+    			<attribute name="Main-Class" value="xps.impl.ui.SimpleXPSFrame"/>
+    		</manifest>
+    	</jar>
+    </target>
+
+</project>
