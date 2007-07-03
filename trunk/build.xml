@@ -1,4 +1,4 @@
-<project name="xps-jaxb" default="jabx-compile">
+<project name="xps-jaxb" default="jar">
 
 	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
 	  <classpath>
