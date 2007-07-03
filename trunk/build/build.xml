@@ -1,0 +1,22 @@
+<project name="xps-jaxb" default="jabx-compile">
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	  <classpath>
+	    <fileset dir="../lib" includes="*.jar" />
+	  </classpath>
+	</taskdef>
+
+
+
+    <target name="jabx-compile">
+    	<xjc 	package="xps.document.jaxb"
+    			destdir="../src">
+   			    <!-- 
+   			    schema="../doc/schemas/RDKey.xsd">
+    			-->
+    			 <schema dir="../doc/schemas" includes="*.xsd" />
+
+    	</xjc>
+    </target>
+
+</project>
