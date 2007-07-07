@@ -28,13 +28,16 @@ import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STLineCap;
 import xps.impl.document.jaxb.STLineJoin;
 import xps.impl.ui.ShorthandPathParser;
+import xps.impl.ui.rendering.brushes.AWTXPSPaint;
+import xps.impl.ui.rendering.brushes.AWTXPSPaintWrapper;
+import xps.impl.ui.rendering.brushes.SolidColourAWTXPSPaint;
+import xps.impl.ui.rendering.brushes.XPSImagePaint;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.IDocumentReference;
 import xps.model.document.page.IArcSegment;
 import xps.model.document.page.IGradientStop;
 import xps.model.document.page.IImageBrush;
 import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IPageResource;
 import xps.model.document.page.IPathFigure;
 import xps.model.document.page.IPathGeometry;
 import xps.model.document.page.IPolyBezierSegment;
@@ -111,15 +114,13 @@ public class AWTXPSRenderingUtils {
 		}
 	}
 
-	public static Paint createPaintFromShorthand(String fill) {
-		//TODO: Verify this is a solid colour fill
-		Paint p = createColour(fill);
-		if(p != null){
-			return p;
+	public static AWTXPSPaint createPaintFromShorthand(String fill) {
+		Color c = createColour(fill);
+		if(c == null){
+			c = Color.BLACK;	
 		}
-		//TODO: Remove if guaranteed to be a solid colour
-		return Color.BLACK;
 		
+		return new SolidColourAWTXPSPaint(c);
 	}
 
 	private static Color createColour(String fill) {
@@ -157,7 +158,7 @@ public class AWTXPSRenderingUtils {
 		
 	}
 	
-	static Paint createPaintFromLinearGradientBrush(ILinearGradientBrush brush) throws XPSSpecError {
+	static AWTXPSPaint createPaintFromLinearGradientBrush(ILinearGradientBrush brush) throws XPSSpecError {
 		Point2D start = createPoint(brush.getStartPoint());
 		Point2D end = createPoint(brush.getEndPoint());
 		//TODO: Handle more than 2 gradient stops
@@ -170,7 +171,7 @@ public class AWTXPSRenderingUtils {
 		if(stops.size() >= 2){
 			IGradientStop s1 = stops.get(0);
 			IGradientStop s2 = stops.get(1);
-			return new GradientPaint(start,createColour(s1.getColor()), end, createColour(s2.getColor()));
+			return new AWTXPSPaintWrapper(new GradientPaint(start,createColour(s1.getColor()), end, createColour(s2.getColor())));
 
 		} else {
 			throw new XPSSpecError(6,5,"Must have at least 2 gradient stops");
@@ -194,7 +195,7 @@ public class AWTXPSRenderingUtils {
 		//return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, visualBrush.getTileMode(), visualBrush.getOpacity(), imageSource)
 	}
 	
-	static Paint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
+	static XPSImagePaint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
 		final AffineTransform at;
 		if(tranformMatrix != null){
 			at = createAffineTransform(tranformMatrix);
@@ -215,7 +216,7 @@ public class AWTXPSRenderingUtils {
 		
 		final Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
 		
-		return new ImagePaint(sourceImage, locationOfFirstTileToRender, at);
+		return new XPSImagePaint(sourceImage, locationOfFirstTileToRender, at);
 		
 //		ImageBrushPaint is a better implementation of the XPS spec, but is not as efficient to render simple image brushes.
 //		return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, imageBrush.getTileMode(), imageBrush.getOpacity(), imageBrush.getImageSource());

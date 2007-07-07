@@ -2,19 +2,20 @@ package xps.impl.ui.rendering;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.Stack;
 
 import xps.XPSError;
 import xps.XPSSpecError;
+import xps.impl.ui.rendering.brushes.AWTXPSPaint;
+import xps.impl.ui.rendering.brushes.XPSImagePaint;
+import xps.model.document.page.IBrush;
 import xps.model.document.page.ICanvas;
 import xps.model.document.page.IFixedPage;
 import xps.model.document.page.IGlyphs;
@@ -101,15 +102,6 @@ public class SwingXPSRenderer implements XPSVisitor{
 		}
 		if(clip != null){
 			fGraphicsStack.peek().setClip(clip);
-		}
-		
-		
-		if(glyphs.getOpacity() < 0f || glyphs.getOpacity() > 1.0f){
-			throw new XPSSpecError(2,74, "Duplicate definition of property");
-		} else {
-			if(glyphs.getOpacity() < 1.0f){
-				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)glyphs.getOpacity()));
-			}
 		}
 	}
 	
@@ -200,13 +192,19 @@ public class SwingXPSRenderer implements XPSVisitor{
 		fGraphicsStack.peek().translate(glyphs.getOriginX(), glyphs.getOriginY());
 		fGraphicsStack.peek().scale(glyphs.getFontRenderingEmSize(), glyphs.getFontRenderingEmSize());
 		
-		Paint fillPaint = createPaint(brushData);
+		AWTXPSPaint fillPaint = createPaint(brushData);
+		
+		if(glyphs.getOpacityMask() != null){
+			applyOpacityMask(fillPaint, null, glyphs.getGlyphsOpacityMask(), glyphs.getOpacityMask());
+		}
+		
 
 		fGraphicsStack.peek().setPaint(fillPaint);
 		fGraphicsStack.peek().drawString(glyphs.getUnicodeString(), 0, 0);
+
 	}
 	
-	private Paint createPaint(FullOrShorthandData<IPageResource> brushData) throws XPSError {
+	private AWTXPSPaint createPaint(FullOrShorthandData<IPageResource> brushData) throws XPSError {
 		if(brushData == null){
 			return null;
 		} else  if(brushData.fShorthand != null){
@@ -255,32 +253,13 @@ public class SwingXPSRenderer implements XPSVisitor{
 		fGraphicsStack.push(g2);
 		applyGraphicsProperties(path, renderTransform);
 
-		Paint fillPaint = createPaint(fillData);
-		Paint drawPaint = createPaint(strokeData);
-
-		IPageResource pr = null;
-		if(path.getPathOpacityMask() != null){
-			if(path.getPathOpacityMask().getImageBrush() != null){
-				pr = path.getPathOpacityMask().getImageBrush();
-			} else if(path.getPathOpacityMask().getLinearGradientBrush() != null){
-				pr = path.getPathOpacityMask().getLinearGradientBrush();
-			} else if(path.getPathOpacityMask().getRadialGradientBrush() != null){
-				pr = path.getPathOpacityMask().getRadialGradientBrush();
-			} else if(path.getPathOpacityMask().getSolidColorBrush() != null){
-				pr = path.getPathOpacityMask().getSolidColorBrush();
-			} else if(path.getPathOpacityMask().getVisualBrush() != null){
-				pr = path.getPathOpacityMask().getVisualBrush();
-			}
-			FullOrShorthandData<IPageResource> opacityMaskData = new FullOrShorthandData<IPageResource>(path.getOpacityMask(), pr);
-			
-			if(fillPaint instanceof ImagePaint){
-				//paint the opacity mask
-				Paint blendingFillPaint = createPaint(opacityMaskData);
-				((ImagePaint)fillPaint).setOpacityMaskPaint(blendingFillPaint);
-			}
 		
-		} 
-		if(path.getOpacity() < 0f || path.getOpacity() > 1.0f){
+		AWTXPSPaint fillPaint = createPaint(fillData);
+		AWTXPSPaint drawPaint = createPaint(strokeData);
+
+		if(path.getPathOpacityMask() != null){
+			applyOpacityMask(fillPaint, drawPaint, path.getPathOpacityMask(), path.getOpacityMask());
+		} else if(path.getOpacity() < 0f || path.getOpacity() > 1.0f){
 			throw new XPSSpecError(2,74, "Invalid opacity");
 		} else {
 			if(path.getOpacity() < 1.0f){
@@ -288,75 +267,34 @@ public class SwingXPSRenderer implements XPSVisitor{
 			}
 		}
 		
-		renderPathData(fillPaint, drawPaint, pathData);
-		
-		
+		renderPathData(fillPaint, drawPaint, pathData);	
 	}
 
-	private void renderPathWithOpacityMask(IPath path, FullOrShorthandData<IPageResource> fillData, FullOrShorthandData<IPageResource> strokeData, FullOrShorthandData<IPathGeometry> pathData, FullOrShorthandData<IPageResource> opacityMaskData) throws XPSError {
-		Shape s;
-		if(pathData.fFull != null){
-			s = AWTXPSRenderingUtils.createShapeFromPathGeometry(pathData.fFull); 
-		} else {
-			s = AWTXPSRenderingUtils.createShapeFromShorthandCommands(pathData.fShorthand, true);
-		}
-		
-		//get the bounding box of the shape. This defines how large our blending buffer must be
-		Rectangle2D rect = s.getBounds2D();
-		AffineTransform toOrigin = AffineTransform.getTranslateInstance(-rect.getX(), -rect.getY());
-		s = toOrigin.createTransformedShape(s);
-		
-		
-		BufferedImage blendingBuffer = new BufferedImage((int)Math.ceil(rect.getWidth()), (int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
-		BufferedImage pathBuffer = new BufferedImage((int)Math.ceil(rect.getWidth()),(int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
 
-		//paint the opacity mask
-		Graphics2D blendGraphcs = blendingBuffer.createGraphics();
-		blendGraphcs.getRenderingHints().put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	private void applyOpacityMask(AWTXPSPaint fillPaint, AWTXPSPaint drawPaint, IBrush opacityMaskBrush, String opacityMaskShorthand) throws XPSError {
+		IPageResource pr = null;
+		if(opacityMaskBrush.getImageBrush() != null){
+			pr = opacityMaskBrush.getImageBrush();
+		} else if(opacityMaskBrush.getLinearGradientBrush() != null){
+			pr = opacityMaskBrush.getLinearGradientBrush();
+		} else if(opacityMaskBrush.getRadialGradientBrush() != null){
+			pr = opacityMaskBrush.getRadialGradientBrush();
+		} else if(opacityMaskBrush.getSolidColorBrush() != null){
+			pr = opacityMaskBrush.getSolidColorBrush();
+		} else if(opacityMaskBrush.getVisualBrush() != null){
+			pr = opacityMaskBrush.getVisualBrush();
+		}
+		FullOrShorthandData<IPageResource> opacityMaskData = new FullOrShorthandData<IPageResource>(opacityMaskShorthand, pr);
+		
 		Paint blendingFillPaint = createPaint(opacityMaskData);
-		if(blendingFillPaint instanceof ImagePaint){
-			((ImagePaint)blendingFillPaint).translate(-rect.getX(), -rect.getY());
-		}
-		blendGraphcs.setPaint(blendingFillPaint);
-		blendGraphcs.fill(s);
-		
-		Graphics2D pathGraphics = pathBuffer.createGraphics();
-		Paint fillPaint = createPaint(fillData);
-		if(fillPaint instanceof ImagePaint){
-			((ImagePaint)fillPaint).translate(-rect.getX(), -rect.getY());
-		}
-
-		Paint drawPaint = createPaint(strokeData);
-		if(drawPaint instanceof ImagePaint){
-			((ImagePaint)drawPaint).translate(-rect.getX(), -rect.getY());
-		}
-		
-		pathGraphics.setStroke(fGraphicsStack.peek().getStroke());
-		
 		if(fillPaint != null){
-			pathGraphics.setPaint(fillPaint);
-			pathGraphics.fill(s);
+			fillPaint.setOpacityMaskPaint(blendingFillPaint);	
 		}
-
+		
 		if(drawPaint != null){
-			pathGraphics.setPaint(drawPaint);
-			pathGraphics.draw(s);
+			drawPaint.setOpacityMaskPaint(blendingFillPaint);	
 		}
-		
-		
-
-		//blendingBuffer and pathBuffer are the exact same size. Copy the alpha values from blendingBuffer to pathBuffer, then draw path buffer
-		for(int i = 0; i < blendingBuffer.getWidth(); i++){
-			for(int  j = 0; j < blendingBuffer.getHeight(); j++){
-				pathBuffer.getRaster().setSample(i, j, 3, blendingBuffer.getRaster().getSample(i, j, 3));
-			}
-		}
-		
-		//blend. blah
-		fGraphicsStack.peek().drawImage(pathBuffer, (int)Math.ceil(rect.getX()), (int)Math.ceil(rect.getY()), null);
-		
 	}
-
 
 	private void renderPathData(Paint fillPaint, Paint drawPaint, FullOrShorthandData<IPathGeometry> pathData) throws XPSError {
 		Shape s;
@@ -377,7 +315,7 @@ public class SwingXPSRenderer implements XPSVisitor{
 		}	
 	}
 	
-	private Paint createPaintFromVisualBrush(IVisualBrush brush) throws XPSSpecError {
+	private AWTXPSPaint createPaintFromVisualBrush(IVisualBrush brush) throws XPSSpecError {
 		if(brush.getTransform() != null && brush.getVisualBrushTransform() != null) {
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
@@ -395,7 +333,7 @@ public class SwingXPSRenderer implements XPSVisitor{
 //		return AWTXPSRenderingUtils.createPaintFromVisualBrush(brush, matrixTransform);
 	}
 	
-	private Paint createPaintFromImageBrush(IImageBrush brush) throws XPSError {
+	private XPSImagePaint createPaintFromImageBrush(IImageBrush brush) throws XPSError {
 		if(brush.getImageBrushTransform() != null && brush.getTransform() != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
