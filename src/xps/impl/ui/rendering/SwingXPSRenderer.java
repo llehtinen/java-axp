@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -14,7 +15,6 @@ import java.util.Stack;
 
 import xps.XPSError;
 import xps.XPSSpecError;
-import xps.model.document.page.IBrush;
 import xps.model.document.page.ICanvas;
 import xps.model.document.page.IFixedPage;
 import xps.model.document.page.IGlyphs;
@@ -255,40 +255,40 @@ public class SwingXPSRenderer implements XPSVisitor{
 		fGraphicsStack.push(g2);
 		applyGraphicsProperties(path, renderTransform);
 
-		
-		if(path.getPathOpacityMask() != null || path.getOpacityMask() != null){
-			
-			IPageResource pr = null;
-			if(path.getPathOpacityMask() != null){
-				if(path.getPathOpacityMask().getImageBrush() != null){
-					pr = path.getPathOpacityMask().getImageBrush();
-				} else if(path.getPathOpacityMask().getLinearGradientBrush() != null){
-					pr = path.getPathOpacityMask().getLinearGradientBrush();
-				} else if(path.getPathOpacityMask().getRadialGradientBrush() != null){
-					pr = path.getPathOpacityMask().getRadialGradientBrush();
-				} else if(path.getPathOpacityMask().getSolidColorBrush() != null){
-					pr = path.getPathOpacityMask().getSolidColorBrush();
-				} else if(path.getPathOpacityMask().getVisualBrush() != null){
-					pr = path.getPathOpacityMask().getVisualBrush();
-				}
-			}
-			
-			FullOrShorthandData<IPageResource> opacityMaskData = new FullOrShorthandData<IPageResource>(path.getOpacityMask(), pr);
-			renderPathWithOpacityMask(path, fillData, strokeData, pathData, opacityMaskData);
-		} else {
-			if(path.getOpacity() < 0f || path.getOpacity() > 1.0f){
-				throw new XPSSpecError(2,74, "Invalid opacity");
-			} else {
-				if(path.getOpacity() < 1.0f){
-					fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, (float)path.getOpacity()));
-				}
-			}
-			Paint fillPaint = createPaint(fillData);
-			Paint drawPaint = createPaint(strokeData);
-			
-			renderPathData(fillPaint, drawPaint, pathData);
+		Paint fillPaint = createPaint(fillData);
+		Paint drawPaint = createPaint(strokeData);
 
+		IPageResource pr = null;
+		if(path.getPathOpacityMask() != null){
+			if(path.getPathOpacityMask().getImageBrush() != null){
+				pr = path.getPathOpacityMask().getImageBrush();
+			} else if(path.getPathOpacityMask().getLinearGradientBrush() != null){
+				pr = path.getPathOpacityMask().getLinearGradientBrush();
+			} else if(path.getPathOpacityMask().getRadialGradientBrush() != null){
+				pr = path.getPathOpacityMask().getRadialGradientBrush();
+			} else if(path.getPathOpacityMask().getSolidColorBrush() != null){
+				pr = path.getPathOpacityMask().getSolidColorBrush();
+			} else if(path.getPathOpacityMask().getVisualBrush() != null){
+				pr = path.getPathOpacityMask().getVisualBrush();
+			}
+			FullOrShorthandData<IPageResource> opacityMaskData = new FullOrShorthandData<IPageResource>(path.getOpacityMask(), pr);
+			
+			if(fillPaint instanceof ImagePaint){
+				//paint the opacity mask
+				Paint blendingFillPaint = createPaint(opacityMaskData);
+				((ImagePaint)fillPaint).setOpacityMaskPaint(blendingFillPaint);
+			}
+		
+		} 
+		if(path.getOpacity() < 0f || path.getOpacity() > 1.0f){
+			throw new XPSSpecError(2,74, "Invalid opacity");
+		} else {
+			if(path.getOpacity() < 1.0f){
+				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, (float)path.getOpacity()));
+			}
 		}
+		
+		renderPathData(fillPaint, drawPaint, pathData);
 		
 		
 	}
@@ -303,24 +303,33 @@ public class SwingXPSRenderer implements XPSVisitor{
 		
 		//get the bounding box of the shape. This defines how large our blending buffer must be
 		Rectangle2D rect = s.getBounds2D();
+		AffineTransform toOrigin = AffineTransform.getTranslateInstance(-rect.getX(), -rect.getY());
+		s = toOrigin.createTransformedShape(s);
+		
 		
 		BufferedImage blendingBuffer = new BufferedImage((int)Math.ceil(rect.getWidth()), (int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
-		BufferedImage pathBuffer = new BufferedImage((int)Math.ceil(rect.getWidth()), (int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage pathBuffer = new BufferedImage((int)Math.ceil(rect.getWidth()),(int)Math.ceil(rect.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
 
 		//paint the opacity mask
 		Graphics2D blendGraphcs = blendingBuffer.createGraphics();
 		blendGraphcs.getRenderingHints().put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		blendGraphcs.setTransform(AffineTransform.getTranslateInstance(-rect.getX(), -rect.getY()));
 		Paint blendingFillPaint = createPaint(opacityMaskData);
+		if(blendingFillPaint instanceof ImagePaint){
+			((ImagePaint)blendingFillPaint).translate(-rect.getX(), -rect.getY());
+		}
 		blendGraphcs.setPaint(blendingFillPaint);
 		blendGraphcs.fill(s);
 		
 		Graphics2D pathGraphics = pathBuffer.createGraphics();
-		pathGraphics.setTransform(AffineTransform.getTranslateInstance(-rect.getX(), -rect.getY()));
 		Paint fillPaint = createPaint(fillData);
+		if(fillPaint instanceof ImagePaint){
+			((ImagePaint)fillPaint).translate(-rect.getX(), -rect.getY());
+		}
+
 		Paint drawPaint = createPaint(strokeData);
-		
-		
+		if(drawPaint instanceof ImagePaint){
+			((ImagePaint)drawPaint).translate(-rect.getX(), -rect.getY());
+		}
 		
 		pathGraphics.setStroke(fGraphicsStack.peek().getStroke());
 		
@@ -333,6 +342,7 @@ public class SwingXPSRenderer implements XPSVisitor{
 			pathGraphics.setPaint(drawPaint);
 			pathGraphics.draw(s);
 		}
+		
 		
 
 		//blendingBuffer and pathBuffer are the exact same size. Copy the alpha values from blendingBuffer to pathBuffer, then draw path buffer

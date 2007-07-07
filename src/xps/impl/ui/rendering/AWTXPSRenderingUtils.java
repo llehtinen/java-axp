@@ -7,9 +7,7 @@ import java.awt.FontFormatException;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -18,7 +16,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +34,7 @@ import xps.model.document.page.IArcSegment;
 import xps.model.document.page.IGradientStop;
 import xps.model.document.page.IImageBrush;
 import xps.model.document.page.ILinearGradientBrush;
+import xps.model.document.page.IPageResource;
 import xps.model.document.page.IPathFigure;
 import xps.model.document.page.IPathGeometry;
 import xps.model.document.page.IPolyBezierSegment;
@@ -197,22 +195,28 @@ public class AWTXPSRenderingUtils {
 	}
 	
 	static Paint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
-		BufferedImage bi = imageResource;
-		AffineTransform at = new AffineTransform();
+		final AffineTransform at;
 		if(tranformMatrix != null){
 			at = createAffineTransform(tranformMatrix);
+		} else {
+			at = new AffineTransform();
 		}
+		
 
 		Rectangle2D portionOfSourceImageToBeRendered = createRectangle(imageBrush.getViewbox());
-		Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
-		Rectangle2D bounds2D = at.createTransformedShape(locationOfFirstTileToRender).getBounds2D();
-		return new TexturePaint(bi, bounds2D){
-			public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle deviceBounds, Rectangle2D userBounds, AffineTransform xform, RenderingHints hints) {			
-				hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-				return super.createContext(cm, deviceBounds, userBounds, xform, hints);
-			}
-		};
-
+		
+		if((int)portionOfSourceImageToBeRendered.getX() + (int)portionOfSourceImageToBeRendered.getWidth() > imageResource.getWidth()){
+			System.out.println();
+		}
+		
+		final BufferedImage sourceImage = imageResource.getSubimage((int)portionOfSourceImageToBeRendered.getX(), (int)portionOfSourceImageToBeRendered.getY(), 
+				(int)portionOfSourceImageToBeRendered.getWidth(), (int)portionOfSourceImageToBeRendered.getHeight());
+		
+		
+		final Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
+		
+		return new ImagePaint(sourceImage, locationOfFirstTileToRender, at);
+		
 //		ImageBrushPaint is a better implementation of the XPS spec, but is not as efficient to render simple image brushes.
 //		return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, imageBrush.getTileMode(), imageBrush.getOpacity(), imageBrush.getImageSource());
 	}

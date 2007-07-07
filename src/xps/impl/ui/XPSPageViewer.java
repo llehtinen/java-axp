@@ -102,7 +102,7 @@ public class XPSPageViewer extends JPanel implements Observer{
 
 	private boolean bufferDirty() {
 		if(fBuffer == null || getWidth() != fBuffer.getWidth() || getHeight() != fBuffer.getHeight()){
-			fBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+			fBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 			return true;
 		}
 		return false;
