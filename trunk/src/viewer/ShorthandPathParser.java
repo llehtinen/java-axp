@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Vector;
 
 import viewer.rendering.AWTXPSRenderingUtils;
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
 import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STSweepDirection;
 import xps.model.document.page.IArcSegment;

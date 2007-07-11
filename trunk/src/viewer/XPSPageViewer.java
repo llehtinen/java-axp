@@ -15,7 +15,7 @@ import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import xps.XPSError;
+import xps.api.XPSError;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.IDocumentReference;
 

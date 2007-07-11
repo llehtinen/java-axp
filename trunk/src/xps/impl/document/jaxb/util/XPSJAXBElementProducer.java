@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import xps.XPSSpecError;
+import xps.api.XPSSpecError;
 
 public class XPSJAXBElementProducer {
 	

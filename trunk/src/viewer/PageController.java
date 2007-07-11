@@ -3,8 +3,8 @@ package viewer;
 import java.util.Observable;
 import java.util.Observer;
 
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.IDocumentStructure;
 import xps.model.document.page.IFixedPage;

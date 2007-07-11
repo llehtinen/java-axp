@@ -28,8 +28,9 @@ import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
 import viewer.rendering.brushes.AWTXPSPaintWrapper;
 import viewer.rendering.brushes.SolidColourAWTXPSPaint;
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
+import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.document.jaxb.STDashCap;
 import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STLineCap;
@@ -46,7 +47,6 @@ import xps.model.document.page.IPolyBezierSegment;
 import xps.model.document.page.IPolyLineSegment;
 import xps.model.document.page.IPolyQuadraticBezierSegment;
 import xps.model.document.page.IVisualBrush;
-import xps.util.DelegatingResourceDictionary;
 
 public class AWTXPSRenderingUtils {
 	//TODO: Unit test this class

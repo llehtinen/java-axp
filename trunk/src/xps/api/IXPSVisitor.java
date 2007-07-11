@@ -1,7 +1,6 @@
-package xps;
+package xps.api;
 
-import xps.impl.page.XPSElementIterator;
-import xps.impl.page.XPSElementIterator.FullOrShorthandData;
+import xps.api.XPSElementIterator.FullOrShorthandData;
 import xps.model.document.page.ICanvas;
 import xps.model.document.page.IFixedPage;
 import xps.model.document.page.IGlyphs;

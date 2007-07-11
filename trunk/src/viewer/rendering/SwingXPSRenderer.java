@@ -13,10 +13,10 @@ import java.util.Stack;
 
 import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
-import xps.IXPSVisitor;
-import xps.XPSError;
-import xps.XPSSpecError;
-import xps.impl.page.XPSElementIterator.FullOrShorthandData;
+import xps.api.IXPSVisitor;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
+import xps.api.XPSElementIterator.FullOrShorthandData;
 import xps.model.document.page.IBrush;
 import xps.model.document.page.ICanvas;
 import xps.model.document.page.IFixedPage;

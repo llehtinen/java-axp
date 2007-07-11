@@ -1,4 +1,4 @@
-package xps;
+package xps.api;
 
 import xps.model.document.IDocumentStructure;
 import xps.model.document.page.IFixedPage;

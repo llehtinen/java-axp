@@ -3,8 +3,8 @@ package viewer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.page.IFixedPage;
 

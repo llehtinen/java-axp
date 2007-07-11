@@ -1,4 +1,4 @@
-package xps;
+package xps.api;
 
 import xps.model.document.IDocumentReference;
 import xps.model.document.IFixedDocument;
