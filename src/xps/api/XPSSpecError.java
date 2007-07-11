@@ -1,4 +1,4 @@
-package xps;
+package xps.api;
 
 
 public class XPSSpecError extends XPSError {

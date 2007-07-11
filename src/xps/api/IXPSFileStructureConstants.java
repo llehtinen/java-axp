@@ -1,4 +1,4 @@
-package xps;
+package xps.api;
 
 public interface IXPSFileStructureConstants {
 	

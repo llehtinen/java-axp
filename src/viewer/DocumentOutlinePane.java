@@ -16,7 +16,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import xps.XPSError;
+import xps.api.XPSError;
 import xps.model.document.IDocumentStructure;
 import xps.model.document.IOutlineEntry;
 

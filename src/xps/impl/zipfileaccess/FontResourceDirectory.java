@@ -2,7 +2,7 @@ package xps.impl.zipfileaccess;
 
 import java.util.zip.ZipEntry;
 
-import xps.XPSSpecError;
+import xps.api.XPSSpecError;
 
 public class FontResourceDirectory {
 

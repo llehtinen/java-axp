@@ -15,8 +15,9 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
+import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.zipfileaccess.LRUCache;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.IDocumentReference;
@@ -33,7 +34,6 @@ import xps.model.document.page.ISolidColorBrush;
 import xps.model.document.page.ITransform;
 import xps.model.document.page.ITransformMatrix;
 import xps.model.document.page.IVisualBrush;
-import xps.util.DelegatingResourceDictionary;
 
 @Deprecated
 public class XPSRenderer {

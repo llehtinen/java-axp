@@ -20,10 +20,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import xps.IXPSFileAccess;
-import xps.LinkTargetNotFoundException;
-import xps.XPSError;
-import xps.XPSSpecError;
+import xps.api.IXPSFileAccess;
+import xps.api.LinkTargetNotFoundException;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
 import xps.impl.document.jaxb.CTDocumentStructure;
 import xps.impl.document.jaxb.CTFixedDocument;
 import xps.impl.document.jaxb.CTFixedDocumentSequence;
