@@ -14,7 +14,7 @@ import java.util.Stack;
 import xps.XPSError;
 import xps.XPSSpecError;
 import xps.impl.ui.rendering.brushes.AWTXPSPaint;
-import xps.impl.ui.rendering.brushes.XPSImagePaint;
+import xps.impl.ui.rendering.brushes.AWTXPSImagePaint;
 import xps.model.document.page.IBrush;
 import xps.model.document.page.ICanvas;
 import xps.model.document.page.IFixedPage;
@@ -333,7 +333,7 @@ public class SwingXPSRenderer implements XPSVisitor{
 //		return AWTXPSRenderingUtils.createPaintFromVisualBrush(brush, matrixTransform);
 	}
 	
-	private XPSImagePaint createPaintFromImageBrush(IImageBrush brush) throws XPSError {
+	private AWTXPSPaint createPaintFromImageBrush(IImageBrush brush) throws XPSError {
 		if(brush.getImageBrushTransform() != null && brush.getTransform() != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
