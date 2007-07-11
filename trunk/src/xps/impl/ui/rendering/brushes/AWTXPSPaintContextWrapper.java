@@ -22,6 +22,13 @@ public class AWTXPSPaintContextWrapper extends AWTXPSPaintContext {
 	protected Raster getSourceRaster(int x, int y, int w, int h) {
 		return mContext.getRaster(x, y, w, h);
 	}
+	
+	@Override
+	public ColorModel getColorModel() {
+		return mContext.getColorModel();
+	}
+	
+	
 
 	
 }

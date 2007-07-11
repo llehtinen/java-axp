@@ -7,7 +7,9 @@ import java.awt.FontFormatException;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -28,10 +30,10 @@ import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STLineCap;
 import xps.impl.document.jaxb.STLineJoin;
 import xps.impl.ui.ShorthandPathParser;
+import xps.impl.ui.rendering.brushes.AWTXPSImagePaint;
 import xps.impl.ui.rendering.brushes.AWTXPSPaint;
 import xps.impl.ui.rendering.brushes.AWTXPSPaintWrapper;
 import xps.impl.ui.rendering.brushes.SolidColourAWTXPSPaint;
-import xps.impl.ui.rendering.brushes.XPSImagePaint;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
 import xps.model.document.IDocumentReference;
 import xps.model.document.page.IArcSegment;
@@ -195,7 +197,7 @@ public class AWTXPSRenderingUtils {
 		//return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, visualBrush.getTileMode(), visualBrush.getOpacity(), imageSource)
 	}
 	
-	static XPSImagePaint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
+	static AWTXPSPaint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
 		final AffineTransform at;
 		if(tranformMatrix != null){
 			at = createAffineTransform(tranformMatrix);
@@ -203,23 +205,9 @@ public class AWTXPSRenderingUtils {
 			at = new AffineTransform();
 		}
 		
-
-		Rectangle2D portionOfSourceImageToBeRendered = createRectangle(imageBrush.getViewbox());
-		
-		if((int)portionOfSourceImageToBeRendered.getX() + (int)portionOfSourceImageToBeRendered.getWidth() > imageResource.getWidth()){
-			System.out.println();
-		}
-		
-		final BufferedImage sourceImage = imageResource.getSubimage((int)portionOfSourceImageToBeRendered.getX(), (int)portionOfSourceImageToBeRendered.getY(), 
-				(int)portionOfSourceImageToBeRendered.getWidth(), (int)portionOfSourceImageToBeRendered.getHeight());
-		
-		
-		final Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
-		
-		return new XPSImagePaint(sourceImage, locationOfFirstTileToRender, at);
-		
-//		ImageBrushPaint is a better implementation of the XPS spec, but is not as efficient to render simple image brushes.
-//		return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, imageBrush.getTileMode(), imageBrush.getOpacity(), imageBrush.getImageSource());
+		//TODO: Take into account viewbox - for stretching, and for using a subimage of the source image
+		Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
+		return new AWTXPSImagePaint(imageResource, locationOfFirstTileToRender, at);
 	}
 	
 	
@@ -234,8 +222,6 @@ public class AWTXPSRenderingUtils {
 			for (IPathFigure figure : ShorthandPathParser.SHORTHAND_PARSER.getPathFigures()) {
 				gp.append(AWTXPSRenderingUtils.createShapeFromPathFigure(figure), false);
 			}
-			
-			
 		} catch (XPSError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
