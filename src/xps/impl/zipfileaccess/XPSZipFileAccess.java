@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import xps.IXPSFileAccess;
 import xps.LinkTargetNotFoundException;
 import xps.XPSError;
 import xps.XPSSpecError;
@@ -38,7 +39,6 @@ import xps.model.document.ILinkTargets;
 import xps.model.document.page.IFixedPage;
 import xps.model.document.page.IPageContent;
 import xps.model.document.page.IPageResourceDictionary;
-import xps.model.fileaccess.IXPSFileAccess;
 
 public class XPSZipFileAccess implements IXPSFileAccess {
 
