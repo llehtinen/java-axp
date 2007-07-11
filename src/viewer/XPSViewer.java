@@ -1,30 +1,17 @@
 package viewer;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.PaintContext;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.Raster;
 import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JViewport;
 
 import xps.api.IXPSAccess;
-import xps.api.IXPSFileAccess;
 import xps.api.XPSError;
 import xps.impl.XPSFileAccessImpl;
 import xps.impl.zipfileaccess.XPSZipFileAccess;

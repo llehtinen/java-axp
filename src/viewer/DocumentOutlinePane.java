@@ -2,12 +2,9 @@ package viewer;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
