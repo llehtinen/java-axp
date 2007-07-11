@@ -45,7 +45,7 @@
     <target name="jar" depends="compile">
     	<jar destfile="java-xps.jar" basedir="bin/">
 			<manifest>
-    			<attribute name="Main-Class" value="xps.impl.ui.SimpleXPSFrame"/>
+    			<attribute name="Main-Class" value="viewer.XPSViewer"/>
     		</manifest>
     	</jar>
     </target>

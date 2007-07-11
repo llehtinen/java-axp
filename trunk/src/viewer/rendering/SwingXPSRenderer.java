@@ -2,7 +2,6 @@ package viewer.rendering;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -11,7 +10,6 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.Stack;
 
-import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
 import xps.api.IXPSVisitor;
 import xps.api.XPSError;
