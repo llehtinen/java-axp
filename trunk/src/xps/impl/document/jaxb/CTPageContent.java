@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.ILinkTargets;
-import xps.model.document.page.IPageContent;
+import xps.api.model.document.ILinkTargets;
+import xps.api.model.document.page.IPageContent;
 
 
 /**

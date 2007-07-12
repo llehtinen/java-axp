@@ -17,10 +17,10 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import xps.model.document.page.IBrush;
-import xps.model.document.page.IGeometry;
-import xps.model.document.page.IPath;
-import xps.model.document.page.ITransform;
+import xps.api.model.document.page.IBrush;
+import xps.api.model.document.page.IGeometry;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.ITransform;
 
 
 /**

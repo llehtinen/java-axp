@@ -15,25 +15,26 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import xps.api.IXPSAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.page.IBrush;
+import xps.api.model.document.page.ICanvas;
+import xps.api.model.document.page.IFixedPage;
+import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IImageBrush;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.IPathGeometry;
+import xps.api.model.document.page.IRadialGradientBrush;
+import xps.api.model.document.page.ISolidColorBrush;
+import xps.api.model.document.page.ITransform;
+import xps.api.model.document.page.ITransformMatrix;
+import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.zipfileaccess.LRUCache;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
-import xps.model.document.page.IBrush;
-import xps.model.document.page.ICanvas;
-import xps.model.document.page.IFixedPage;
-import xps.model.document.page.IGlyphs;
-import xps.model.document.page.IImageBrush;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IPath;
-import xps.model.document.page.IPathGeometry;
-import xps.model.document.page.IRadialGradientBrush;
-import xps.model.document.page.ISolidColorBrush;
-import xps.model.document.page.ITransform;
-import xps.model.document.page.ITransformMatrix;
-import xps.model.document.page.IVisualBrush;
 
 @Deprecated
 public class XPSRenderer {
@@ -41,7 +42,7 @@ public class XPSRenderer {
 	private static final Pattern RESOURCE_REFERENCE_PATTERN = Pattern.compile("\\{StaticResource (.*)\\}");
 	private static LRUCache<String, ImageBrushPaint> fImageBrushCache;
 
-	public static void renderVisual(Graphics g, IVisualBrush vb, DelegatingResourceDictionary resources, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	public static void renderVisual(Graphics g, IVisualBrush vb, DelegatingResourceDictionary resources, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		if(vb.getVisualBrushVisual() != null && vb.getVisual() != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
@@ -72,7 +73,7 @@ public class XPSRenderer {
 	}
 	
 	
-	public static void renderPage(Graphics g, IFixedPage page, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	public static void renderPage(Graphics g, IFixedPage page, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		
 		//set the initial transform
@@ -99,7 +100,7 @@ public class XPSRenderer {
 
 
 
-	private static void renderCanvas(Graphics g, ICanvas canvas, DelegatingResourceDictionary pageResourceDictionary, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	private static void renderCanvas(Graphics g, ICanvas canvas, DelegatingResourceDictionary pageResourceDictionary, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		applyGraphicsProperties(g2d, canvas, pageResourceDictionary);
 		
@@ -120,7 +121,7 @@ public class XPSRenderer {
 
 
 
-	private static void renderGlyphs(Graphics g, IGlyphs glyphs, DelegatingResourceDictionary pageResourceDictionary, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	private static void renderGlyphs(Graphics g, IGlyphs glyphs, DelegatingResourceDictionary pageResourceDictionary, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		g2d.setFont(g2d.getFont().deriveFont(1f));
 		applyGraphicsProperties(g2d, glyphs, pageResourceDictionary);
@@ -140,7 +141,7 @@ public class XPSRenderer {
 
 
 
-	private static void renderPath(Graphics g, IPath path, DelegatingResourceDictionary pageResourceDictionary, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	private static void renderPath(Graphics g, IPath path, DelegatingResourceDictionary pageResourceDictionary, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		applyGraphicsProperties(g2d, path, pageResourceDictionary);
 		
@@ -156,7 +157,7 @@ public class XPSRenderer {
 	}
 
 
-	private static Paint createPaint(String pathData, IBrush brush, DelegatingResourceDictionary pageResourceDictionary, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	private static Paint createPaint(String pathData, IBrush brush, DelegatingResourceDictionary pageResourceDictionary, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 	   if(brush != null && pathData != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");   
 	   }
@@ -191,7 +192,7 @@ public class XPSRenderer {
 		return o;
 	}
 
-	private static Shape renderTextPathData(Graphics2D g, Paint fillPaint, Paint drawPaint, IPath path, DelegatingResourceDictionary pageResourceDictionary, XPSZipFileAccess access, IDocumentReference docRef) throws XPSSpecError, XPSError {
+	private static Shape renderTextPathData(Graphics2D g, Paint fillPaint, Paint drawPaint, IPath path, DelegatingResourceDictionary pageResourceDictionary, IXPSAccess access, IDocumentReference docRef) throws XPSSpecError, XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		
 		Shape s;
@@ -315,7 +316,7 @@ public class XPSRenderer {
 
 	
 
-	private static Shape renderPathData(Graphics g, Paint fillPaint, Paint drawPaint, IPath geo, XPSZipFileAccess access) throws XPSError {
+	private static Shape renderPathData(Graphics g, Paint fillPaint, Paint drawPaint, IPath geo, IXPSAccess access) throws XPSError {
 		Graphics2D g2d = (Graphics2D)g.create();
 		Shape s = AWTXPSRenderingUtils.createShapeFromPathGeometry(geo.getPathData().getPathGeometry());
 		
@@ -510,7 +511,7 @@ public class XPSRenderer {
 		return renderTransformMatrix;
 	}
 
-	public static Paint createPaintFromBrush(IBrush pathFill, DelegatingResourceDictionary resources,XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	public static Paint createPaintFromBrush(IBrush pathFill, DelegatingResourceDictionary resources,IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		//TODO: Handle all brush types
 		if(pathFill.getSolidColorBrush() != null){
 			return AWTXPSRenderingUtils.createPaintFromShorthand(pathFill.getSolidColorBrush().getColor());
@@ -529,7 +530,7 @@ public class XPSRenderer {
 
 
 
-	public static Paint createPaintFromBrush(Object o, DelegatingResourceDictionary resources,XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	public static Paint createPaintFromBrush(Object o, DelegatingResourceDictionary resources,IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		if(o instanceof ISolidColorBrush){
 			return AWTXPSRenderingUtils.createPaintFromShorthand(((ISolidColorBrush)o).getColor());
 		} else if(o instanceof IImageBrush){
@@ -546,7 +547,7 @@ public class XPSRenderer {
 	}
 
 
-	private static Paint createPaintFromImageBrush(IImageBrush imageBrush, DelegatingResourceDictionary resources, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	private static Paint createPaintFromImageBrush(IImageBrush imageBrush, DelegatingResourceDictionary resources, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		if(imageBrush.getImageBrushTransform() != null && imageBrush.getTransform() != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
@@ -556,11 +557,11 @@ public class XPSRenderer {
 		} else if(imageBrush.getTransform() != null){
 			matrixTransform = imageBrush.getTransform();
 		}
-		return AWTXPSRenderingUtils.createPaintFromImageBrush(imageBrush, matrixTransform, access.getImageResource(imageBrush.getImageSource(), docRef));
+		return AWTXPSRenderingUtils.createPaintFromImageBrush(imageBrush, matrixTransform, access.getFileAccess().getImageResource(imageBrush.getImageSource(), docRef));
 	}
 
 
-	private static Paint createPaintFromVisualBrush(IVisualBrush vb, DelegatingResourceDictionary resources, XPSZipFileAccess access, IDocumentReference docRef) throws XPSSpecError, XPSError {
+	private static Paint createPaintFromVisualBrush(IVisualBrush vb, DelegatingResourceDictionary resources, IXPSAccess access, IDocumentReference docRef) throws XPSSpecError, XPSError {
 		if(vb.getTransform() != null && vb.getVisualBrushTransform() != null) {
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}

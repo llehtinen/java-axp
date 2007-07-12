@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.IFixedDocumentSequence;
+import xps.api.model.document.IFixedDocumentSequence;
 
 
 /**

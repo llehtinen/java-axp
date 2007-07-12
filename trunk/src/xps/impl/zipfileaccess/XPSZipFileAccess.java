@@ -24,21 +24,21 @@ import xps.api.IXPSFileAccess;
 import xps.api.LinkTargetNotFoundException;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.IDocumentStructure;
+import xps.api.model.document.IFixedDocument;
+import xps.api.model.document.IFixedDocumentSequence;
+import xps.api.model.document.ILinkTarget;
+import xps.api.model.document.ILinkTargets;
+import xps.api.model.document.page.IFixedPage;
+import xps.api.model.document.page.IPageContent;
+import xps.api.model.document.page.IPageResourceDictionary;
 import xps.impl.document.jaxb.CTDocumentStructure;
 import xps.impl.document.jaxb.CTFixedDocument;
 import xps.impl.document.jaxb.CTFixedDocumentSequence;
 import xps.impl.document.jaxb.CTFixedPage;
 import xps.impl.document.jaxb.CTResourceDictionary;
 import xps.impl.document.jaxb.util.XPSJAXBElementProducer;
-import xps.model.document.IDocumentReference;
-import xps.model.document.IDocumentStructure;
-import xps.model.document.IFixedDocument;
-import xps.model.document.IFixedDocumentSequence;
-import xps.model.document.ILinkTarget;
-import xps.model.document.ILinkTargets;
-import xps.model.document.page.IFixedPage;
-import xps.model.document.page.IPageContent;
-import xps.model.document.page.IPageResourceDictionary;
 
 public class XPSZipFileAccess implements IXPSFileAccess {
 

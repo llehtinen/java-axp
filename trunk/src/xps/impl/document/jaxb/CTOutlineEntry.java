@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.IOutlineEntry;
+import xps.api.model.document.IOutlineEntry;
 
 
 /**

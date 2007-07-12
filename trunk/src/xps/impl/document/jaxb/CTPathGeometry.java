@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.IPathGeometry;
-import xps.model.document.page.ITransform;
+import xps.api.model.document.page.IPathGeometry;
+import xps.api.model.document.page.ITransform;
 
 
 /**

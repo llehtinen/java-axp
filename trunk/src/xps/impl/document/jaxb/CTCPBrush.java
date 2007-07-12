@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.IBrush;
-import xps.model.document.page.IImageBrush;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IRadialGradientBrush;
-import xps.model.document.page.ISolidColorBrush;
-import xps.model.document.page.IVisualBrush;
+import xps.api.model.document.page.IBrush;
+import xps.api.model.document.page.IImageBrush;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.IRadialGradientBrush;
+import xps.api.model.document.page.ISolidColorBrush;
+import xps.api.model.document.page.IVisualBrush;
 
 
 /**

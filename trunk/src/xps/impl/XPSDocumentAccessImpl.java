@@ -1,34 +1,32 @@
 package xps.impl;
 
+import xps.api.IXPSAccess;
 import xps.api.IXPSDocumentAccess;
 import xps.api.IXPSFileAccess;
-import xps.model.document.IDocumentStructure;
-import xps.model.document.page.IFixedPage;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
+import xps.api.model.document.IDocumentStructure;
+import xps.api.model.document.page.IFixedPage;
 
 public class XPSDocumentAccessImpl implements IXPSDocumentAccess {
 
-	public XPSDocumentAccessImpl(IXPSFileAccess fileAccess) {
-		// TODO Auto-generated constructor stub
+	private IXPSFileAccess fFileAccess;
+
+	public XPSDocumentAccessImpl(IXPSAccess fileAccess) {
+		fFileAccess = fileAccess.getFileAccess();
 	}
 
-	public IDocumentStructure getDocument() {
-		// TODO Auto-generated method stub
-		return null;
+	public IDocumentStructure getDocumentStructure(int docNum) throws XPSSpecError, XPSError {
+		return fFileAccess.loadDocumentStructure(docNum);
 	}
 
-	public int getFirstPageIndex() {
-		// TODO Auto-generated method stub
+	public int getFirstDocNum() throws XPSError {
 		return 0;
 	}
 
-	public int getLastPageIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getLastDocNum() throws XPSError {
+		return fFileAccess.getFixedDocumentSequence().getDocumentReference().size() - 1;
 	}
 
-	public IFixedPage getPage(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

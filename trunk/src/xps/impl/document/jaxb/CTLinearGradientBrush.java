@@ -14,9 +14,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.IGradientStops;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.ITransform;
+import xps.api.model.document.IGradientStops;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.ITransform;
 
 
 /**

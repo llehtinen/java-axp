@@ -1,11 +1,9 @@
 package xps.api;
 
-import xps.model.document.IDocumentStructure;
-import xps.model.document.page.IFixedPage;
+import xps.api.model.document.IDocumentStructure;
 
 public interface IXPSDocumentAccess {
-	public IDocumentStructure getDocument();
-	public IFixedPage getPage(int i);
-	public int getFirstPageIndex();
-	public int getLastPageIndex();
+	public IDocumentStructure getDocumentStructure(int docNum) throws XPSSpecError, XPSError;
+	public int getFirstDocNum() throws XPSError;
+	public int getLastDocNum() throws XPSError;
 }

@@ -3,17 +3,19 @@ package xps.api.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import xps.api.IXPSAccess;
+import xps.api.IXPSFileAccess;
 import xps.api.XPSError;
+import xps.api.model.document.IDocumentReference;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
 
 public abstract class CachingResourceLoader<T> {
-	private XPSZipFileAccess fFileAccess;
+	private IXPSFileAccess fFileAccess;
 	private IDocumentReference fDocument;
 	private Map<String, T> fCache = new HashMap<String, T>();
 
-	public CachingResourceLoader(IDocumentReference docRef, XPSZipFileAccess access){
-		fFileAccess = access;
+	public CachingResourceLoader(IDocumentReference docRef, IXPSAccess access) {
+		fFileAccess = access.getFileAccess();
 		fDocument = docRef;
 	}
 
@@ -21,7 +23,7 @@ public abstract class CachingResourceLoader<T> {
 		return fDocument;
 	}
 
-	public XPSZipFileAccess getFileAccess() {
+	public IXPSFileAccess getFileAccess() {
 		return fFileAccess;
 	}
 	

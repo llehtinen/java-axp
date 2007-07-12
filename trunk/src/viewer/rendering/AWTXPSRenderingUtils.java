@@ -26,25 +26,26 @@ import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
 import viewer.rendering.brushes.AWTXPSPaintWrapper;
 import viewer.rendering.brushes.SolidColourAWTXPSPaint;
+import xps.api.IXPSAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.page.IArcSegment;
+import xps.api.model.document.page.IGradientStop;
+import xps.api.model.document.page.IImageBrush;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.IPathFigure;
+import xps.api.model.document.page.IPathGeometry;
+import xps.api.model.document.page.IPolyBezierSegment;
+import xps.api.model.document.page.IPolyLineSegment;
+import xps.api.model.document.page.IPolyQuadraticBezierSegment;
+import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.document.jaxb.STDashCap;
 import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STLineCap;
 import xps.impl.document.jaxb.STLineJoin;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
-import xps.model.document.page.IArcSegment;
-import xps.model.document.page.IGradientStop;
-import xps.model.document.page.IImageBrush;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IPathFigure;
-import xps.model.document.page.IPathGeometry;
-import xps.model.document.page.IPolyBezierSegment;
-import xps.model.document.page.IPolyLineSegment;
-import xps.model.document.page.IPolyQuadraticBezierSegment;
-import xps.model.document.page.IVisualBrush;
 
 public class AWTXPSRenderingUtils {
 	//TODO: Unit test this class
@@ -178,7 +179,7 @@ public class AWTXPSRenderingUtils {
 		}
 	}
 
-	static Paint createPaintFromVisualBrush(IVisualBrush visualBrush, String tranformMatrix, DelegatingResourceDictionary resources, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	static Paint createPaintFromVisualBrush(IVisualBrush visualBrush, String tranformMatrix, DelegatingResourceDictionary resources, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		AffineTransform at = new AffineTransform();
 		if(tranformMatrix != null){
 			at = createAffineTransform(tranformMatrix);
@@ -365,10 +366,10 @@ public class AWTXPSRenderingUtils {
 		double angle = segment.getRotationAngle();
 	}
 	
-	public static Font loadFont(String fontUri, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError {
+	public static Font loadFont(String fontUri, IXPSAccess access, IDocumentReference docRef) throws XPSError {
 		Font f = fFontCache .get(fontUri);
 		if(f == null){
-			byte fontData[] = access.getFontData(fontUri, docRef);
+			byte fontData[] = access.getFileAccess().getFontData(fontUri, docRef);
 			try {
 				f = Font.createFont(Font.TRUETYPE_FONT, new ByteArrayInputStream(fontData));
 				fFontCache.put(fontUri, f);

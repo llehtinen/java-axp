@@ -11,18 +11,22 @@ import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class XPSFileAccessImpl implements IXPSAccess {
 
-	public IXPSDocumentAccess getDocumentAccess(IXPSFileAccess fileAccess) {
+	IXPSFileAccess fFileAccess;
+
+	public XPSFileAccessImpl(File file) throws XPSError {
+		super();
+		fFileAccess = new XPSZipFileAccess(file);
+	}
+
+	public IXPSDocumentAccess getDocumentAccess(IXPSAccess fileAccess) {
 		return new XPSDocumentAccessImpl(fileAccess);
 	}
 
-	public IXPSFileAccess getFileAccess(File xpsFile) throws XPSError {
-		return new XPSZipFileAccess(xpsFile);
+	public IXPSFileAccess getFileAccess()  {
+		return fFileAccess;
 	}
 
-	public IXPSPageAccess getPageAccess(IXPSFileAccess xpsfile, IXPSDocumentAccess xpsdocument) {
-		return new XPSPageAccessImpl(xpsfile, xpsdocument);
+	public IXPSPageAccess getPageAccess(IXPSAccess xpsAccess, int docNum) throws XPSError {
+		return new XPSPageAccessImpl(xpsAccess, docNum);
 	}
-
-
-
 }

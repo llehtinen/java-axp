@@ -9,14 +9,14 @@ import java.util.Vector;
 import viewer.rendering.AWTXPSRenderingUtils;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
+import xps.api.model.document.page.IArcSegment;
+import xps.api.model.document.page.ILineSegment;
+import xps.api.model.document.page.IPathFigure;
+import xps.api.model.document.page.IPolyBezierSegment;
+import xps.api.model.document.page.IPolyLineSegment;
+import xps.api.model.document.page.IPolyQuadraticBezierSegment;
 import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STSweepDirection;
-import xps.model.document.page.IArcSegment;
-import xps.model.document.page.ILineSegment;
-import xps.model.document.page.IPathFigure;
-import xps.model.document.page.IPolyBezierSegment;
-import xps.model.document.page.IPolyLineSegment;
-import xps.model.document.page.IPolyQuadraticBezierSegment;
 
 public class ShorthandPathParser {
 

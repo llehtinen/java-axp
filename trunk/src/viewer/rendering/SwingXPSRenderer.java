@@ -15,18 +15,18 @@ import xps.api.IXPSVisitor;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
 import xps.api.XPSElementIterator.FullOrShorthandData;
-import xps.model.document.page.IBrush;
-import xps.model.document.page.ICanvas;
-import xps.model.document.page.IFixedPage;
-import xps.model.document.page.IGlyphs;
-import xps.model.document.page.IImageBrush;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IPageResource;
-import xps.model.document.page.IPath;
-import xps.model.document.page.IPathGeometry;
-import xps.model.document.page.IRadialGradientBrush;
-import xps.model.document.page.ISolidColorBrush;
-import xps.model.document.page.IVisualBrush;
+import xps.api.model.document.page.IBrush;
+import xps.api.model.document.page.ICanvas;
+import xps.api.model.document.page.IFixedPage;
+import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IImageBrush;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.IPathGeometry;
+import xps.api.model.document.page.IRadialGradientBrush;
+import xps.api.model.document.page.ISolidColorBrush;
+import xps.api.model.document.page.IVisualBrush;
 
 public class SwingXPSRenderer implements IXPSVisitor{
 

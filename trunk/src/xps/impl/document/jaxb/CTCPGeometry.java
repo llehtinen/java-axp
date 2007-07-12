@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.IGeometry;
-import xps.model.document.page.IPathGeometry;
+import xps.api.model.document.page.IGeometry;
+import xps.api.model.document.page.IPathGeometry;
 
 
 /**
