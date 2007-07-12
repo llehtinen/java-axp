@@ -6,7 +6,6 @@ import xps.api.IXPSFileAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
 import xps.api.model.document.IDocumentStructure;
-import xps.api.model.document.page.IFixedPage;
 
 public class XPSDocumentAccessImpl implements IXPSDocumentAccess {
 

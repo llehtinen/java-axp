@@ -20,7 +20,6 @@ import xps.api.model.document.page.ITransform;
 import xps.api.model.document.page.ITransformMatrix;
 import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class XPSElementIterator {
 	

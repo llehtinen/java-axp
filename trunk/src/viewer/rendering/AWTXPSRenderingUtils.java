@@ -45,7 +45,6 @@ import xps.impl.document.jaxb.STDashCap;
 import xps.impl.document.jaxb.STFillRule;
 import xps.impl.document.jaxb.STLineCap;
 import xps.impl.document.jaxb.STLineJoin;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class AWTXPSRenderingUtils {
 	//TODO: Unit test this class

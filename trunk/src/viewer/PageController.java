@@ -3,17 +3,13 @@ package viewer;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.sun.org.apache.bcel.internal.generic.FDIV;
-
 import xps.api.IXPSAccess;
 import xps.api.IXPSDocumentAccess;
-import xps.api.IXPSFileAccess;
 import xps.api.IXPSPageAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
 import xps.api.model.document.IDocumentStructure;
 import xps.api.model.document.page.IFixedPage;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class PageController {
 	private class PageViewerSubject extends Observable {

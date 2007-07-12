@@ -10,7 +10,6 @@ import xps.api.XPSElementIterator;
 import xps.api.XPSError;
 import xps.api.model.document.IDocumentReference;
 import xps.api.model.document.page.IFixedPage;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class XPSPageRenderer {
 	
