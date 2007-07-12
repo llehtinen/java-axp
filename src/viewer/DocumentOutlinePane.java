@@ -14,8 +14,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import xps.api.XPSError;
-import xps.model.document.IDocumentStructure;
-import xps.model.document.IOutlineEntry;
+import xps.api.model.document.IDocumentStructure;
+import xps.api.model.document.IOutlineEntry;
 
 public class DocumentOutlinePane  {
 	public static JComponent getDocumentTree(final PageController pageController) {

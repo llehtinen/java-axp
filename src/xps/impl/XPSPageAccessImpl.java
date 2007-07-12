@@ -1,29 +1,51 @@
 package xps.impl;
 
-import xps.api.IXPSDocumentAccess;
-import xps.api.IXPSFileAccess;
+import xps.api.IXPSAccess;
 import xps.api.IXPSPageAccess;
 import xps.api.XPSElementIterator;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.IFixedDocument;
+import xps.api.model.document.page.IFixedPage;
 
 public class XPSPageAccessImpl implements IXPSPageAccess {
 
-	public XPSPageAccessImpl(IXPSFileAccess xpsfile, IXPSDocumentAccess xpsdocument) {
-		// TODO Auto-generated constructor stub
+	private IXPSAccess fXPSAccess;
+	private int fDocNum;
+	private IDocumentReference fDocumentReference;
+	private IFixedDocument fFixedDocument;
+
+	public XPSPageAccessImpl(IXPSAccess access, int docNum) throws XPSError {
+		fXPSAccess = access;
+		fDocNum = docNum;
+		fDocumentReference = access.getFileAccess().getFixedDocumentSequence().getDocumentReference().get(docNum);
+		fFixedDocument = fXPSAccess.getFileAccess().getFixedDocument(fDocumentReference);
 	}
 
-	public XPSElementIterator getElementIterator(int pageNum) {
-		// TODO Auto-generated method stub
-		return null;
+	public XPSElementIterator getElementIterator(int pageNum) throws XPSSpecError, XPSError {
+		return new XPSElementIterator(getPage(pageNum),fXPSAccess,fDocumentReference);
 	}
 
 	public int getFirstPageNum() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int getLastPageNum() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return fFixedDocument.getPageContent().size() - 1;	
 	}
+
+	public int getPageNumberWithLinkTarget(String outlineTarget) throws XPSError {
+		return fXPSAccess.getFileAccess().getPageNumberWithLinkTarget(outlineTarget, fDocNum);
+	}
+
+	public IFixedPage getPage(int pageNum) throws XPSSpecError, XPSError {
+		return fXPSAccess.getFileAccess().loadPageFromDocument(fDocNum, pageNum);
+	}
+	
+	
+
+
 
 }

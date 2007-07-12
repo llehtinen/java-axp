@@ -2,13 +2,13 @@ package viewer.rendering;
 
 import java.awt.image.BufferedImage;
 
+import xps.api.IXPSAccess;
+import xps.api.model.document.IDocumentReference;
 import xps.api.util.CachingResourceLoader;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
 
 public class ImageLoader extends CachingResourceLoader<BufferedImage>{
 
-	public ImageLoader(IDocumentReference docRef, XPSZipFileAccess access) {
+	public ImageLoader(IDocumentReference docRef, IXPSAccess access)  {
 		super(docRef, access);
 	}
 

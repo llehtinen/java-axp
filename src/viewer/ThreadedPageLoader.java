@@ -3,27 +3,24 @@ package viewer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import xps.api.IXPSPageAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
+import xps.api.model.document.page.IFixedPage;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.page.IFixedPage;
 
 public class ThreadedPageLoader {
 	
 	public class PageFetcher implements Runnable {
-
-		private int fDocNum;
 		private int fPageNum;
 
-		public PageFetcher(int docNum, int i) {
-			fDocNum = docNum;
+		public PageFetcher(int i) {
 			fPageNum = i;
 		}
 		public void run() {
 			try {
 				try {
-					loadPageFromAccess(fDocNum, fPageNum);
-					System.out.println("Finished loading " + fDocNum + ", " + fPageNum);
+					loadPageFromAccess(fPageNum);
 				} catch (IllegalArgumentException e){
 					//that's ok
 				}
@@ -39,71 +36,71 @@ public class ThreadedPageLoader {
 	private ExecutorService fExecutorService;
 	private int fLoading[];
 	private int fLoaded[];
-	private XPSZipFileAccess fAccess;
+	private IXPSPageAccess fPageAccess;
 	private IFixedPage fLastPageLoaded;
 
-	public ThreadedPageLoader(XPSZipFileAccess access) {
+	public ThreadedPageLoader(IXPSPageAccess pageAccess) {
 		fExecutorService = Executors.newSingleThreadExecutor();
 		fLoading = null;
 		fLoaded = null;
-		fAccess = access;
+		fPageAccess = pageAccess;
 	}
 	
-	public synchronized IFixedPage loadPage(int docNum, int pageNum) throws XPSSpecError, XPSError{
+	public synchronized IFixedPage loadPage(int pageNum) throws XPSSpecError, XPSError{
 		//return fAccess.loadPageFromDocument(docNum, pageNum);
 		if(fLoading == null){
-			return loadPageAndSetupNext(docNum, pageNum);
+			return loadPageAndSetupNext(pageNum);
 		} else {
-			if(fLoading[0] == docNum && fLoading[1] == pageNum){
+			if(fLoading[0] == pageNum){
 				//wait till done
 				System.out.println("Already loading, waiting");
-				return waitForPageBeingLoaded(docNum, pageNum);
+				return waitForPageBeingLoaded(pageNum);
 			} else {
-				System.out.println("Far-off page: wanted " + pageNum + ", loading " + fLoading[1]);
-				return loadPageAndSetupNext(docNum, pageNum);
+				System.out.println("Far-off page: wanted " + pageNum + ", loading " + fLoading[0]);
+				return loadPageAndSetupNext(pageNum);
 			}
 		}
 	}
 
-	private IFixedPage waitForPageBeingLoaded(int docNum, int pageNum) {
+	private IFixedPage waitForPageBeingLoaded(int pageNum) {
 		
-		while(fLoaded == null || (fLoaded[0] != docNum && fLoaded[1] != pageNum)){
+		while(fLoaded == null || (fLoaded[0] != pageNum)){
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		setupNext(docNum, pageNum);
+		setupNext(pageNum);
 		return fLastPageLoaded;
 	}
 
 
 
-	private IFixedPage loadPageAndSetupNext(int docNum, int pageNum) throws XPSSpecError, XPSError {
-		IFixedPage toReturn = loadPageFromAccess(docNum, pageNum);
-		setupNext(docNum, pageNum);
+	private IFixedPage loadPageAndSetupNext(int pageNum) throws XPSSpecError, XPSError {
+		IFixedPage toReturn = loadPageFromAccess(pageNum);
+		setupNext(pageNum);
 		return toReturn;
 	}
 	
-	private IFixedPage loadPageFromAccess(int docNum, int pageNum) throws XPSSpecError, XPSError {
+	private IFixedPage loadPageFromAccess(int pageNum) throws XPSSpecError, XPSError {
 		synchronized(this){
-			if(fLoading != null && fLoading[0] == docNum && fLoading[1] == pageNum){
+			if(fLoading != null &&  fLoading[0] == pageNum){
 				//already being loaded.
 				throw new IllegalArgumentException("Page Already being loaded");
 			}
 			
 			
-			fLoading = new int[] {docNum, pageNum};
+			fLoading = new int[] {pageNum};
 			fLoaded = null;
 		}
 		try {
-			fLastPageLoaded =  fAccess.loadPageFromDocument(docNum, pageNum);
+			fLastPageLoaded =  fPageAccess.getPage(pageNum);
 		
 		} finally {
 			synchronized(this){
 				fLoading = null;
-				fLoaded = new int[] {docNum, pageNum};
+				fLoaded = new int[] {pageNum};
 				this.notify();
 			}
 		}
@@ -112,14 +109,14 @@ public class ThreadedPageLoader {
 		return fLastPageLoaded;
 	}
 
-	private void setupNext(int docNum, int pageNum) {
+	private void setupNext(int pageNum) {
 		
-		fExecutorService.execute(new PageFetcher(docNum, pageNum + 1));
+		fExecutorService.execute(new PageFetcher(pageNum + 1));
 		if(pageNum > 0){
-			fExecutorService.execute(new PageFetcher(docNum, pageNum - 1));
+			fExecutorService.execute(new PageFetcher(pageNum - 1));
 		}
-		fExecutorService.execute(new PageFetcher(docNum, pageNum + 2));
-		fExecutorService.execute(new PageFetcher(docNum, pageNum + 3));
+		fExecutorService.execute(new PageFetcher(pageNum + 2));
+		fExecutorService.execute(new PageFetcher(pageNum + 3));
 	}
 	 
 

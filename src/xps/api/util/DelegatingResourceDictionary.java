@@ -1,11 +1,11 @@
 package xps.api.util;
 
+import xps.api.IXPSAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
-import xps.model.document.page.IPageResource;
-import xps.model.document.page.IPageResourceDictionary;
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPageResourceDictionary;
 
 public class DelegatingResourceDictionary {
 	private DelegatingResourceDictionary fParent;
@@ -23,7 +23,7 @@ public class DelegatingResourceDictionary {
 		fDict = null;
 	}
 	
-	public DelegatingResourceDictionary(DelegatingResourceDictionary parent, IPageResourceDictionary dict, XPSZipFileAccess za, IDocumentReference docRef) throws XPSError{
+	public DelegatingResourceDictionary(DelegatingResourceDictionary parent, IPageResourceDictionary dict, IXPSAccess xpsAccess, IDocumentReference docRef) throws XPSError{
 		fParent = parent;
 
 		if(dict != null){
@@ -33,7 +33,7 @@ public class DelegatingResourceDictionary {
 			
 			if(dict.getSource() != null){
 				//read the resource version
-				za.getResourceDictionary(dict.getSource(), docRef);
+				xpsAccess.getFileAccess().getResourceDictionary(dict.getSource(), docRef);
 			} else {
 				fDict = dict;
 			}

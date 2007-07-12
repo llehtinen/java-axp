@@ -3,24 +3,24 @@ package xps.api;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import xps.api.model.document.IDocumentReference;
+import xps.api.model.document.page.IBrush;
+import xps.api.model.document.page.ICanvas;
+import xps.api.model.document.page.IFixedPage;
+import xps.api.model.document.page.IGeometry;
+import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IImageBrush;
+import xps.api.model.document.page.ILinearGradientBrush;
+import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.IPathGeometry;
+import xps.api.model.document.page.IRadialGradientBrush;
+import xps.api.model.document.page.ISolidColorBrush;
+import xps.api.model.document.page.ITransform;
+import xps.api.model.document.page.ITransformMatrix;
+import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
-import xps.model.document.page.IBrush;
-import xps.model.document.page.ICanvas;
-import xps.model.document.page.IFixedPage;
-import xps.model.document.page.IGeometry;
-import xps.model.document.page.IGlyphs;
-import xps.model.document.page.IImageBrush;
-import xps.model.document.page.ILinearGradientBrush;
-import xps.model.document.page.IPageResource;
-import xps.model.document.page.IPath;
-import xps.model.document.page.IPathGeometry;
-import xps.model.document.page.IRadialGradientBrush;
-import xps.model.document.page.ISolidColorBrush;
-import xps.model.document.page.ITransform;
-import xps.model.document.page.ITransformMatrix;
-import xps.model.document.page.IVisualBrush;
 
 public class XPSElementIterator {
 	
@@ -29,11 +29,11 @@ public class XPSElementIterator {
 	
 	private DelegatingResourceDictionary fPageResourceDictionary;
 	private IFixedPage fPage;
-	private XPSZipFileAccess fFileAccess;
+	private IXPSAccess fFileAccess;
 	private IDocumentReference fDocument;
 
 	
-	public XPSElementIterator(IFixedPage page, XPSZipFileAccess access, IDocumentReference docRef) throws XPSError{
+	public XPSElementIterator(IFixedPage page, IXPSAccess access, IDocumentReference docRef) throws XPSError{
 		fPage = page;
 		fFileAccess = access;
 		fDocument = docRef;

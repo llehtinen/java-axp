@@ -14,9 +14,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.ITransform;
-import xps.model.document.page.IVisual;
-import xps.model.document.page.IVisualBrush;
+import xps.api.model.document.page.ITransform;
+import xps.api.model.document.page.IVisual;
+import xps.api.model.document.page.IVisualBrush;
 
 
 /**

@@ -3,12 +3,14 @@ package viewer.rendering;
 import java.awt.Font;
 import java.io.ByteArrayInputStream;
 
+import xps.api.IXPSAccess;
+import xps.api.XPSError;
+import xps.api.model.document.IDocumentReference;
 import xps.api.util.CachingResourceLoader;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
 
 public class FontLoader extends CachingResourceLoader<Font>{
-	public FontLoader(IDocumentReference docRef, XPSZipFileAccess access){
+	public FontLoader(IDocumentReference docRef, IXPSAccess access) {
 		super(docRef, access);
 	}
 

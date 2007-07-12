@@ -12,20 +12,21 @@ import javax.swing.JSplitPane;
 import javax.swing.JViewport;
 
 import xps.api.IXPSAccess;
+import xps.api.IXPSFileAccess;
 import xps.api.XPSError;
 import xps.impl.XPSFileAccessImpl;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class XPSViewer {
 	
 	
 	
-	private XPSZipFileAccess fXPSAccess;
+	private IXPSFileAccess fXPSAccess;
 	private JFrame mFrame;
 	private XPSPageViewer fPageViewer;
 
-	public XPSViewer(XPSZipFileAccess xpsA) throws XPSError {
-		fXPSAccess = xpsA;
+	
+	public XPSViewer(IXPSAccess access, IXPSFileAccess xpsFileAccess) throws XPSError {
+		fXPSAccess = xpsFileAccess;
 		mFrame = new JFrame("XPS Viewer");
 
 		mFrame.addWindowListener(new WindowAdapter() {
@@ -37,8 +38,9 @@ public class XPSViewer {
 		
 		//mFrame.getContentPane().add(new TestPanel());
 		JScrollPane pageScrollPane = new JScrollPane();
-		PageController pageController = new PageController(fXPSAccess);
-		fPageViewer = new XPSPageViewer(pageController, pageScrollPane, xpsA, fXPSAccess.getFixedDocumentSequence().getDocumentReference().get(0));
+		PageController pageController = new PageController(access);
+
+		fPageViewer = new XPSPageViewer(pageController, pageScrollPane, access, fXPSAccess.getFixedDocumentSequence().getDocumentReference().get(0));
 		pageController.addObserver(fPageViewer);
 		JScrollPane treeScrollPane = new JScrollPane(DocumentOutlinePane.getDocumentTree(pageController));
 		
@@ -63,6 +65,8 @@ public class XPSViewer {
 		mFrame.setVisible(true);
 	}
 
+
+
 	public static void main(String[] args) {
 		try {
 			if(args.length < 1){
@@ -74,10 +78,9 @@ public class XPSViewer {
 				if(!input.exists()){
 					System.out.println("File required");
 				}
-				IXPSAccess access = new XPSFileAccessImpl();
-				
-				XPSZipFileAccess xpsA = new XPSZipFileAccess(input);
-				XPSViewer f = new XPSViewer(xpsA);
+				IXPSAccess access = new XPSFileAccessImpl(input);
+				IXPSFileAccess xpsFileAccess = access.getFileAccess();
+				XPSViewer f = new XPSViewer(access, xpsFileAccess);
 			}
 		} catch (XPSError e) {
 			// TODO Auto-generated catch block

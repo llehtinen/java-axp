@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.ILineSegment;
-import xps.model.document.page.IPathFigure;
+import xps.api.model.document.page.ILineSegment;
+import xps.api.model.document.page.IPathFigure;
 
 
 /**

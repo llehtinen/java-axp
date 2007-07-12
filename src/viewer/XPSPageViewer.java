@@ -15,9 +15,10 @@ import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import xps.api.IXPSAccess;
 import xps.api.XPSError;
+import xps.api.model.document.IDocumentReference;
 import xps.impl.zipfileaccess.XPSZipFileAccess;
-import xps.model.document.IDocumentReference;
 
 public class XPSPageViewer extends JPanel implements Observer{
 
@@ -29,7 +30,7 @@ public class XPSPageViewer extends JPanel implements Observer{
 
 	
 	
-	public XPSPageViewer(PageController controller, final JScrollPane pageScrollPane, XPSZipFileAccess xpsa, IDocumentReference doc) throws XPSError {
+	public XPSPageViewer(PageController controller, final JScrollPane pageScrollPane, IXPSAccess xpsAccess, IDocumentReference doc) throws XPSError {
 		fPageController = controller;
 		fScrollPane = pageScrollPane;
 		setBackground(Color.WHITE);
@@ -58,7 +59,7 @@ public class XPSPageViewer extends JPanel implements Observer{
 		});
 		
 		fCurrentScale = 1;
-		fPageRenderer = new XPSPageRenderer(xpsa, doc);
+		fPageRenderer = new XPSPageRenderer(xpsAccess, doc);
 		fPageRenderer.setPage(fPageController.getPage());
 	}
 	

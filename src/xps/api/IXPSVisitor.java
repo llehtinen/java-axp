@@ -1,12 +1,12 @@
 package xps.api;
 
 import xps.api.XPSElementIterator.FullOrShorthandData;
-import xps.model.document.page.ICanvas;
-import xps.model.document.page.IFixedPage;
-import xps.model.document.page.IGlyphs;
-import xps.model.document.page.IPageResource;
-import xps.model.document.page.IPath;
-import xps.model.document.page.IPathGeometry;
+import xps.api.model.document.page.ICanvas;
+import xps.api.model.document.page.IFixedPage;
+import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.IPathGeometry;
 
 public interface IXPSVisitor {
 

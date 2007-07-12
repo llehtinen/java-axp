@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.IPageResource;
-import xps.model.document.page.IPageResourceDictionary;
+import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPageResourceDictionary;
 
 
 /**

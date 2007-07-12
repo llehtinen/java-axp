@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.page.ICanvas;
-import xps.model.document.page.IGlyphs;
-import xps.model.document.page.IPath;
-import xps.model.document.page.IVisual;
+import xps.api.model.document.page.ICanvas;
+import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IPath;
+import xps.api.model.document.page.IVisual;
 
 
 /**

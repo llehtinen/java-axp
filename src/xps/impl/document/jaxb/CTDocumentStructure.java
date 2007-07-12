@@ -16,8 +16,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import xps.model.document.IDocumentStructure;
-import xps.model.document.IOutline;
+import xps.api.model.document.IDocumentStructure;
+import xps.api.model.document.IOutline;
 
 
 /**
