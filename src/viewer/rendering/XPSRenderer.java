@@ -34,7 +34,6 @@ import xps.api.model.document.page.ITransformMatrix;
 import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.zipfileaccess.LRUCache;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 @Deprecated
 public class XPSRenderer {

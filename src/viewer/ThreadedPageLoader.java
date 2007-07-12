@@ -7,7 +7,6 @@ import xps.api.IXPSPageAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
 import xps.api.model.document.page.IFixedPage;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class ThreadedPageLoader {
 	

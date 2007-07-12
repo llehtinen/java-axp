@@ -18,7 +18,6 @@ import javax.swing.JScrollPane;
 import xps.api.IXPSAccess;
 import xps.api.XPSError;
 import xps.api.model.document.IDocumentReference;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class XPSPageViewer extends JPanel implements Observer{
 

@@ -4,10 +4,8 @@ import java.awt.Font;
 import java.io.ByteArrayInputStream;
 
 import xps.api.IXPSAccess;
-import xps.api.XPSError;
 import xps.api.model.document.IDocumentReference;
 import xps.api.util.CachingResourceLoader;
-import xps.impl.zipfileaccess.XPSZipFileAccess;
 
 public class FontLoader extends CachingResourceLoader<Font>{
 	public FontLoader(IDocumentReference docRef, IXPSAccess access) {
