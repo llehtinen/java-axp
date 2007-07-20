@@ -1,4 +1,4 @@
-<project name="xps-jaxb" default="jar">
+<project name="xps-jaxb" default="viewer-jar">
 
 	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
 	  <classpath>
@@ -24,30 +24,26 @@
     	</delete>
     </target>
     	
-    <target name="compile">
-    	<antcall target="compile-java-1.6"/>
-    </target>
-    	
-	<target name="compile-java-1.6">
+	
+	<target name="compile">
 		<mkdir dir="bin"/>
-		<javac srcdir="src/" destdir="bin"/>	
+		<javac srcdir="core" destdir="bin"/>	
+		<javac srcdir="viewer" destdir="bin" classpath="bin"/>
 	</target>
-
-	<target name="compile-java-1.5">
-		<mkdir dir="bin"/>
-		<javac srcdir="src/" destdir="bin">
-    		<classpath>
-    			<fileset includes="lib/*.jar"/>
-    		</classpath>
-    	</javac>
-	</target>
+	
     	
-    <target name="jar" depends="compile">
-    	<jar destfile="java-xps.jar" basedir="bin/">
-			<manifest>
+    <target name="viewer-jar" depends="compile">
+    	<jar destfile="java-axp-viewer.jar" basedir="bin">
+    		<manifest>
     			<attribute name="Main-Class" value="viewer.XPSViewer"/>
     		</manifest>
     	</jar>
     </target>
 
+    <target name="core-jar" depends="compile">
+    	<jar destfile="java-axp-core.jar" basedir="bin/" includes="xps/**">
+    	</jar>
+    </target>
+
+	
 </project>
