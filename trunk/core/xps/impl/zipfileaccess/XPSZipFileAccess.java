@@ -353,14 +353,12 @@ public class XPSZipFileAccess implements IXPSFileAccess {
 			return elem;
 		}
 		
-		
-		
 		InputStream in = null;
 		try {
 			
 			byte b[] =  getEntryData(ze);
 			in = new ByteArrayInputStream(b);
-			T toReturn = XPSJAXBElementProducer.createXPSElement(in);
+			T toReturn = (T)XPSJAXBElementProducer.createXPSElement(in);
 			fElementCache.put(ze.getName(), toReturn);
 			return toReturn;
 		} catch (IOException e) {

@@ -13,11 +13,11 @@ public class XPSJAXBElementProducer {
 	
 	
 	
-	public static <T> T createXPSElement(InputStream in) throws XPSSpecError  {
+	public static Object createXPSElement(InputStream in) throws XPSSpecError  {
 		try {
 			JAXBContext jc = JAXBContext.newInstance("xps.impl.document.jaxb");
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			JAXBElement<T>  ref = (JAXBElement<T>) unmarshaller.unmarshal(in);
+			JAXBElement  ref = (JAXBElement) unmarshaller.unmarshal(in);
 			return ref.getValue();
 		} catch (JAXBException e) {
 			e.printStackTrace();
