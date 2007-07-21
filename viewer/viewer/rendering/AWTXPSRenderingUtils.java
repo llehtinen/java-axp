@@ -25,7 +25,7 @@ import xps.impl.document.jaxb.STLineJoin;
 
 public class AWTXPSRenderingUtils {
 	//TODO: Unit test this class
-	static AffineTransform createAffineTransform(String renderTransform) {
+	public static AffineTransform createAffineTransform(String renderTransform) {
 		StringTokenizer st = new StringTokenizer(renderTransform, ",");
 		double components[] = new double[6];
 		for(int i = 0; i < components.length; i++){

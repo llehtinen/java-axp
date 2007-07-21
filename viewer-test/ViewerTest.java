@@ -6,10 +6,6 @@ import java.io.StringBufferInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import viewer.rendering.AWTXPSRenderer;
 import xps.api.XPSError;
@@ -26,7 +22,7 @@ public class ViewerTest {
 	private static final String kVisualBrushTest = "<FixedPage xmlns=\"http://schemas.microsoft.com/xps/2005/06\"  Width=\"816\" Height=\"1056\"> <Path Fill=\" #CCCC66\"  Data=\" M 150,0 L 300,150 L 150,300 L 0,150 Z\"  /> 			<Path Data=\" M 150,0 L 300,150 L 150,300 L 0,150 Z\" > 			<Path.Fill> 			<VisualBrush Viewbox=\" 0.25,0.25,0.75,0.75\"  Viewport=\" 150,75,50,50\"  			ViewboxUnits=\" Absolute\"  ViewportUnits=\" Absolute\"  TileMode=\" Tile\" > 			<VisualBrush.Visual>     			<Canvas>       			<Path Fill=\" #333399\"  Data=\" M 0.1,0.1 L 0.9,0.1 L 0.9,0.9 L 0.1,0.9 Z\"  /> 			<Path Fill=\" #FFFF00\"  Data=\" M 0.1,0.35 L 0.35,0.1 L 0.6,0.35 L 0.35,0.6 Z\" />   			</Canvas> 			</VisualBrush.Visual> 			</VisualBrush>  			</Path.Fill> 			</Path> 			</FixedPage>";
 
 	public static void main(String[] args) {
-		renderSegment(kSimplePath);
+//		renderSegment(kSimplePath);
 		renderSegment(kVisualBrushTest);
 	}
 
