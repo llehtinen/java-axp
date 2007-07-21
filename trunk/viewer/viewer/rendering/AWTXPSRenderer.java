@@ -399,6 +399,7 @@ public class AWTXPSRenderer implements IXPSVisitor{
 
 
 	private AWTXPSPaint createPaintFromShorthand(String fill) {
+		fill = fill.trim();
 		Color c = AWTXPSRenderingUtils.parseColourString(fill);
 		if(c == null){
 			c = Color.BLACK;	
