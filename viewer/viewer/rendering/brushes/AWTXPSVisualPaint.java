@@ -9,6 +9,7 @@ import java.awt.image.ColorModel;
 
 import viewer.rendering.FontLoader;
 import viewer.rendering.ImageLoader;
+import xps.api.XPSError;
 import xps.api.model.document.page.IVisualBrush;
 
 public class AWTXPSVisualPaint extends AWTXPSPaint {
@@ -28,8 +29,8 @@ public class AWTXPSVisualPaint extends AWTXPSPaint {
 	}
 
 	protected AWTXPSPaintContext getPaintContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds,
-			AffineTransform xform, RenderingHints hints, PaintContext opacityPaintContext) {
-		return new AWTXPSVisualPaintContext(cm,opacityPaintContext,xform,fVisualBrush,fFontLoader, fImageLoader, fLocationOfFirstTileToRender, fBrushTransform, userBounds);
+			AffineTransform xform, RenderingHints hints, PaintContext opacityPaintContext) throws XPSError {
+		return new AWTXPSVisualPaintContext(cm,opacityPaintContext,xform,fVisualBrush, fFontLoader, fImageLoader, fLocationOfFirstTileToRender,fBrushTransform, userBounds);
 	}
 
 }

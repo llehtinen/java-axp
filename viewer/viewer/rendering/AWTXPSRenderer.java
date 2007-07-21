@@ -372,8 +372,7 @@ public class AWTXPSRenderer implements IXPSVisitor{
 		}
 		
 		//TODO: Take into account viewbox - for stretching, and for using a subimage of the source image
-		Rectangle2D locationOfFirstTileToRender = AWTXPSRenderingUtils.createRectangle(brush.getViewport());
-		return new AWTXPSImagePaint(fImageLoader.load(brush.getImageSource()), locationOfFirstTileToRender, at);
+		return new AWTXPSImagePaint(fImageLoader.load(brush.getImageSource()), brush, at);
 	}
 
 
