@@ -15,9 +15,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Stack;
 
+import sun.misc.FpUtils;
 import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
 import viewer.rendering.brushes.AWTXPSPaintWrapper;
+import viewer.rendering.brushes.AWTXPSVisualPaint;
 import viewer.rendering.brushes.SolidColourAWTXPSPaint;
 import xps.api.IXPSVisitor;
 import xps.api.XPSError;
@@ -34,6 +36,7 @@ import xps.api.model.document.page.IPath;
 import xps.api.model.document.page.IPathGeometry;
 import xps.api.model.document.page.IRadialGradientBrush;
 import xps.api.model.document.page.ISolidColorBrush;
+import xps.api.model.document.page.IVisual;
 import xps.api.model.document.page.IVisualBrush;
 import xps.impl.XPSElementIterator.FullOrShorthandData;
 import xps.impl.document.jaxb.STDashCap;
@@ -325,7 +328,7 @@ public class AWTXPSRenderer implements IXPSVisitor{
 		}	
 	}
 	
-	private AWTXPSPaint createPaintFromVisualBrush(IVisualBrush brush) throws XPSSpecError {
+	private AWTXPSPaint createPaintFromVisualBrush(IVisualBrush brush) throws XPSError {
 		if(brush.getTransform() != null && brush.getVisualBrushTransform() != null) {
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		}
@@ -336,9 +339,19 @@ public class AWTXPSRenderer implements IXPSVisitor{
 		} else if(brush.getTransform() != null){
 			matrixTransform = brush.getTransform();
 		}
+
+		final AffineTransform at;
+		if(matrixTransform != null){
+			at = AWTXPSRenderingUtils.createAffineTransform(matrixTransform);
+		} else {
+			at = new AffineTransform();
+		}
+
 		
-		return null;
-//		return AWTXPSRenderingUtils.createPaintFromVisualBrush(brush, matrixTransform);
+		Rectangle2D locationOfFirstTileToRender = AWTXPSRenderingUtils.createRectangle(brush.getViewport());
+		
+		
+		return new AWTXPSVisualPaint(locationOfFirstTileToRender, brush, fFontLoader, fImageLoader, at);
 	}
 	
 	private AWTXPSPaint createPaintFromImageBrush(IImageBrush brush) throws XPSError {
