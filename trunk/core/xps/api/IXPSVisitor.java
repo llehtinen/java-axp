@@ -1,12 +1,12 @@
 package xps.api;
 
-import xps.api.XPSElementIterator.FullOrShorthandData;
 import xps.api.model.document.page.ICanvas;
 import xps.api.model.document.page.IFixedPage;
 import xps.api.model.document.page.IGlyphs;
 import xps.api.model.document.page.IPageResource;
 import xps.api.model.document.page.IPath;
 import xps.api.model.document.page.IPathGeometry;
+import xps.impl.XPSElementIterator.FullOrShorthandData;
 
 public interface IXPSVisitor {
 
@@ -23,5 +23,5 @@ public interface IXPSVisitor {
 	
 	boolean visitCanvas(ICanvas canvas, String renderTransformMatrix) throws XPSError;
 	void postVisitCanvas(ICanvas canvas);
-
+	
 }

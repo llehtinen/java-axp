@@ -1,8 +1,12 @@
-package xps.api;
+package xps.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import xps.api.IXPSAccess;
+import xps.api.IXPSVisitor;
+import xps.api.XPSError;
+import xps.api.XPSSpecError;
 import xps.api.model.document.IDocumentReference;
 import xps.api.model.document.page.IBrush;
 import xps.api.model.document.page.ICanvas;
@@ -12,6 +16,7 @@ import xps.api.model.document.page.IGlyphs;
 import xps.api.model.document.page.IImageBrush;
 import xps.api.model.document.page.ILinearGradientBrush;
 import xps.api.model.document.page.IPageResource;
+import xps.api.model.document.page.IPageResourceDictionary;
 import xps.api.model.document.page.IPath;
 import xps.api.model.document.page.IPathGeometry;
 import xps.api.model.document.page.IRadialGradientBrush;
@@ -21,53 +26,24 @@ import xps.api.model.document.page.ITransformMatrix;
 import xps.api.model.document.page.IVisualBrush;
 import xps.api.util.DelegatingResourceDictionary;
 
-public class XPSElementIterator {
+public abstract class XPSElementIterator {
 	
 	
 	private static final Pattern RESOURCE_REFERENCE_PATTERN = Pattern.compile("\\{StaticResource (.*)\\}");
 	
-	private DelegatingResourceDictionary fPageResourceDictionary;
-	private IFixedPage fPage;
-	private IXPSAccess fFileAccess;
-	private IDocumentReference fDocument;
+	protected DelegatingResourceDictionary fPageResourceDictionary;
 
 	
-	public XPSElementIterator(IFixedPage page, IXPSAccess access, IDocumentReference docRef) throws XPSError{
-		fPage = page;
-		fFileAccess = access;
-		fDocument = docRef;
-		
-		if(page.getFixedPageResources() != null) {
-			fPageResourceDictionary = new DelegatingResourceDictionary(null, page.getFixedPageResources().getResourceDictionary(),access, docRef);
-		} else {
-			fPageResourceDictionary = DelegatingResourceDictionary.EMPTY_RESOURCE_DICTIONARY;
-		}
-
+	public XPSElementIterator() throws XPSError{
 	}
 	
-	public void accept(IXPSVisitor v) throws XPSError{
-		try {
-			boolean b = v.visitPage(fPage);
-			
-			if(b){
-				for(Object o : fPage.getPathOrGlyphsOrCanvas()){
-					if(o instanceof IPath){
-						accept(v, (IPath)o);
-					} else if(o instanceof IGlyphs){
-						accept(v, (IGlyphs)o);
-					} else if(o instanceof ICanvas){
-						accept(v, (ICanvas)o);
-					}
-				}
-			}
-		} finally {
-			v.postVisitPage(fPage);
-		}
-	}
+	public abstract void accept(IXPSVisitor v) throws XPSError;
+	
+	protected abstract DelegatingResourceDictionary loadResourceDictionary(IPageResourceDictionary resourceDictionary) throws XPSError;
 
-	private void accept(IXPSVisitor v, ICanvas canvas) throws XPSError {
+	protected void accept(IXPSVisitor v, ICanvas canvas) throws XPSError {
 		if(canvas.getCanvasResources() != null){
-			fPageResourceDictionary = new DelegatingResourceDictionary(fPageResourceDictionary, canvas.getCanvasResources().getResourceDictionary(), fFileAccess, fDocument);
+			fPageResourceDictionary = loadResourceDictionary(canvas.getCanvasResources().getResourceDictionary());
 		}
 
 		try {
@@ -93,7 +69,7 @@ public class XPSElementIterator {
 		}
 	}
 
-	private void accept(IXPSVisitor v, IGlyphs glyphs) throws XPSError {
+	protected void accept(IXPSVisitor v, IGlyphs glyphs) throws XPSError {
 		if(glyphs.getFill() != null && glyphs.getGlyphsFill() != null){
 			throw new XPSSpecError(2,74, "Duplicate definition of property");   
 		}
@@ -106,7 +82,7 @@ public class XPSElementIterator {
 		}
 	}
 
-	private void accept(IXPSVisitor v, IPath path) throws XPSError {
+	protected void accept(IXPSVisitor v, IPath path) throws XPSError {
 		//The path can be filled by either an IBrush delegating type, or a text-specified path
 		
 		if(path.getFill() != null && path.getPathFill() != null){

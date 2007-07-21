@@ -2,56 +2,29 @@ package viewer.rendering;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import viewer.ShorthandPathParser;
-import viewer.rendering.brushes.AWTXPSImagePaint;
-import viewer.rendering.brushes.AWTXPSPaint;
-import viewer.rendering.brushes.AWTXPSPaintWrapper;
-import viewer.rendering.brushes.SolidColourAWTXPSPaint;
-import xps.api.IXPSAccess;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
-import xps.api.model.document.IDocumentReference;
 import xps.api.model.document.page.IArcSegment;
-import xps.api.model.document.page.IGradientStop;
-import xps.api.model.document.page.IImageBrush;
-import xps.api.model.document.page.ILinearGradientBrush;
 import xps.api.model.document.page.IPathFigure;
 import xps.api.model.document.page.IPathGeometry;
 import xps.api.model.document.page.IPolyBezierSegment;
 import xps.api.model.document.page.IPolyLineSegment;
 import xps.api.model.document.page.IPolyQuadraticBezierSegment;
-import xps.api.model.document.page.IVisualBrush;
-import xps.api.util.DelegatingResourceDictionary;
 import xps.impl.document.jaxb.STDashCap;
 import xps.impl.document.jaxb.STFillRule;
-import xps.impl.document.jaxb.STLineCap;
 import xps.impl.document.jaxb.STLineJoin;
 
 public class AWTXPSRenderingUtils {
 	//TODO: Unit test this class
-	
-	private static Map<String, Font> fFontCache = new HashMap<String, Font>();
-
-
 	static AffineTransform createAffineTransform(String renderTransform) {
 		StringTokenizer st = new StringTokenizer(renderTransform, ",");
 		double components[] = new double[6];
@@ -74,20 +47,7 @@ public class AWTXPSRenderingUtils {
 		}
 	}
 
-	public static BasicStroke getStroke(String strokeDashArray, STDashCap strokeDashCap, double strokeDashOffset, STLineCap strokeEndLineCap, STLineJoin strokeLineJoin, double strokeMiterLimit, double strokeThickness) {
-		if(strokeDashArray != null){
-			String dashes[] = strokeDashArray.split("\\s");
-			float dashArray[] = new float[dashes.length];
-			for (int i = 0; i < dashArray.length; i++) {
-				dashArray[i] = Float.parseFloat(dashes[i]);
-			}
-			return new BasicStroke((float)strokeThickness, getDashCapType(strokeDashCap), getJoinType(strokeLineJoin),(float)strokeMiterLimit,dashArray, (float)strokeDashOffset);
-		} else {
-			return new BasicStroke((float)strokeThickness, getDashCapType(strokeDashCap), getJoinType(strokeLineJoin),(float)strokeMiterLimit);
-		}
-	}
-
-	private static int getDashCapType(STDashCap strokeDashCap) {
+	static int getDashCapType(STDashCap strokeDashCap) {
 		if(strokeDashCap == STDashCap.FLAT){
 			return BasicStroke.CAP_BUTT;
 		} else if(strokeDashCap == STDashCap.SQUARE){
@@ -102,7 +62,7 @@ public class AWTXPSRenderingUtils {
 		}
 	}
 
-	private static int getJoinType(STLineJoin strokeLineJoin) {
+	static int getJoinType(STLineJoin strokeLineJoin) {
 		if(strokeLineJoin == STLineJoin.BEVEL){
 			return BasicStroke.JOIN_BEVEL;
 		} else if(strokeLineJoin == STLineJoin.MITER){
@@ -114,16 +74,7 @@ public class AWTXPSRenderingUtils {
 		}
 	}
 
-	public static AWTXPSPaint createPaintFromShorthand(String fill) {
-		Color c = createColour(fill);
-		if(c == null){
-			c = Color.BLACK;	
-		}
-		
-		return new SolidColourAWTXPSPaint(c);
-	}
-
-	private static Color createColour(String fill) {
+	static Color parseColourString(String fill) {
 		if(fill.startsWith("#")){
 			//derive colour from hex
 			fill = fill.substring(1);
@@ -158,58 +109,6 @@ public class AWTXPSRenderingUtils {
 		
 	}
 	
-	static AWTXPSPaint createPaintFromLinearGradientBrush(ILinearGradientBrush brush) throws XPSSpecError {
-		Point2D start = createPoint(brush.getStartPoint());
-		Point2D end = createPoint(brush.getEndPoint());
-		//TODO: Handle more than 2 gradient stops
-		//TODO: Handle transform of gradient
-		//TODO: Handle transform of linear gradient brushes
-		
-		
-		
-		List<? extends IGradientStop> stops = brush.getLinearGradientBrushGradientStops().getGradientStop();
-		if(stops.size() >= 2){
-			IGradientStop s1 = stops.get(0);
-			IGradientStop s2 = stops.get(1);
-			return new AWTXPSPaintWrapper(new GradientPaint(start,createColour(s1.getColor()), end, createColour(s2.getColor())));
-
-		} else {
-			throw new XPSSpecError(6,5,"Must have at least 2 gradient stops");
-		}
-	}
-
-	static Paint createPaintFromVisualBrush(IVisualBrush visualBrush, String tranformMatrix, DelegatingResourceDictionary resources, IXPSAccess access, IDocumentReference docRef) throws XPSError {
-		AffineTransform at = new AffineTransform();
-		if(tranformMatrix != null){
-			at = createAffineTransform(tranformMatrix);
-		}
-
-		Rectangle2D portionOfSourceImageToBeRendered = createRectangle(visualBrush.getViewbox());
-		Rectangle2D locationOfFirstTileToRender = createRectangle(visualBrush.getViewport());
-		
-		BufferedImage bi = new BufferedImage((int)locationOfFirstTileToRender.getWidth(), (int)locationOfFirstTileToRender.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		Graphics2D g2 = bi.createGraphics();
-		g2.transform(at);
-		XPSRenderer.renderVisual(g2, visualBrush, resources, access, docRef);
-		return new ImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, visualBrush.getTileMode(), visualBrush.getOpacity());
-		//return ImageBrushPaint.getImageBrushPaint(bi, at, portionOfSourceImageToBeRendered, locationOfFirstTileToRender, visualBrush.getTileMode(), visualBrush.getOpacity(), imageSource)
-	}
-	
-	static AWTXPSPaint createPaintFromImageBrush(IImageBrush imageBrush, String tranformMatrix, BufferedImage imageResource) throws XPSError {
-		final AffineTransform at;
-		if(tranformMatrix != null){
-			at = createAffineTransform(tranformMatrix);
-		} else {
-			at = new AffineTransform();
-		}
-		
-		//TODO: Take into account viewbox - for stretching, and for using a subimage of the source image
-		Rectangle2D locationOfFirstTileToRender = createRectangle(imageBrush.getViewport());
-		return new AWTXPSImagePaint(imageResource, locationOfFirstTileToRender, at);
-	}
-	
-	
-
 	static GeneralPath createShapeFromShorthandCommands(String commands, boolean fillRuleAllowed) {
 		GeneralPath gp = new GeneralPath();
 		
@@ -365,22 +264,7 @@ public class AWTXPSRenderingUtils {
 		double angle = segment.getRotationAngle();
 	}
 	
-	public static Font loadFont(String fontUri, IXPSAccess access, IDocumentReference docRef) throws XPSError {
-		Font f = fFontCache .get(fontUri);
-		if(f == null){
-			byte fontData[] = access.getFileAccess().getFontData(fontUri, docRef);
-			try {
-				f = Font.createFont(Font.TRUETYPE_FONT, new ByteArrayInputStream(fontData));
-				fFontCache.put(fontUri, f);
-			} catch (FontFormatException e) {
-				throw new XPSError(e);
-			} catch (IOException e) {
-				throw new XPSError(e);		
-			}
-		}
-		
-		return f;
-	}
+
 
 
 }
