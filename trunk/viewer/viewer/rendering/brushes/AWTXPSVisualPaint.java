@@ -29,7 +29,7 @@ public class AWTXPSVisualPaint extends AWTXPSPaint {
 
 	protected AWTXPSPaintContext getPaintContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds,
 			AffineTransform xform, RenderingHints hints, PaintContext opacityPaintContext) {
-		return new AWTXPSVisualPaintContext(cm,opacityPaintContext,xform,fVisualBrush,fFontLoader, fImageLoader, fLocationOfFirstTileToRender, fBrushTransform);
+		return new AWTXPSVisualPaintContext(cm,opacityPaintContext,xform,fVisualBrush,fFontLoader, fImageLoader, fLocationOfFirstTileToRender, fBrushTransform, userBounds);
 	}
 
 }
