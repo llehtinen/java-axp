@@ -2,7 +2,6 @@ package xps.impl;
 
 import xps.api.IXPSAccess;
 import xps.api.IXPSPageAccess;
-import xps.api.XPSElementIterator;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
 import xps.api.model.document.IDocumentReference;
@@ -23,16 +22,11 @@ public class XPSPageAccessImpl implements IXPSPageAccess {
 		fFixedDocument = fXPSAccess.getFileAccess().getFixedDocument(fDocumentReference);
 	}
 
-	public XPSElementIterator getElementIterator(int pageNum) throws XPSSpecError, XPSError {
-		return new XPSElementIterator(getPage(pageNum),fXPSAccess,fDocumentReference);
-	}
-
 	public int getFirstPageNum() {
 		return 0;
 	}
 
 	public int getLastPageNum() {
-		
 		return fFixedDocument.getPageContent().size() - 1;	
 	}
 
@@ -43,9 +37,8 @@ public class XPSPageAccessImpl implements IXPSPageAccess {
 	public IFixedPage getPage(int pageNum) throws XPSSpecError, XPSError {
 		return fXPSAccess.getFileAccess().loadPageFromDocument(fDocNum, pageNum);
 	}
-	
-	
 
-
-
+	public IDocumentReference getDocumentReference() {
+		return fDocumentReference;
+	}
 }

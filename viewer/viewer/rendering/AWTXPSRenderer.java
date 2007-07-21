@@ -2,23 +2,31 @@ package viewer.rendering;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import java.util.Stack;
 
+import viewer.rendering.brushes.AWTXPSImagePaint;
 import viewer.rendering.brushes.AWTXPSPaint;
+import viewer.rendering.brushes.AWTXPSPaintWrapper;
+import viewer.rendering.brushes.SolidColourAWTXPSPaint;
 import xps.api.IXPSVisitor;
 import xps.api.XPSError;
 import xps.api.XPSSpecError;
-import xps.api.XPSElementIterator.FullOrShorthandData;
 import xps.api.model.document.page.IBrush;
 import xps.api.model.document.page.ICanvas;
 import xps.api.model.document.page.IFixedPage;
 import xps.api.model.document.page.IGlyphs;
+import xps.api.model.document.page.IGradientStop;
 import xps.api.model.document.page.IImageBrush;
 import xps.api.model.document.page.ILinearGradientBrush;
 import xps.api.model.document.page.IPageResource;
@@ -27,14 +35,18 @@ import xps.api.model.document.page.IPathGeometry;
 import xps.api.model.document.page.IRadialGradientBrush;
 import xps.api.model.document.page.ISolidColorBrush;
 import xps.api.model.document.page.IVisualBrush;
+import xps.impl.XPSElementIterator.FullOrShorthandData;
+import xps.impl.document.jaxb.STDashCap;
+import xps.impl.document.jaxb.STLineCap;
+import xps.impl.document.jaxb.STLineJoin;
 
-public class SwingXPSRenderer implements IXPSVisitor{
+public class AWTXPSRenderer implements IXPSVisitor{
 
 	private Stack<Graphics2D> fGraphicsStack;
 	private FontLoader fFontLoader;
 	private ImageLoader fImageLoader;
 
-	public SwingXPSRenderer(FontLoader fontLoader, ImageLoader imageLoader, Graphics2D g2){
+	public AWTXPSRenderer(FontLoader fontLoader, ImageLoader imageLoader, Graphics2D g2){
 		fFontLoader = fontLoader;
 		fImageLoader = imageLoader;
 		fGraphicsStack = new Stack<Graphics2D>();
@@ -135,7 +147,7 @@ public class SwingXPSRenderer implements IXPSVisitor{
 		}
 		
 		//handle stroke
-		BasicStroke s = AWTXPSRenderingUtils.getStroke(path.getStrokeDashArray(), path.getStrokeDashCap(), path.getStrokeDashOffset(), 
+		BasicStroke s = createStroke(path.getStrokeDashArray(), path.getStrokeDashCap(), path.getStrokeDashOffset(), 
 				path.getStrokeEndLineCap(), path.getStrokeLineJoin(), path.getStrokeMiterLimit(), path.getStrokeThickness());  
 		fGraphicsStack.peek().setStroke(s);
 		
@@ -206,14 +218,14 @@ public class SwingXPSRenderer implements IXPSVisitor{
 		if(brushData == null){
 			return null;
 		} else  if(brushData.fShorthand != null){
-			return AWTXPSRenderingUtils.createPaintFromShorthand(brushData.fShorthand);
+			return createPaintFromShorthand(brushData.fShorthand);
 		} else {
 			if(brushData.fFull instanceof ISolidColorBrush){
-				return AWTXPSRenderingUtils.createPaintFromShorthand(((ISolidColorBrush)brushData.fFull).getColor());
+				return createPaintFromShorthand(((ISolidColorBrush)brushData.fFull).getColor());
 			} else if(brushData.fFull instanceof IImageBrush){
 				return createPaintFromImageBrush((IImageBrush)brushData.fFull);
 			} else if(brushData.fFull instanceof ILinearGradientBrush){
-				return AWTXPSRenderingUtils.createPaintFromLinearGradientBrush((ILinearGradientBrush)brushData.fFull);
+				return createPaintFromLinearGradientBrush((ILinearGradientBrush)brushData.fFull);
 			} else if(brushData.fFull instanceof IVisualBrush){
 				return createPaintFromVisualBrush((IVisualBrush)brushData.fFull);
 			} else if(brushData.fFull instanceof IRadialGradientBrush){
@@ -325,8 +337,6 @@ public class SwingXPSRenderer implements IXPSVisitor{
 			matrixTransform = brush.getTransform();
 		}
 		
-		
-		//TODO: Need to adapt AWTXPSRenderingUtils.createPaintFromVisualBrush
 		return null;
 //		return AWTXPSRenderingUtils.createPaintFromVisualBrush(brush, matrixTransform);
 	}
@@ -341,11 +351,61 @@ public class SwingXPSRenderer implements IXPSVisitor{
 		} else if(brush.getTransform() != null){
 			matrixTransform = brush.getTransform();
 		}
-		return AWTXPSRenderingUtils.createPaintFromImageBrush(brush, matrixTransform, fImageLoader.load(brush.getImageSource()));
+		final AffineTransform at;
+		if(matrixTransform != null){
+			at = AWTXPSRenderingUtils.createAffineTransform(matrixTransform);
+		} else {
+			at = new AffineTransform();
+		}
+		
+		//TODO: Take into account viewbox - for stretching, and for using a subimage of the source image
+		Rectangle2D locationOfFirstTileToRender = AWTXPSRenderingUtils.createRectangle(brush.getViewport());
+		return new AWTXPSImagePaint(fImageLoader.load(brush.getImageSource()), locationOfFirstTileToRender, at);
 	}
 
 
+	private AWTXPSPaint createPaintFromLinearGradientBrush(ILinearGradientBrush brush) throws XPSSpecError {
+		Point2D start = AWTXPSRenderingUtils.createPoint(brush.getStartPoint());
+		Point2D end = AWTXPSRenderingUtils.createPoint(brush.getEndPoint());
+		//TODO: Handle more than 2 gradient stops
+		//TODO: Handle transform of gradient
+		//TODO: Handle transform of linear gradient brushes
+		
+		
+		
+		List<? extends IGradientStop> stops = brush.getLinearGradientBrushGradientStops().getGradientStop();
+		if(stops.size() >= 2){
+			IGradientStop s1 = stops.get(0);
+			IGradientStop s2 = stops.get(1);
+			return new AWTXPSPaintWrapper(new GradientPaint(start,AWTXPSRenderingUtils.parseColourString(s1.getColor()), end, AWTXPSRenderingUtils.parseColourString(s2.getColor())));
+	
+		} else {
+			throw new XPSSpecError(6,5,"Must have at least 2 gradient stops");
+		}
+	}
 
 
+	private AWTXPSPaint createPaintFromShorthand(String fill) {
+		Color c = AWTXPSRenderingUtils.parseColourString(fill);
+		if(c == null){
+			c = Color.BLACK;	
+		}
+		
+		return new SolidColourAWTXPSPaint(c);
+	}
+
+
+	private BasicStroke createStroke(String strokeDashArray, STDashCap strokeDashCap, double strokeDashOffset, STLineCap strokeEndLineCap, STLineJoin strokeLineJoin, double strokeMiterLimit, double strokeThickness) {
+		if(strokeDashArray != null){
+			String dashes[] = strokeDashArray.split("\\s");
+			float dashArray[] = new float[dashes.length];
+			for (int i = 0; i < dashArray.length; i++) {
+				dashArray[i] = Float.parseFloat(dashes[i]);
+			}
+			return new BasicStroke((float)strokeThickness, AWTXPSRenderingUtils.getDashCapType(strokeDashCap), AWTXPSRenderingUtils.getJoinType(strokeLineJoin),(float)strokeMiterLimit,dashArray, (float)strokeDashOffset);
+		} else {
+			return new BasicStroke((float)strokeThickness, AWTXPSRenderingUtils.getDashCapType(strokeDashCap), AWTXPSRenderingUtils.getJoinType(strokeLineJoin),(float)strokeMiterLimit);
+		}
+	}
 }
 

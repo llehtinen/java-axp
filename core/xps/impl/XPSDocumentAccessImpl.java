@@ -26,6 +26,4 @@ public class XPSDocumentAccessImpl implements IXPSDocumentAccess {
 	public int getLastDocNum() throws XPSError {
 		return fFileAccess.getFixedDocumentSequence().getDocumentReference().size() - 1;
 	}
-
-
 }
