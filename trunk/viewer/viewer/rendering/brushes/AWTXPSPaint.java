@@ -9,6 +9,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 
+import xps.api.XPSError;
+
 public abstract class AWTXPSPaint implements Paint {
 
 	
@@ -20,10 +22,14 @@ public abstract class AWTXPSPaint implements Paint {
 			opacityPaintContext = fOpacityMaskPaint.createContext(new BufferedImage(1,1,BufferedImage.TYPE_4BYTE_ABGR).getColorModel(), deviceBounds, userBounds, xform, hints);
 		}
 		
-		return getPaintContext(cm, deviceBounds, userBounds, xform, hints, opacityPaintContext);
+		try {
+			return getPaintContext(cm, deviceBounds, userBounds, xform, hints, opacityPaintContext);
+		} catch (XPSError e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	protected abstract AWTXPSPaintContext getPaintContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds, AffineTransform xform, RenderingHints hints, PaintContext opacityPaintContext);
+	protected abstract AWTXPSPaintContext getPaintContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds, AffineTransform xform, RenderingHints hints, PaintContext opacityPaintContext) throws XPSError;
 
 	public int getTransparency() {
 		return 0;
