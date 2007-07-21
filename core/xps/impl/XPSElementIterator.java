@@ -172,7 +172,7 @@ public abstract class XPSElementIterator {
 		}
 	}
 	
-	private Object dictionaryLookup(String s) throws XPSSpecError, XPSError {
+	protected Object dictionaryLookup(String s) throws XPSSpecError, XPSError {
 		Matcher m = RESOURCE_REFERENCE_PATTERN.matcher(s);
 		
 		Object o = null;
