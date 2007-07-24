@@ -34,7 +34,7 @@ public class ViewerTest {
 		FontLoader fl = new FontLoader(null, null){
 			protected Font loadResource(String uri) throws Exception {
 				String string[] = Toolkit.getDefaultToolkit().getFontList();
-				return Font.getFont("Serif");
+				return new Font("Times New Roman", Font.PLAIN, 12);
 			}
 		};
 		
