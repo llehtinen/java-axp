@@ -23,8 +23,8 @@ public class XPSPageRenderer {
 	public XPSPageRenderer(IXPSAccess access, IDocumentReference document) {
 		fDocument = document;
 		fXPSAccess = access;
-		fFontLoader = new FontLoader(document, access);
-		fImageLoader = new ImageLoader(document, access);
+		fFontLoader = new FontLoader(document, access.getFileAccess());
+		fImageLoader = new ImageLoader(document, access.getFileAccess());
 	}
 	
 	public void setPage(IFixedPage page) throws XPSError{
