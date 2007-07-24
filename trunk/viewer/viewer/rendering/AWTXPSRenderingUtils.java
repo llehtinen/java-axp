@@ -237,22 +237,16 @@ public class AWTXPSRenderingUtils {
 	}
 
 	private static void appendSegment(IPolyLineSegment segment, GeneralPath gp) throws XPSSpecError {
-		StringTokenizer st = new StringTokenizer(segment.getPoints(), ",");
-		while(st.hasMoreTokens()){
-			String x = st.nextToken();
-			String y = st.nextToken();
-			gp.lineTo(Float.parseFloat(x), Float.parseFloat(y));
-		}
-		
-//		String points[] = segment.getPoints().split("\\,");
-//		if(points.length % 2 != 0){
-//			throw new XPSSpecError(4, 2, "Malformed polyline points");
-//		}
-//		
-//		int i = 0;
-//		while(i < points.length){
-//			gp.lineTo(Float.parseFloat(points[i++]), Float.parseFloat(points[i++]));
-//		}		
+		String points[] = segment.getPoints().split("\\s");
+		int i = 0;
+		while(i < points.length){
+			String coords[] = points[i++].split("\\,");
+			if(coords.length  != 2){
+				throw new XPSSpecError(4, 2, "Malformed polyline points");
+			}
+			
+			gp.lineTo(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]));
+		}		
 	}
 
 	private static void appendSegment(IArcSegment segment, GeneralPath gp) throws XPSError {

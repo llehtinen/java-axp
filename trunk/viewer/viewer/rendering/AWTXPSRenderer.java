@@ -187,23 +187,28 @@ public class AWTXPSRenderer implements IXPSVisitor{
 			throw new XPSSpecError(2,74, "Duplicate definition of property");
 		} else {
 			if(canvas.getOpacity() < 1.0f){
-				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, (float)canvas.getOpacity()));
+				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)canvas.getOpacity()));
 			}
 		}
-		
 	}
 
 
+	public void postVisitGlyphs(IGlyphs glyphs) {
+		fGraphicsStack.pop();	
+	}
+	
 	public void visitGlyphs(IGlyphs glyphs, FullOrShorthandData<IPageResource> brushData, String renderTransform) throws XPSError {
 		Graphics2D g2 = (Graphics2D)fGraphicsStack.peek().create();
 		fGraphicsStack.push(g2);
 		applyGraphicsProperties(glyphs, renderTransform);
 		
 		Font f = fFontLoader.load(glyphs.getFontUri());
+		f = f.deriveFont((float)glyphs.getFontRenderingEmSize());
 		fGraphicsStack.peek().setFont(f);
+
 		
 		fGraphicsStack.peek().translate(glyphs.getOriginX(), glyphs.getOriginY());
-		fGraphicsStack.peek().scale(glyphs.getFontRenderingEmSize(), glyphs.getFontRenderingEmSize());
+		
 		
 		AWTXPSPaint fillPaint = createPaint(brushData);
 		
@@ -240,9 +245,7 @@ public class AWTXPSRenderer implements IXPSVisitor{
 	}
 
 
-	public void postVisitGlyphs(IGlyphs glyphs) {
-		fGraphicsStack.pop();	
-	}
+
 
 
 	public void postVisitPath(IPath path) {
@@ -276,7 +279,7 @@ public class AWTXPSRenderer implements IXPSVisitor{
 			throw new XPSSpecError(2,74, "Invalid opacity");
 		} else {
 			if(path.getOpacity() < 1.0f){
-				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, (float)path.getOpacity()));
+				fGraphicsStack.peek().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)path.getOpacity()));
 			}
 		}
 		
