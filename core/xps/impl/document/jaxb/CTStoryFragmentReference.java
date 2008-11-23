@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import xps.api.model.document.IStoryFragment;
+
 
 /**
  * <p>Java class for CT_StoryFragmentReference complex type.
@@ -33,21 +35,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CT_StoryFragmentReference", namespace = "http://schemas.microsoft.com/xps/2005/06/documentstructure")
-public class CTStoryFragmentReference {
+public class CTStoryFragmentReference implements IStoryFragment {
 
     @XmlAttribute(name = "FragmentName")
     protected String fragmentName;
     @XmlAttribute(name = "Page", required = true)
     protected int page;
 
-    /**
-     * Gets the value of the fragmentName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
+    /* (non-Javadoc)
+	 * @see xps.impl.document.jaxb.IStroryFragment#getFragmentName()
+	 */
     public String getFragmentName() {
         return fragmentName;
     }
@@ -64,10 +61,9 @@ public class CTStoryFragmentReference {
         this.fragmentName = value;
     }
 
-    /**
-     * Gets the value of the page property.
-     * 
-     */
+    /* (non-Javadoc)
+	 * @see xps.impl.document.jaxb.IStroryFragment#getPage()
+	 */
     public int getPage() {
         return page;
     }

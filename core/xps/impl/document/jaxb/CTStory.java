@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import xps.api.model.document.IStory;
+
 
 /**
  * <p>Java class for CT_Story complex type.
@@ -42,35 +44,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "CT_Story", namespace = "http://schemas.microsoft.com/xps/2005/06/documentstructure", propOrder = {
     "storyFragmentReference"
 })
-public class CTStory {
+public class CTStory implements IStory {
 
     @XmlElement(name = "StoryFragmentReference", namespace = "http://schemas.microsoft.com/xps/2005/06/documentstructure", required = true)
     protected List<CTStoryFragmentReference> storyFragmentReference;
     @XmlAttribute(name = "StoryName", required = true)
     protected String storyName;
 
-    /**
-     * Gets the value of the storyFragmentReference property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the storyFragmentReference property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getStoryFragmentReference().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link CTStoryFragmentReference }
-     * 
-     * 
-     */
+    /* (non-Javadoc)
+	 * @see xps.impl.document.jaxb.IStory#getStoryFragmentReference()
+	 */
     public List<CTStoryFragmentReference> getStoryFragmentReference() {
         if (storyFragmentReference == null) {
             storyFragmentReference = new ArrayList<CTStoryFragmentReference>();
@@ -78,26 +61,16 @@ public class CTStory {
         return this.storyFragmentReference;
     }
 
-    /**
-     * Gets the value of the storyName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
+    /* (non-Javadoc)
+	 * @see xps.impl.document.jaxb.IStory#getStoryName()
+	 */
     public String getStoryName() {
         return storyName;
     }
 
-    /**
-     * Sets the value of the storyName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
+    /* (non-Javadoc)
+	 * @see xps.impl.document.jaxb.IStory#setStoryName(java.lang.String)
+	 */
     public void setStoryName(String value) {
         this.storyName = value;
     }
