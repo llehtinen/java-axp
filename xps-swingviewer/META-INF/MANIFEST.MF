@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java AXP Swing Viewer
+Bundle-SymbolicName: javaaxp.xps_swingviewer
+Bundle-Version: 1.0.0
+Bundle-Activator: javaaxp.swingviewer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: javaaxp.core,
+ javaaxp.core.service,
+ javaaxp.core.service.model.document,
+ javaaxp.core.service.model.document.page,
+ org.osgi.framework;version="1.3.0",
+ org.osgi.util.tracker;version="1.3.1"
+Bundle-ActivationPolicy: lazy
+Require-Bundle: javaaxp.xps_core;bundle-version="1.0.0"
+Export-Package: javaaxp.swingviewer
