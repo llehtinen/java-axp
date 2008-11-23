@@ -27,5 +27,17 @@
             id="javaaxp.xps_swingviewerapp.view">
       </view>
    </extension>
+   <extension
+         id="javaaxp_xps_wingviewerapp"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="javaaxp.xps_swingviewerapp.application"
+            name="Java AXP Viewer">
+         <property
+               name="appName"
+               value="Java AXP Viewer">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
