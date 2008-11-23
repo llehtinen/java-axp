@@ -3,6 +3,7 @@ package xps.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import xps.api.FullOrShorthandData;
 import xps.api.IXPSAccess;
 import xps.api.IXPSVisitor;
 import xps.api.XPSError;
@@ -205,16 +206,6 @@ public abstract class XPSElementIterator {
 			}
 		}
 		return renderTransformMatrix;
-	}
-
-	public static class FullOrShorthandData<T>{
-		public final T fFull;
-		public final String fShorthand;
-
-		public FullOrShorthandData(String shorthand, T full){
-			fFull = full;
-			fShorthand = shorthand;
-		}
 	}
 
 }

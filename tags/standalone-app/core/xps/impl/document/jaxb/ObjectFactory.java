@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
+import xps.api.model.document.IStory;
+import xps.api.model.document.IStoryFragment;
+
 
 /**
  * This object contains factory methods for each 
@@ -120,7 +123,7 @@ public class ObjectFactory {
      * Create an instance of {@link CTStory }
      * 
      */
-    public CTStory createCTStory() {
+    public IStory createCTStory() {
         return new CTStory();
     }
 
@@ -464,7 +467,7 @@ public class ObjectFactory {
      * Create an instance of {@link CTStoryFragmentReference }
      * 
      */
-    public CTStoryFragmentReference createCTStoryFragmentReference() {
+    public IStoryFragment createCTStoryFragmentReference() {
         return new CTStoryFragmentReference();
     }
 
