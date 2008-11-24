@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="javaaxp.swingviewer.application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="javaaxp.swingviewer.app.SwingViewerApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="javaaxp_xps_swingviewer"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="javaaxp.swingviewer.application"
+            name="Java AXP XPS Viewer">
+         <property
+               name="appName"
+               value="Java AXP XPS Viewer">
+         </property>
+      </product>
+   </extension>
+
+</plugin>
