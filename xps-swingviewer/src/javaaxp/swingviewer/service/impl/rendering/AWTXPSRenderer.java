@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -217,10 +218,49 @@ public class AWTXPSRenderer implements IXPSVisitor{
 			applyOpacityMask(fillPaint, null, glyphs.getGlyphsOpacityMask(), glyphs.getOpacityMask());
 		}
 		
+//		System.out.println(glyphs.getIndices());
+		fGraphicsStack.peek().setPaint(fillPaint);		
 
-		fGraphicsStack.peek().setPaint(fillPaint);
-		fGraphicsStack.peek().drawString(glyphs.getUnicodeString(), 0, 0);
+		if(glyphs.getIndices() == null){
+			fGraphicsStack.peek().drawString(glyphs.getUnicodeString(), 0, 0);	
+		} else {
+			GlyphVector gv = f.createGlyphVector(fGraphicsStack.peek().getFontRenderContext(), glyphs.getUnicodeString());
+			String indices[] = glyphs.getIndices().split(";");
+			for(int i = 0; i < indices.length; i++){
+				String components[] = indices[i].split(",");
+				double advance = 0, uoffset = 0, voffset = 0;
+				if(components.length == 2){
+					if(components[1].length() > 0){
+						advance = Double.parseDouble(components[1]);
+					}
+				} else if(components.length == 3){
+					if(components[1].length() > 0){
+						advance = Double.parseDouble(components[1]);
+					}
+					if(components[2].length() > 0){
+						uoffset = Double.parseDouble(components[2]);
+					}
+				}else if(components.length == 4){
+					if(components[1].length() > 0){
+						advance = Double.parseDouble(components[1]);
+					}
+					if(components[2].length() > 0){
+						uoffset = Double.parseDouble(components[2]);
+					}
+					if(components[3].length() > 0){
+						voffset = Double.parseDouble(components[3]);
+					}
 
+				}
+				if(i < gv.getNumGlyphs() - 1){
+					if( advance > 0) {
+						gv.setGlyphPosition(i + 1, new Point2D.Double(gv.getGlyphPosition(i).getX() + advance * glyphs.getFontRenderingEmSize() / 100 , gv.getGlyphPosition(i).getY()));
+					}
+				}
+				
+			}
+			fGraphicsStack.peek().fill(gv.getOutline());
+		}
 	}
 	
 	private AWTXPSPaint createPaint(FullOrShorthandData<IPageResource> brushData) throws XPSError {
