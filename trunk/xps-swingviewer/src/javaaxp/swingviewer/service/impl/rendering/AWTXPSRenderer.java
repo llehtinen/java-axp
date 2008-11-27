@@ -37,6 +37,7 @@ import javaaxp.core.service.model.document.page.IVisualBrush;
 import javaaxp.core.service.model.document.page.STDashCap;
 import javaaxp.core.service.model.document.page.STLineCap;
 import javaaxp.core.service.model.document.page.STLineJoin;
+import javaaxp.swingviewer.service.impl.rendering.GlyphIndicesParser.GlyphIndicesEntry;
 import javaaxp.swingviewer.service.impl.viewer.brushes.AWTXPSImagePaint;
 import javaaxp.swingviewer.service.impl.viewer.brushes.AWTXPSPaint;
 import javaaxp.swingviewer.service.impl.viewer.brushes.AWTXPSPaintWrapper;
@@ -225,39 +226,20 @@ public class AWTXPSRenderer implements IXPSVisitor{
 			fGraphicsStack.peek().drawString(glyphs.getUnicodeString(), 0, 0);	
 		} else {
 			GlyphVector gv = f.createGlyphVector(fGraphicsStack.peek().getFontRenderContext(), glyphs.getUnicodeString());
-			String indices[] = glyphs.getIndices().split(";");
-			for(int i = 0; i < indices.length; i++){
-				String components[] = indices[i].split(",");
-				double advance = 0, uoffset = 0, voffset = 0;
-				if(components.length == 2){
-					if(components[1].length() > 0){
-						advance = Double.parseDouble(components[1]);
-					}
-				} else if(components.length == 3){
-					if(components[1].length() > 0){
-						advance = Double.parseDouble(components[1]);
-					}
-					if(components[2].length() > 0){
-						uoffset = Double.parseDouble(components[2]);
-					}
-				}else if(components.length == 4){
-					if(components[1].length() > 0){
-						advance = Double.parseDouble(components[1]);
-					}
-					if(components[2].length() > 0){
-						uoffset = Double.parseDouble(components[2]);
-					}
-					if(components[3].length() > 0){
-						voffset = Double.parseDouble(components[3]);
-					}
-
-				}
-				if(i < gv.getNumGlyphs() - 1){
-					if( advance > 0) {
-						gv.setGlyphPosition(i + 1, new Point2D.Double(gv.getGlyphPosition(i).getX() + advance * glyphs.getFontRenderingEmSize() / 100 , gv.getGlyphPosition(i).getY()));
+			GlyphIndicesEntry entries[] = new GlyphIndicesParser().parse(glyphs.getIndices());
+			for(int i = 0; i < entries.length; i++){
+				GlyphIndicesEntry entry = entries[i];
+				if(entry.fGlyphMetrics != null && entry.fGlyphMetrics.fAdvance != null){
+					if(i < gv.getNumGlyphs() - 1){
+						gv.setGlyphPosition(i + 1, new Point2D.Double(gv.getGlyphPosition(i).getX() + entry.fGlyphMetrics.fAdvance * glyphs.getFontRenderingEmSize() / 100 , gv.getGlyphPosition(i).getY()));
 					}
 				}
-				
+				//uoffset is a horizontal shift relative to the current origin (calculated from origin of previous glyph plus the advance of the previous glyph)
+				if(entry.fGlyphMetrics.fUOffset != null){
+					double xTranslate = entry.fGlyphMetrics.fUOffset * glyphs.getFontRenderingEmSize() / 100;
+					double yTranslate = (entry.fGlyphMetrics.fVOffset == null ? 0 :  entry.fGlyphMetrics.fVOffset * glyphs.getFontRenderingEmSize() / 100);
+					gv.setGlyphTransform(i, AffineTransform.getTranslateInstance(xTranslate, yTranslate));
+				}
 			}
 			fGraphicsStack.peek().fill(gv.getOutline());
 		}
