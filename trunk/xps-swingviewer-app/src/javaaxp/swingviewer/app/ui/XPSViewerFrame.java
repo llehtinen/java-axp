@@ -1,12 +1,9 @@
 package javaaxp.swingviewer.app.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
@@ -15,8 +12,8 @@ import javaaxp.swingviewer.ISwingViewerService;
 import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.PageController;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,16 +24,15 @@ import javax.swing.JSplitPane;
 import javax.swing.JViewport;
 import javax.swing.SwingWorker;
 
-public class XPSViewerFrame extends JDialog {
+public class XPSViewerFrame extends JFrame {
 
 	private ISwingViewerService fSwingViewerService;
 	protected IXPSPageViewer fCurrentPageViewer;
 	protected PageController fCurrentPageController;
 
 	public XPSViewerFrame(ISwingViewerService swingViewerService) {
-		super((Frame)null, "Java AXP Viewer", true);
+		super("Java AXP Viewer");
 		fSwingViewerService = swingViewerService;
-		
 		initMenu();
 		setSize(800, 600);
 	}
@@ -91,7 +87,7 @@ public class XPSViewerFrame extends JDialog {
 	}
 
 	protected void quit() {
-		System.exit(0);
+		dispose();
 	}
 
 	protected void openXPSFile() {
