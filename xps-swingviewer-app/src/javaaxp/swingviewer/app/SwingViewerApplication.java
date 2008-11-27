@@ -1,5 +1,11 @@
 package javaaxp.swingviewer.app;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.concurrent.Semaphore;
+
+import javax.swing.SwingUtilities;
+
 import javaaxp.swingviewer.app.ui.XPSViewerFrame;
 
 import org.eclipse.equinox.app.IApplication;
@@ -11,10 +17,24 @@ public class SwingViewerApplication implements IApplication {
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
-        fSwingViewerFrame = new XPSViewerFrame(SwingViewerActivator.fSwingViewerService);
-        fSwingViewerFrame.setVisible(true);
+		final Semaphore windowClosing = new Semaphore(-1);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+		        fSwingViewerFrame = new XPSViewerFrame(SwingViewerActivator.fSwingViewerService);
+		        fSwingViewerFrame.setVisible(true);
+		        
+		        fSwingViewerFrame.addWindowListener(new WindowAdapter() {
+		        	@Override
+		        	public void windowClosed(WindowEvent e) {
+		        		windowClosing.release();
+		        	}
+		        });
+			}
+		});
         
-        return null;
+		windowClosing.acquire();
+		return null;
 	}
 
 	@Override
