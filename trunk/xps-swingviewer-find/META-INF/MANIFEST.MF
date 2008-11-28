@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java AXP Text Find
+Bundle-SymbolicName: javaaxp.swingviewer.find;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: javaaxp.xps_core;bundle-version="1.0.0",
+ javaaxp_xps_swingviewer_application;bundle-version="0.1.0"
