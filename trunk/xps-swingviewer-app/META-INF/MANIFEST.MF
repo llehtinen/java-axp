@@ -11,5 +11,5 @@ Require-Bundle: javaaxp.xps_swingviewer;bundle-version="1.0.0",
  javaaxp.xps_core;bundle-version="1.0.0",
  org.eclipse.equinox.app;bundle-version="1.1.0",
  org.eclipse.core.runtime;bundle-version="3.4.0"
-Export-Package: javaaxp.swingviewer.app,
- javaaxp.swingviewer.app.ui
+Export-Package: javaaxp.swingviewer;uses:="javax.swing",
+ javaaxp.swingviewer.app;uses:="org.osgi.framework,javaaxp.swingviewer,org.eclipse.equinox.app"

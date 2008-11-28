@@ -9,20 +9,24 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Vector;
 
 import javaaxp.core.service.IXPSAccess;
 import javaaxp.core.service.XPSError;
 import javaaxp.core.service.model.document.IDocumentReference;
 import javaaxp.core.service.model.document.IFixedDocument;
+import javaaxp.swingviewer.IXPSPageRenderer;
 import javaaxp.swingviewer.IXPSPageViewer;
+import javaaxp.swingviewer.IXPSRenderingExtension;
 import javaaxp.swingviewer.PageController;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
-public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer{
+public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, IXPSPageRenderer{
 
 	private PageController fPageController;
 	private XPSPageRenderer fPageRenderer;
@@ -30,7 +34,6 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer{
 //	private JScrollPane fScrollPane;
 	private BufferedImage fBuffer;
 
-	
 	
 	public XPSPageViewer(PageController controller) throws XPSError {
 		IXPSAccess xpsAccess = controller.getXPSAccess();
@@ -70,15 +73,20 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer{
 	}
 	
 	public void update(Observable o, Object arg) {
-		try {
-			fPageRenderer.setPage(fPageController.getPage());
-			setPreferredSize(new Dimension((int)fPageController.getPage().getWidth(), (int)fPageController.getPage().getHeight()));
-			fBuffer = null;
-			repaint();
-		} catch (XPSError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					fPageRenderer.setPage(fPageController.getPage());
+					setPreferredSize(new Dimension((int)fPageController.getPage().getWidth(), (int)fPageController.getPage().getHeight()));
+					fBuffer = null;
+					repaint();
+				} catch (XPSError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -121,7 +129,7 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer{
 	}
 
 	@Override
-	public JComponent createViewerComponent() {
+	public IXPSPageRenderer getPageRenderer() {
 		return this;
 	}
 
@@ -155,6 +163,21 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer{
 	@Override
 	public JComponent createScaleControlPane() {
 		return new PageScaleControlPane(this);
+	}
+
+	@Override
+	public void addRenderingExtension(IXPSRenderingExtension x) {
+		fPageRenderer.addRenderingExtension(x);
+	}
+
+	@Override
+	public JComponent getRendererComponent() {
+		return this;
+	}
+
+	@Override
+	public void removeRenderingExtension(IXPSRenderingExtension x) {
+		fPageRenderer.removeRenderingExtension(x);
 	}
 
 }

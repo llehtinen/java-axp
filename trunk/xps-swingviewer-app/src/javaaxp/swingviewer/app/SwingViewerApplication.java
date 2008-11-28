@@ -6,6 +6,8 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.SwingUtilities;
 
+import javaaxp.swingviewer.IUIExtension;
+import javaaxp.swingviewer.SwingViewerContext;
 import javaaxp.swingviewer.app.ui.XPSViewerFrame;
 
 import org.eclipse.equinox.app.IApplication;
@@ -22,8 +24,10 @@ public class SwingViewerApplication implements IApplication {
 			@Override
 			public void run() {
 		        fSwingViewerFrame = new XPSViewerFrame(SwingViewerActivator.fSwingViewerService);
+		        for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
+					ext.init(new SwingViewerContext(null,null, fSwingViewerFrame));
+				}
 		        fSwingViewerFrame.setVisible(true);
-		        
 		        fSwingViewerFrame.addWindowListener(new WindowAdapter() {
 		        	@Override
 		        	public void windowClosed(WindowEvent e) {
