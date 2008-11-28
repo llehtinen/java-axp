@@ -6,7 +6,7 @@ import java.util.Observable;
 import javax.swing.JComponent;
 
 public interface IXPSPageViewer {
-	public JComponent createViewerComponent();
+	public IXPSPageRenderer getPageRenderer();
 	public Observable getPageControllerObservables();
 	public JComponent createDocumentOutlinePane();
 	public JComponent createPageControlPane();

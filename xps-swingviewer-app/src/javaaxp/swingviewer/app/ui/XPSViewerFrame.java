@@ -9,8 +9,11 @@ import java.util.concurrent.ExecutionException;
 
 import javaaxp.core.service.XPSError;
 import javaaxp.swingviewer.ISwingViewerService;
+import javaaxp.swingviewer.IUIExtension;
 import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.PageController;
+import javaaxp.swingviewer.SwingViewerContext;
+import javaaxp.swingviewer.app.SwingViewerActivator;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -54,7 +57,7 @@ public class XPSViewerFrame extends JFrame {
 				super.paint(g);
 			};	
 		};
-		jvp.setView(fCurrentPageViewer.createViewerComponent());
+		jvp.setView(fCurrentPageViewer.getPageRenderer().getRendererComponent());
 		pageScrollPane.setViewport(jvp);
 		pageScrollPane.getViewport().setOpaque(true);
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,treeScrollPane, pageScrollPane);
@@ -62,6 +65,10 @@ public class XPSViewerFrame extends JFrame {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		validate();
 		fCurrentPageViewer.setScale(1d);
+		
+        for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
+			ext.documentShown(new SwingViewerContext(fCurrentPageController, fCurrentPageViewer,  this));
+		}
 	}
 
 	private void initMenu() {
@@ -87,7 +94,7 @@ public class XPSViewerFrame extends JFrame {
 	}
 
 	protected void quit() {
-		dispose();
+		setVisible(false);
 	}
 
 	protected void openXPSFile() {
@@ -102,6 +109,10 @@ public class XPSViewerFrame extends JFrame {
 	}
 
 	private void showXPSFile(final File f) {
+        for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
+			ext.documentShown(new SwingViewerContext(null, null, this));
+		}
+
 		getContentPane().removeAll();
 		getContentPane().add(new JLabel("Loading..."));
 		SwingWorker<PageController, Void> sw = new SwingWorker<PageController, Void>() {

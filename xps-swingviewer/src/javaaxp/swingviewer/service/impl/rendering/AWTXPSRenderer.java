@@ -15,6 +15,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Stack;
+import java.util.Vector;
 
 import javaaxp.core.service.IXPSAccess;
 import javaaxp.core.service.IXPSVisitor;
@@ -37,6 +38,7 @@ import javaaxp.core.service.model.document.page.IVisualBrush;
 import javaaxp.core.service.model.document.page.STDashCap;
 import javaaxp.core.service.model.document.page.STLineCap;
 import javaaxp.core.service.model.document.page.STLineJoin;
+import javaaxp.swingviewer.IXPSRenderingExtension;
 import javaaxp.swingviewer.service.impl.rendering.GlyphIndicesParser.GlyphIndicesEntry;
 import javaaxp.swingviewer.service.impl.viewer.brushes.AWTXPSImagePaint;
 import javaaxp.swingviewer.service.impl.viewer.brushes.AWTXPSPaint;
@@ -50,17 +52,23 @@ public class AWTXPSRenderer implements IXPSVisitor{
 	private FontLoader fFontLoader;
 	private ImageLoader fImageLoader;
 	private IXPSAccess fXPSAccess;
+	private Vector<IXPSRenderingExtension> fRenderingExtensions;
 
-	public AWTXPSRenderer(FontLoader fontLoader, ImageLoader imageLoader, Graphics2D g2, IXPSAccess access){
+	public AWTXPSRenderer(FontLoader fontLoader, ImageLoader imageLoader, Graphics2D g2, IXPSAccess access, Vector<IXPSRenderingExtension> renderingExtensions){
 		fFontLoader = fontLoader;
 		fImageLoader = imageLoader;
 		fGraphicsStack = new Stack<Graphics2D>();
 		fGraphicsStack.push(g2);
 		fXPSAccess = access;
+		fRenderingExtensions = renderingExtensions;
 	}
 	
 	
 	public void postVisitPage(IFixedPage page) {
+		for (IXPSRenderingExtension ext : fRenderingExtensions) {
+			ext.renderedPage(page, fGraphicsStack.peek());
+		}
+
 		fGraphicsStack.pop();
 	}
 
@@ -197,6 +205,9 @@ public class AWTXPSRenderer implements IXPSVisitor{
 
 
 	public void postVisitGlyphs(IGlyphs glyphs) {
+		for (IXPSRenderingExtension ext : fRenderingExtensions) {
+			ext.renderedGlyphs(glyphs, fGraphicsStack.peek());
+		}
 		fGraphicsStack.pop();	
 	}
 	
@@ -272,10 +283,18 @@ public class AWTXPSRenderer implements IXPSVisitor{
 
 
 	public void postVisitPath(IPath path) {
+		for (IXPSRenderingExtension ext : fRenderingExtensions) {
+			ext.renderedPath(path, fGraphicsStack.peek());
+		}
+
 		fGraphicsStack.pop();	
 	}
 	
 	public void postVisitCanvas(ICanvas canvas) {
+		for (IXPSRenderingExtension ext : fRenderingExtensions) {
+			ext.renderedCanvas(canvas, fGraphicsStack.peek());
+		}
+
 		fGraphicsStack.pop();	
 	}
 
