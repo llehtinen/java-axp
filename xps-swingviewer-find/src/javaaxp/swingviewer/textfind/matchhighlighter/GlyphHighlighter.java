@@ -1,7 +1,7 @@
 /**
  * 
  */
-package javaaxp.swingviewer.textfind.ui;
+package javaaxp.swingviewer.textfind.matchhighlighter;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -16,10 +16,10 @@ import javaaxp.swingviewer.IXPSRenderingExtension;
 
 public class GlyphHighlighter implements IXPSRenderingExtension {
 
-	private String fSearchStirng;
+	private String fSearchString;
 
 	public GlyphHighlighter(String searchString) {
-		fSearchStirng = searchString;
+		fSearchString = searchString;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class GlyphHighlighter implements IXPSRenderingExtension {
 
 	@Override
 	public void renderedGlyphs(IGlyphs glyphs, Graphics2D g2) {
-		if(glyphs.getUnicodeString().contains(fSearchStirng)){
+		if(glyphs.getUnicodeString().contains(fSearchString)){
 			//graphics is at the origin.
 			//first, highlight the whole string. Then ,get fancy and just highlight the searched-for string
 			//also, should be using the glyphmetrics provided by indices property (need to make that util public)

@@ -14,27 +14,23 @@ import javaaxp.core.service.IXPSPageAccess;
 import javaaxp.core.service.XPSError;
 import javaaxp.core.service.XPSSpecError;
 import javaaxp.core.service.model.document.IDocumentReference;
-import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.PageController;
-import javaaxp.swingviewer.textfind.ui.GlyphHighlighter;
+import javaaxp.swingviewer.textfind.TextFindController;
+import javaaxp.swingviewer.textfind.matchhighlighter.GlyphHighlighter;
 
 public class XPSFileSearcher {
 
 	private PageController fPageController;
-	private IXPSPageViewer fCurrentViewer;
-	private GlyphHighlighter fGlyphHighlighter;
 	private ExecutorService fExecutorService;
 	private Thread fSearchInitiatorThread;
 
-	public XPSFileSearcher(PageController currentDocumentPageController, IXPSPageViewer currentViewer) {
+	public XPSFileSearcher(PageController currentDocumentPageController) {
 		fPageController = currentDocumentPageController;
-		fCurrentViewer = currentViewer;
 	}
 
-	public boolean search(FindDialogController controller, String searchString, SearchDirection direction) {
+	public boolean search(TextFindController controller, String searchString, SearchDirection direction) {
 		//terminate any existing search
 		terminateExistingSearch();
-		removeExistingGlyphHighlighter();
 		boolean foundMatch = false;
 
 		//ensure only one search thread is running at once. If second search thread starts, this should clean up after the first one
@@ -77,7 +73,6 @@ public class XPSFileSearcher {
 								//found a match. shutdown the executor service, no need for the threads to continue
 								//found a match.
 								fExecutorService.shutdownNow();
-								setupHighlightRenderer(futureTask.getSearchString());
 								fPageController.setPage(futureTask.getPageNum());
 								foundMatch = true;
 								break;
@@ -103,7 +98,7 @@ public class XPSFileSearcher {
 			} finally {
 				fExecutorService = null;
 				fSearchInitiatorThread = null;
-				controller.fireSearchEnded(foundMatch);
+				controller.fireSearchEnded(searchString, foundMatch);
 			}
 		}
 		
@@ -120,32 +115,16 @@ public class XPSFileSearcher {
 		return v.foundString();
 	}
 
-	private void setupHighlightRenderer(String searchString) {
-		fGlyphHighlighter = new GlyphHighlighter(searchString);
-		fCurrentViewer.getPageRenderer().addRenderingExtension(fGlyphHighlighter);
-	}
-
 	public void findPanelClosed() {
-		removeExistingGlyphHighlighter();
 		terminateExistingSearch();
 	}
 
 	private void terminateExistingSearch() {
 		if(fExecutorService != null){
-			List<Runnable> currentTasks = fExecutorService.shutdownNow();
+			fExecutorService.shutdownNow();
 			//fExecutorService != null -> fSearchInitiatorThread !=  null
 			fSearchInitiatorThread.interrupt();
 		}
 	}
-
-	private void removeExistingGlyphHighlighter() {
-		if(fGlyphHighlighter != null){
-			fCurrentViewer.getPageRenderer().removeRenderingExtension(fGlyphHighlighter);
-			fGlyphHighlighter = null;
-			fCurrentViewer.getPageRenderer().forceRepaint();
-		}
-	}
-	
-	
 
 }

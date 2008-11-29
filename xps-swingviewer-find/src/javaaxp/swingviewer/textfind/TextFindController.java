@@ -1,15 +1,16 @@
-package javaaxp.swingviewer.textfind.impl;
+package javaaxp.swingviewer.textfind;
 
 import java.util.ArrayList;
 
-import javaaxp.swingviewer.textfind.ui.IFindPanelListener;
+import javaaxp.swingviewer.textfind.impl.SearchDirection;
+import javaaxp.swingviewer.textfind.impl.XPSFileSearcher;
 
-public class FindDialogController {
+public class TextFindController {
 	ArrayList<IFindPanelListener> fListeners = new ArrayList<IFindPanelListener>();
 	
 	private XPSFileSearcher fSearcher;
 	
-	public FindDialogController(XPSFileSearcher searcher){
+	public TextFindController(XPSFileSearcher searcher){
 		fSearcher = searcher;
 	}
 	
@@ -17,13 +18,13 @@ public class FindDialogController {
 		fSearcher.search(this, string, SearchDirection.FORWARD);
 	}
 
-	protected void fireSearchEnded(boolean foundMatch) {
+	public void fireSearchEnded(String searchString, boolean foundMatch) {
 		for (IFindPanelListener l : fListeners) {
-			l.searchEnded(foundMatch);
+			l.searchEnded(searchString, foundMatch);
 		}
 	}
 
-	protected void fireSearchStarted(String string) {
+	public void fireSearchStarted(String string) {
 		for (IFindPanelListener l : fListeners) {
 			l.searchStarted(string);
 		}

@@ -10,10 +10,9 @@ import javaaxp.swingviewer.IUIExtension;
 import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.PageController;
 import javaaxp.swingviewer.SwingViewerContext;
-import javaaxp.swingviewer.textfind.impl.FindDialogController;
 import javaaxp.swingviewer.textfind.impl.XPSFileSearcher;
+import javaaxp.swingviewer.textfind.matchhighlighter.GlyphHighlighterListener;
 import javaaxp.swingviewer.textfind.ui.FindPanel;
-import javaaxp.swingviewer.textfind.ui.IFindPanelListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -48,7 +47,7 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 		}
 
 		@Override
-		public void searchEnded(boolean foundMatch) {
+		public void searchEnded(String searchString, boolean foundMatch) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -75,8 +74,9 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 		fFindMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FindDialogController fdc = new FindDialogController(new XPSFileSearcher(fCurentPageController, fCurrentViewer));
+				TextFindController fdc = new TextFindController(new XPSFileSearcher(fCurentPageController));
 				fdc.addFindPanelListener(TextFindExtension.this);
+				fdc.addFindPanelListener(new GlyphHighlighterListener(fCurrentViewer));
 				FindPanel fp = new FindPanel(fdc);
 				JPanel jp = new JPanel();
 				jp.setLayout(new BorderLayout());
@@ -110,7 +110,7 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 	}
 
 	@Override
-	public void searchEnded(boolean foundMatch) {
+	public void searchEnded(String searchString, boolean foundMatch) {
 		// TODO Auto-generated method stub
 		
 	}

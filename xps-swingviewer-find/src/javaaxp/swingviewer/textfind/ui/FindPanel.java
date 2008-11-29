@@ -6,7 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javaaxp.swingviewer.textfind.impl.FindDialogController;
+import javaaxp.swingviewer.textfind.IFindPanelListener;
+import javaaxp.swingviewer.textfind.TextFindController;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,12 +19,12 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 	
 	private JTextField fSearchTextBox;
 	private JButton fFindNextButton;
-	private FindDialogController fController;
+	private TextFindController fController;
 	private JButton fFindPreviousButton;
 	private JButton fCloseButton;
 	private JLabel fSearchingLabel;
 
-	public FindPanel(FindDialogController controller) {
+	public FindPanel(TextFindController controller) {
 		super();
 		fController = controller;
 		fController.addFindPanelListener(this);
@@ -102,7 +103,7 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 	}
 
 	@Override
-	public void searchEnded(final boolean foundMatch) {
+	public void searchEnded(String searchString, final boolean foundMatch) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
