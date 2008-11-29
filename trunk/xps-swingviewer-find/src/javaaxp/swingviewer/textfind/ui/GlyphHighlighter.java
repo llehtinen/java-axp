@@ -1,7 +1,7 @@
 /**
  * 
  */
-package javaaxp.swingviewer.textfind;
+package javaaxp.swingviewer.textfind.ui;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
