@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javaaxp.swingviewer.IUIExtension;
 import javaaxp.swingviewer.IXPSPageViewer;
@@ -16,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 public class TextFindExtension implements IUIExtension, IFindPanelListener{
 
@@ -67,6 +69,7 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 		JMenuBar jmb = ctx.getUI().getJMenuBar();
 		JMenu editMenu = new JMenu("Edit");
 		fFindMenuItem = editMenu.add("Find...");
+		fFindMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
 		fFindMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,7 +80,7 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 				jp.setLayout(new BorderLayout());
 				final Container prevConentPanel = ctx.getUI().getContentPane(); 
 				jp.add(prevConentPanel, BorderLayout.CENTER);
-				jp.add(fp, BorderLayout.SOUTH);
+				jp.add(fp, BorderLayout.NORTH);
 				ctx.getUI().setContentPane(jp);
 				ctx.getUI().validate();
 				fdc.findPanelShown();

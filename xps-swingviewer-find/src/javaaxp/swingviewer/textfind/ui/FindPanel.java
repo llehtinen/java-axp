@@ -92,7 +92,6 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 
 	@Override
 	public void findPanelClosed() {
-		fController.removeFindPanelListenr(this);
 	}
 
 	@Override
