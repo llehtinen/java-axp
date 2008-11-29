@@ -180,4 +180,10 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 		fPageRenderer.removeRenderingExtension(x);
 	}
 
+	@Override
+	public void forceRepaint() {
+		fBuffer = null;
+		getParent().repaint();
+	}
+
 }
