@@ -10,6 +10,8 @@ import javaaxp.swingviewer.IUIExtension;
 import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.PageController;
 import javaaxp.swingviewer.SwingViewerContext;
+import javaaxp.swingviewer.textfind.impl.FindDialogController;
+import javaaxp.swingviewer.textfind.impl.XPSFileSearcher;
 import javaaxp.swingviewer.textfind.ui.FindPanel;
 import javaaxp.swingviewer.textfind.ui.IFindPanelListener;
 
