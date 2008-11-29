@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javaaxp.swingviewer.textfind.FindDialogController;
+import javaaxp.swingviewer.textfind.impl.FindDialogController;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -85,8 +85,9 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		});
 		add(fCloseButton, c2);
 		
-		fSearchingLabel = new JLabel();
-		fSearchingLabel.setPreferredSize(new Dimension(50, fSearchingLabel.getPreferredSize().height));
+		fSearchingLabel = new JLabel(" ");
+		c2.gridwidth = GridBagConstraints.REMAINDER;
+		fSearchingLabel.setMinimumSize(new Dimension(200, fSearchingLabel.getPreferredSize().height));
 		add(fSearchingLabel, c2);
 	}
 

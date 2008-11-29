@@ -1,4 +1,4 @@
-package javaaxp.swingviewer.textfind;
+package javaaxp.swingviewer.textfind.impl;
 
 import javaaxp.core.service.IXPSVisitor;
 import javaaxp.core.service.XPSError;
