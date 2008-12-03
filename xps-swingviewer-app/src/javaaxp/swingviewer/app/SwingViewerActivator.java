@@ -34,12 +34,12 @@ public class SwingViewerActivator implements BundleActivator {
 	
 	private void loadUIExtensions() {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IExtensionPoint uiExtensionPoint = reg.getExtensionPoint("javaaxp.swingviewer.app.uiextension");
+		IExtensionPoint uiExtensionPoint = reg.getExtensionPoint("javaaxp.swingviewer.app.uiextension"); //$NON-NLS-1$
 		IExtension extensions[] = uiExtensionPoint.getExtensions();
 		for (IExtension extension : extensions) {
 			for (IConfigurationElement config : extension.getConfigurationElements()) {
 				try {
-					Object o = config.createExecutableExtension("class");
+					Object o = config.createExecutableExtension("class"); //$NON-NLS-1$
 					if(o instanceof IUIExtension){
 						fUIExtensions.add((IUIExtension)o);
 					}

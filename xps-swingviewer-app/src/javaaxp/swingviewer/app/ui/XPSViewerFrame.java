@@ -34,7 +34,7 @@ public class XPSViewerFrame extends JFrame {
 	protected PageController fCurrentPageController;
 
 	public XPSViewerFrame(ISwingViewerService swingViewerService) {
-		super("Java AXP Viewer");
+		super(Messages.XPSViewerFrame_WindowTitle);
 		fSwingViewerService = swingViewerService;
 		initMenu();
 		setSize(800, 600);
@@ -73,8 +73,8 @@ public class XPSViewerFrame extends JFrame {
 
 	private void initMenu() {
 		JMenuBar bar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-		JMenuItem openItem = fileMenu.add("Open");
+		JMenu fileMenu = new JMenu(Messages.XPSViewerFrame_FileMenu);
+		JMenuItem openItem = fileMenu.add(Messages.XPSViewerFrame_OpenMenuItem);
 		openItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +82,7 @@ public class XPSViewerFrame extends JFrame {
 			}
 		});
 		fileMenu.addSeparator();
-		JMenuItem exitItem = fileMenu.add("Exit");
+		JMenuItem exitItem = fileMenu.add(Messages.XPSViewerFrame_ExitMenuItem);
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -114,7 +114,7 @@ public class XPSViewerFrame extends JFrame {
 		}
 
 		getContentPane().removeAll();
-		getContentPane().add(new JLabel("Loading..."));
+		getContentPane().add(new JLabel(Messages.XPSViewerFrame_LoadingLabel));
 		SwingWorker<PageController, Void> sw = new SwingWorker<PageController, Void>() {
 			@Override
 			protected PageController doInBackground() throws Exception {
