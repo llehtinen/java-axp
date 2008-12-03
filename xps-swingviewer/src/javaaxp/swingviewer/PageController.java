@@ -1,5 +1,6 @@
 package javaaxp.swingviewer;
 
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,7 +13,7 @@ import javaaxp.core.service.model.document.IDocumentStructure;
 import javaaxp.core.service.model.document.page.IFixedPage;
 import javaaxp.swingviewer.service.impl.ThreadedPageLoader;
 
-public class PageController {
+public class PageController implements Iterator<IFixedPage>{
 	private class PageViewerSubject extends Observable {
 		public void pageChanged() {
 			setChanged();
@@ -34,8 +35,8 @@ public class PageController {
 		fXPSAccess = access;
 		fCurrDocNum = 0;
 		fCurrPageNum = 0;
-		fDocumentAccess = fXPSAccess.getDocumentAccess(access);
-		fPageAccess = access.getPageAccess(access, fCurrDocNum);
+		fDocumentAccess = fXPSAccess.getDocumentAccess();
+		fPageAccess = access.getPageAccess(fCurrDocNum);
 		fPageLoader = new ThreadedPageLoader(fPageAccess);
 		fSubject = new PageViewerSubject();
 		setPage();
@@ -102,5 +103,23 @@ public class PageController {
 
 	public IFixedPage getPage() {
 		return fPage;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return fCurrPageNum < fPageAccess.getLastPageNum();
+	}
+
+	@Override
+	public IFixedPage next() {
+		IFixedPage toReturn = getPage();
+		nextPage();
+		return toReturn; 
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
 	}
 }

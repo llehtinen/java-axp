@@ -2,6 +2,7 @@ package javaaxp.swingviewer.service.impl;
 
 import java.io.File;
 
+import javaaxp.core.service.IXPSAccess;
 import javaaxp.core.service.IXPSService;
 import javaaxp.core.service.XPSError;
 import javaaxp.swingviewer.ISwingViewerService;
@@ -24,7 +25,13 @@ public class SwingViewerServiceImpl implements ISwingViewerService {
 
 	@Override
 	public PageController createPageController(File f) throws XPSError {
-		return new PageController(fXPSAccess.getXPSAccess(f));	
+		return createPageController(fXPSAccess.getXPSAccess(f));	
 	}
+	
+	@Override
+	public PageController createPageController(IXPSAccess xpsAccess) throws XPSError {
+		return new PageController(xpsAccess);	
+	}
+
 
 }

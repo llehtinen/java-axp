@@ -25,7 +25,7 @@ public class SwingViewerApplication implements IApplication {
 			public void run() {
 		        fSwingViewerFrame = new XPSViewerFrame(SwingViewerActivator.fSwingViewerService);
 		        for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
-					ext.init(new SwingViewerContext(null,null, fSwingViewerFrame));
+					ext.init(new SwingViewerContext(SwingViewerActivator.fSwingViewerService, null,null, fSwingViewerFrame));
 				}
 		        fSwingViewerFrame.setVisible(true);
 		        fSwingViewerFrame.addWindowListener(new WindowAdapter() {

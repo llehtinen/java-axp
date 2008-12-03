@@ -67,7 +67,7 @@ public class XPSViewerFrame extends JFrame {
 		fCurrentPageViewer.setScale(1d);
 		
         for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
-			ext.documentShown(new SwingViewerContext(fCurrentPageController, fCurrentPageViewer,  this));
+			ext.documentShown(new SwingViewerContext(fSwingViewerService, fCurrentPageController, fCurrentPageViewer,  this));
 		}
 	}
 
@@ -110,7 +110,7 @@ public class XPSViewerFrame extends JFrame {
 
 	private void showXPSFile(final File f) {
         for (IUIExtension ext : SwingViewerActivator.fUIExtensions) {
-			ext.documentShown(new SwingViewerContext(null, null, this));
+			ext.documentShown(new SwingViewerContext(fSwingViewerService, null, null, this));
 		}
 
 		getContentPane().removeAll();

@@ -41,7 +41,7 @@ public class XPSFileSearcher {
 			try {
 				//can this be optimized by using a page controller that's not doing threaded loading? 
 				try {
-					IXPSPageAccess pageAccess = fPageController.getXPSAccess().getPageAccess(fPageController.getXPSAccess(), 0);
+					IXPSPageAccess pageAccess = fPageController.getXPSAccess().getPageAccess(0);
 				
 					//add a futuretask for searching of each page, in order of search direction
 					ArrayList<SearchFutureTask> searchTasks = new ArrayList<SearchFutureTask>();
@@ -108,8 +108,8 @@ public class XPSFileSearcher {
 
 	boolean searchPage(String searchString, int i) throws XPSError {
 		IDocumentReference docRef = fPageController.getXPSAccess().getFileAccess().getFixedDocumentSequence().getDocumentReference().get(0);	
-		IXPSPageAccess pageAccess = fPageController.getXPSAccess().getPageAccess(fPageController.getXPSAccess(), 0);
-		IXPSIterator pageIterator = fPageController.getXPSAccess().getPageIterator(pageAccess.getPage(i), fPageController.getXPSAccess(), docRef);
+		IXPSPageAccess pageAccess = fPageController.getXPSAccess().getPageAccess(0);
+		IXPSIterator pageIterator = fPageController.getXPSAccess().getPageIterator(pageAccess.getPage(i), docRef);
 		StringSearchXPSVisitor v = new StringSearchXPSVisitor(searchString);
 		pageIterator.accept(v);
 		return v.foundString();

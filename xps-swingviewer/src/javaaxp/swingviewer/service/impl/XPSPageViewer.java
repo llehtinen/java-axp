@@ -9,12 +9,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Vector;
 
 import javaaxp.core.service.IXPSAccess;
 import javaaxp.core.service.XPSError;
 import javaaxp.core.service.model.document.IDocumentReference;
-import javaaxp.core.service.model.document.IFixedDocument;
 import javaaxp.swingviewer.IXPSPageRenderer;
 import javaaxp.swingviewer.IXPSPageViewer;
 import javaaxp.swingviewer.IXPSRenderingExtension;
@@ -22,7 +20,6 @@ import javaaxp.swingviewer.PageController;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
@@ -33,11 +30,12 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 	protected double fCurrentScale;
 //	private JScrollPane fScrollPane;
 	private BufferedImage fBuffer;
+	private IXPSAccess fXPSAccess;
 
 	
 	public XPSPageViewer(PageController controller) throws XPSError {
-		IXPSAccess xpsAccess = controller.getXPSAccess();
-		IDocumentReference doc = xpsAccess.getFileAccess().getFixedDocumentSequence().getDocumentReference().get(0);	
+		fXPSAccess = controller.getXPSAccess();
+		IDocumentReference doc = fXPSAccess.getFileAccess().getFixedDocumentSequence().getDocumentReference().get(0);	
 		
 		fPageController = controller;
 		fPageController.addObserver(this);
@@ -68,7 +66,7 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 //		});
 		
 		fCurrentScale = 1;
-		fPageRenderer = new XPSPageRenderer(xpsAccess, doc);
+		fPageRenderer = new XPSPageRenderer(fXPSAccess, doc);
 		fPageRenderer.setPage(fPageController.getPage());
 	}
 	
@@ -91,19 +89,29 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 	
 	@Override
 	public void paint(Graphics g) {
-		
+
+		boolean blitFromBuffer = true;
 		if(bufferDirty()){
-			Graphics2D g2 = fBuffer.createGraphics();
-			paintPage(g2);
+			if(fBuffer != null){
+				Graphics2D g2 = fBuffer.createGraphics();
+				paintPage(g2, fBuffer.getWidth(), fBuffer.getHeight());
+			} else {
+				blitFromBuffer = false;
+			}
 		} 
 		
-		//blit from buffer to g
-		g.drawImage(fBuffer, 0, 0, null);
+		if(blitFromBuffer){
+			//blit from buffer to g
+			g.drawImage(fBuffer, 0, 0, null);
+		} else {
+			//paint direct
+			paintPage((Graphics2D)g, (int)fPageController.getPage().getWidth(), (int)fPageController.getPage().getHeight());
+		}
 	}
 
-	private void paintPage(Graphics2D g2) {
+	private void paintPage(Graphics2D g2, int width, int height) {
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, fBuffer.getWidth(), fBuffer.getHeight());
+		g2.fillRect(0, 0, width, height);
 		g2.drawString("Page " + fPageController.getPageNum(), 0, 10);
 		g2.setClip(0,0,getWidth(),getHeight());
 		((Graphics2D)g2).scale(fCurrentScale,fCurrentScale);
@@ -117,7 +125,9 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 
 	private boolean bufferDirty() {
 		if(fBuffer == null || getWidth() != fBuffer.getWidth() || getHeight() != fBuffer.getHeight()){
-			fBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			if(getWidth() > 0 && getHeight() > 0){
+				fBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			}
 			return true;
 		}
 		return false;
@@ -184,6 +194,10 @@ public class XPSPageViewer extends JPanel implements Observer, IXPSPageViewer, I
 	public void forceRepaint() {
 		fBuffer = null;
 		getParent().repaint();
+	}
+	
+	public IXPSAccess getXPSAccess() {
+		return fXPSAccess;
 	}
 
 }

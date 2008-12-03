@@ -2,6 +2,7 @@ package javaaxp.core.service.impl;
 
 import javaaxp.core.service.DelegatingResourceDictionary;
 import javaaxp.core.service.IXPSAccess;
+import javaaxp.core.service.IXPSFileAccess;
 import javaaxp.core.service.IXPSIterator;
 import javaaxp.core.service.IXPSVisitor;
 import javaaxp.core.service.XPSError;
@@ -15,10 +16,10 @@ import javaaxp.core.service.model.document.page.IPath;
 public class XPSPageElementIterator extends XPSElementIterator implements IXPSIterator{
 
 	private IFixedPage fPage;
-	private IXPSAccess fFileAccess;
+	private IXPSFileAccess fFileAccess;
 	private IDocumentReference fDocument;
 
-	public XPSPageElementIterator(IFixedPage page, IXPSAccess access, IDocumentReference docRef) throws XPSError {
+	public XPSPageElementIterator(IFixedPage page, IXPSFileAccess access, IDocumentReference docRef) throws XPSError {
 		super();
 		fFileAccess = access;
 		fDocument = docRef;
