@@ -20,6 +20,7 @@
 package javaaxp.swingviewer.app.ui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javaaxp.swingviewer.PageController;
 import javaaxp.swingviewer.SwingViewerContext;
 import javaaxp.swingviewer.app.SwingViewerActivator;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,11 +45,30 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.JViewport;
 import javax.swing.SwingWorker;
 
 public class XPSViewerFrame extends JFrame {
 
+	private static final String LICENSE_STRING = 
+		 " java-axp XPS utility" + //$NON-NLS-1$
+		 " Copyright (C) 2007-2008 Chris Pope" + //$NON-NLS-1$
+		 "\n" +  //$NON-NLS-1$
+		 " This library is free software; you can redistribute it and/or" + //$NON-NLS-1$
+		 " modify it under the terms of the GNU Lesser General Public" + //$NON-NLS-1$
+		 " License as published by the Free Software Foundation; either" + //$NON-NLS-1$
+		 " version 2.1 of the License, or (at your option) any later version" + //$NON-NLS-1$
+		 "\n" +  //$NON-NLS-1$
+		 " This library is distributed in the hope that it will be useful," + //$NON-NLS-1$
+		 " but WITHOUT ANY WARRANTY; without even the implied warranty of" + //$NON-NLS-1$
+		 " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU" + //$NON-NLS-1$
+		 " Lesser General Public License for more details." + //$NON-NLS-1$
+		 "\n" +  //$NON-NLS-1$
+		 " You should have received a copy of the GNU Lesser General Public" + //$NON-NLS-1$
+		 " License along with this library; if not, write to the Free Software" + //$NON-NLS-1$
+		 " Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA"; //$NON-NLS-1$
+	
 	private ISwingViewerService fSwingViewerService;
 	protected IXPSPageViewer fCurrentPageViewer;
 	protected PageController fCurrentPageController;
@@ -108,8 +129,45 @@ public class XPSViewerFrame extends JFrame {
 				quit();
 			};
 		});
+		
+		
+		JMenu help = new JMenu(Messages.XPSViewerFrame_HelpMenu);
+		JMenuItem about = help.add(Messages.XPSViewerFrame_AboutMenuItem);
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showAboutDialog();
+			}
+		});
+		
+		
+		
 		bar.add(fileMenu);
+		bar.add(help);
+		
 		setJMenuBar(bar);
+	}
+
+	protected void showAboutDialog() {
+		JPanel aboutPanel = new JPanel();
+		aboutPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		//get plugin name, version
+		aboutPanel.add(new JLabel(Messages.XPSViewerFrame_AppName));
+		
+		JTextArea licenseText = new JTextArea(20, 50);
+		licenseText.setEditable(false);
+		licenseText.setText(LICENSE_STRING);
+		licenseText.setCaretPosition(0);
+		JScrollPane jsp = new JScrollPane(licenseText);
+		aboutPanel.add(jsp);
+		
+		JDialog jd = new JDialog(this, Messages.XPSViewerFrame_AboutDialogTitle, true);
+		jd.setContentPane(aboutPanel);
+		jd.setSize(jsp.getPreferredSize().width, 400);
+		jd.setResizable(false);
+		jd.setVisible(true);
+		
 	}
 
 	protected void quit() {
