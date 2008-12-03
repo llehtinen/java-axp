@@ -5,4 +5,5 @@ Bundle-SymbolicName: javaaxp.swingviewer.find;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: javaaxp.xps_core;bundle-version="1.0.0",
- javaaxp_xps_swingviewer_application;bundle-version="0.1.0"
+ javaaxp_xps_swingviewer_application;bundle-version="0.1.0",
+ org.eclipse.core.runtime;bundle-version="3.4.0"
