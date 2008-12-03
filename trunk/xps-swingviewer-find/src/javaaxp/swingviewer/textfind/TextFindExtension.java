@@ -68,8 +68,8 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 	@Override
 	public void init(final SwingViewerContext ctx) {
 		JMenuBar jmb = ctx.getUI().getJMenuBar();
-		JMenu editMenu = new JMenu("Edit");
-		fFindMenuItem = editMenu.add("Find...");
+		JMenu editMenu = new JMenu(Messages.TextFindExtension_EditMenu);
+		fFindMenuItem = editMenu.add(Messages.TextFindExtension_FindMenuItem);
 		fFindMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
 		fFindMenuItem.addActionListener(new ActionListener() {
 			@Override

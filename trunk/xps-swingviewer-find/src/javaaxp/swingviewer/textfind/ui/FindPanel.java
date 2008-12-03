@@ -41,7 +41,7 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		fSearchTextBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Thread("Search Thread"){
+				new Thread("Search Thread"){ //$NON-NLS-1$
 					public void run() {
 						fController.findNextMatch(fSearchTextBox.getText());						
 					}
@@ -50,11 +50,11 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		});
 		
 		GridBagConstraints c2 = new GridBagConstraints();
-		fFindNextButton = new JButton("Find Next");
+		fFindNextButton = new JButton(Messages.FindPanel_FindNextButton);
 		fFindNextButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Thread("Search Thread"){
+				new Thread("Search Thread"){ //$NON-NLS-1$
 					public void run() {
 						fController.findNextMatch(fSearchTextBox.getText());						
 					}
@@ -63,11 +63,11 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		});
 		add(fFindNextButton, c2);
 		
-		fFindPreviousButton = new JButton("Find Previous");
+		fFindPreviousButton = new JButton(Messages.FindPanel_FindPreviousButton);
 		fFindPreviousButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Thread("Search Thread"){
+				new Thread("Search Thread"){ //$NON-NLS-1$
 					public void run() {
 						fController.findPrevious(fSearchTextBox.getText());
 					}
@@ -77,7 +77,7 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		add(fFindPreviousButton, c2);
 
 		
-		fCloseButton = new JButton("Close");
+		fCloseButton = new JButton(Messages.FindPanel_CloseButtonLabel);
 		fCloseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -86,7 +86,7 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 		});
 		add(fCloseButton, c2);
 		
-		fSearchingLabel = new JLabel(" ");
+		fSearchingLabel = new JLabel(" "); //$NON-NLS-1$
 		c2.gridwidth = GridBagConstraints.REMAINDER;
 		fSearchingLabel.setMinimumSize(new Dimension(200, fSearchingLabel.getPreferredSize().height));
 		add(fSearchingLabel, c2);
@@ -110,9 +110,9 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 				fFindNextButton.setEnabled(true);
 				fFindPreviousButton.setEnabled(true);
 				if(!foundMatch){
-					fSearchingLabel.setText("No Matches");
+					fSearchingLabel.setText(Messages.FindPanel_NoMatchesLabel);
 				} else {
-					fSearchingLabel.setText("");
+					fSearchingLabel.setText(""); //$NON-NLS-1$
 				}
 			}
 		});
@@ -125,7 +125,7 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 			public void run() {
 				fFindNextButton.setEnabled(false);
 				fFindPreviousButton.setEnabled(false);
-				fSearchingLabel.setText("Searching for '" + searchString + "'....");
+				fSearchingLabel.setText(Messages.FindPanel_9 + searchString + Messages.FindPanel_10);
 			}
 		});
 	}
