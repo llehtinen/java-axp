@@ -129,13 +129,5 @@ public class FindPanel extends JPanel implements IFindPanelListener {
 			}
 		});
 	}
-	
-//	public static void main(String[] args) {
-//		JDialog jd = new JDialog();
-//		jd.getContentPane().add(new FindPanel(new FindDialogController()));
-//		jd.pack();
-//		jd.setVisible(true);
-//	}
-
 
 }

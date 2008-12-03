@@ -11,25 +11,25 @@ import org.osgi.util.tracker.ServiceTracker;
 
 public class XPSCoreActivator implements BundleActivator {
 
-	private IXPSService service;
-	private ServiceTracker helloServiceTracker;
+	private IXPSService fXPSService;
+	private ServiceTracker fServiceTracker;
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		service = new XPSServiceImpl();
+		fXPSService = new XPSServiceImpl();
 		
 		// register the service
-		context.registerService(IXPSService.class.getName(), service, new Hashtable());
+		context.registerService(IXPSService.class.getName(), fXPSService, new Hashtable());
 		
 		// create a tracker and track the service
-		helloServiceTracker = new ServiceTracker(context, IXPSService.class.getName(), null);
-		helloServiceTracker.open();
+		fServiceTracker = new ServiceTracker(context, IXPSService.class.getName(), null);
+		fServiceTracker.open();
 		
 		// grab the service
-		service = (IXPSService) helloServiceTracker.getService();
+		fXPSService = (IXPSService) fServiceTracker.getService();
 	}
 	
 	/*
@@ -38,10 +38,10 @@ public class XPSCoreActivator implements BundleActivator {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		// close the service tracker
-		helloServiceTracker.close();
-		helloServiceTracker = null;
+		fServiceTracker.close();
+		fServiceTracker = null;
 		
-		service = null;
+		fXPSService = null;
 	}
 
 }

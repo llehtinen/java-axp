@@ -30,7 +30,7 @@ public class XPSPageRenderer {
 	}
 	
 	public void setPage(IFixedPage page) throws XPSError{
-		fPageIterator = fXPSAccess.getPageIterator(page,fXPSAccess,fDocument);
+		fPageIterator = fXPSAccess.getPageIterator(page,fDocument);
 	}
 	
 	public void paint(Graphics2D g) throws XPSError{

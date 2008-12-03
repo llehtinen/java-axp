@@ -22,21 +22,21 @@ public class XPSFileAccessImpl implements IXPSAccess {
 		fFileAccess = new XPSZipFileAccess(file);
 	}
 
-	public IXPSDocumentAccess getDocumentAccess(IXPSAccess fileAccess) {
-		return new XPSDocumentAccessImpl(fileAccess);
+	public IXPSDocumentAccess getDocumentAccess() {
+		return new XPSDocumentAccessImpl(fFileAccess);
 	}
 
 	public IXPSFileAccess getFileAccess()  {
 		return fFileAccess;
 	}
 
-	public IXPSPageAccess getPageAccess(IXPSAccess xpsAccess, int docNum) throws XPSError {
-		return new XPSPageAccessImpl(xpsAccess, docNum);
+	public IXPSPageAccess getPageAccess(int docNum) throws XPSError {
+		return new XPSPageAccessImpl(fFileAccess, docNum);
 	}
 
 	@Override
-	public IXPSIterator getPageIterator(IFixedPage page, IXPSAccess access, IDocumentReference docRef) throws XPSError {
-		return new XPSPageElementIterator(page, access, docRef);
+	public IXPSIterator getPageIterator(IFixedPage page, IDocumentReference docRef) throws XPSError {
+		return new XPSPageElementIterator(page, fFileAccess, docRef);
 	}
 
 	@Override

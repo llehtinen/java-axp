@@ -6,8 +6,14 @@ public class SwingViewerContext {
 	private JFrame fUI;
 	private  PageController fCurrentDocumentPageController;
 	private IXPSPageViewer fPageViewer;
-	public SwingViewerContext(PageController currentDocumentPageController, IXPSPageViewer viewer, JFrame ui) {
+	private ISwingViewerService fSwingViewerService;
+	public ISwingViewerService getSwingViewerService() {
+		return fSwingViewerService;
+	}
+
+	public SwingViewerContext(ISwingViewerService swingViewerService, PageController currentDocumentPageController, IXPSPageViewer viewer, JFrame ui) {
 		super();
+		fSwingViewerService = swingViewerService;
 		fCurrentDocumentPageController = currentDocumentPageController;
 		fUI = ui;
 		fPageViewer = viewer;

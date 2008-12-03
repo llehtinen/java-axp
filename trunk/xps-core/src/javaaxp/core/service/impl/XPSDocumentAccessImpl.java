@@ -1,6 +1,5 @@
 package javaaxp.core.service.impl;
 
-import javaaxp.core.service.IXPSAccess;
 import javaaxp.core.service.IXPSDocumentAccess;
 import javaaxp.core.service.IXPSFileAccess;
 import javaaxp.core.service.XPSError;
@@ -11,8 +10,8 @@ public class XPSDocumentAccessImpl implements IXPSDocumentAccess {
 
 	private IXPSFileAccess fFileAccess;
 
-	public XPSDocumentAccessImpl(IXPSAccess fileAccess) {
-		fFileAccess = fileAccess.getFileAccess();
+	public XPSDocumentAccessImpl(IXPSFileAccess fileAccess) {
+		fFileAccess = fileAccess;
 	}
 
 	public IDocumentStructure getDocumentStructure(int docNum) throws XPSSpecError, XPSError {

@@ -20,7 +20,7 @@ public class DelegatingResourceDictionary {
 		fDict = null;
 	}
 	
-	public DelegatingResourceDictionary(DelegatingResourceDictionary parent, IPageResourceDictionary dict, IXPSAccess xpsAccess, IDocumentReference docRef) throws XPSError{
+	public DelegatingResourceDictionary(DelegatingResourceDictionary parent, IPageResourceDictionary dict, IXPSFileAccess xpsFileAccess, IDocumentReference docRef) throws XPSError{
 		fParent = parent;
 
 		if(dict != null){
@@ -30,7 +30,7 @@ public class DelegatingResourceDictionary {
 			
 			if(dict.getSource() != null){
 				//read the resource version
-				xpsAccess.getFileAccess().getResourceDictionary(dict.getSource(), docRef);
+				xpsFileAccess.getResourceDictionary(dict.getSource(), docRef);
 			} else {
 				fDict = dict;
 			}
