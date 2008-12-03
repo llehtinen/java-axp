@@ -24,9 +24,17 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "javaaxp.swingviewer.app.ui.messages"; //$NON-NLS-1$
 
+	public static String XPSViewerFrame_AboutDialogTitle;
+
+	public static String XPSViewerFrame_AboutMenuItem;
+
+	public static String XPSViewerFrame_AppName;
+
 	public static String XPSViewerFrame_ExitMenuItem;
 
 	public static String XPSViewerFrame_FileMenu;
+
+	public static String XPSViewerFrame_HelpMenu;
 
 	public static String XPSViewerFrame_LoadingLabel;
 

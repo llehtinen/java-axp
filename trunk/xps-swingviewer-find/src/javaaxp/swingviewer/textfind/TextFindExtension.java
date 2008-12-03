@@ -108,7 +108,7 @@ public class TextFindExtension implements IUIExtension, IFindPanelListener{
 				fdc.addFindPanelListener(new FindPanelRemover(ctx, prevConentPanel));
 			}
 		});
-		jmb.add(editMenu);
+		jmb.add(editMenu, jmb.getComponentCount() - 1);
 		fFindMenuItem.setEnabled(false);
 	}
 
