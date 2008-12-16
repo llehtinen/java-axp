@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Java AXP Viewer Application
 Bundle-SymbolicName: javaaxp_xps_swingviewer_application;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0
 Bundle-Activator: javaaxp.swingviewer.app.SwingViewerActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Require-Bundle: javaaxp.xps_swingviewer;bundle-version="1.0.0",
- javaaxp.xps_core;bundle-version="1.0.0",
- org.eclipse.equinox.app;bundle-version="1.1.0",
- org.eclipse.core.runtime;bundle-version="3.4.0"
+Require-Bundle: org.eclipse.equinox.app;bundle-version="1.1.0",
+ org.eclipse.core.runtime;bundle-version="3.4.0",
+ javaaxp.xps_core;bundle-version="0.2.0",
+ javaaxp.xps_swingviewer;bundle-version="0.2.0"
 Export-Package: javaaxp.swingviewer;uses:="javax.swing",
  javaaxp.swingviewer.app;uses:="org.osgi.framework,javaaxp.swingviewer,org.eclipse.equinox.app"

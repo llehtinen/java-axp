@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.4"?>
 
-<product name="Java AXP XPS Viewer" id="javaaxp_xps_swingviewer_application.javaaxp_xps_swingviewer" application="javaaxp.swingviewer.application" version="0.1" useFeatures="false">
+<product name="Java AXP XPS Viewer" id="javaaxp_xps_swingviewer_application.javaaxp_xps_swingviewer" application="javaaxp.swingviewer.application" version="0.2" useFeatures="false">
 
    <configIni use="default">
    </configIni>
@@ -10,7 +10,6 @@
       <vmArgs>-Xmx256M</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
-
 
    <launcher name="javaaxp-xps-viewer">
       <solaris/>
