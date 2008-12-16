@@ -7,8 +7,8 @@ Bundle-Activator: javaaxp.xps2pdf.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Require-Bundle: javaaxp.xps_core;bundle-version="1.0.0",
- javaaxp.xps_swingviewer;bundle-version="1.0.0"
+Require-Bundle: javaaxp.xps_core;bundle-version="0.2.0",
+ javaaxp.xps_swingviewer;bundle-version="0.2.0"
 Bundle-ClassPath: lib/iText-2.1.4.jar,
  .
 Export-Package: javaaxp.xps2pdf.service

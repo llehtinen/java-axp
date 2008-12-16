@@ -8,5 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Require-Bundle: javaaxp.xps2pdf;bundle-version="0.2.0",
- javaaxp_xps_swingviewer_application;bundle-version="0.1.0",
- javaaxp.xps_core;bundle-version="1.0.0"
+ javaaxp.xps_core;bundle-version="0.2.0",
+ javaaxp_xps_swingviewer_application;bundle-version="0.2.0"
