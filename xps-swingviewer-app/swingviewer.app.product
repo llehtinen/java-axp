@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.4"?>
 
-<product name="Java AXP XPS Viewer" id="javaaxp_xps_swingviewer_application.javaaxp_xps_swingviewer" application="javaaxp.swingviewer.application" version="0.2" useFeatures="false">
+<product name="Java AXP XPS Viewer" id="javaaxp_xps_swingviewer_application.javaaxp_xps_swingviewer" application="javaaxp.swingviewer.application" version="0.2.1" useFeatures="false">
 
    <configIni use="default">
    </configIni>
@@ -22,6 +22,7 @@
    </vm>
 
    <plugins>
+      <plugin id="javaaxp.swingviewer.find"/>
       <plugin id="javaaxp.xps_core"/>
       <plugin id="javaaxp.xps_swingviewer"/>
       <plugin id="javaaxp_xps_swingviewer_application"/>
