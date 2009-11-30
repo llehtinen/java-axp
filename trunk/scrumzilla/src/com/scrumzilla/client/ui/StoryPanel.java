@@ -19,18 +19,21 @@ import com.scrumzilla.client.ScrumzillaTaskTypeRegistry;
 import com.scrumzilla.client.TaskCreationException;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
+import com.scrumzilla.client.events.AddTaskEventHandler;
+import com.scrumzilla.client.events.AddedTaskEvent;
+import com.scrumzilla.client.events.RemovedTaskFromStoryEvent;
+import com.scrumzilla.client.events.RemovedTaskFromStoryEventHandler;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
 import com.scrumzilla.client.taskcontribution.ScrumzillaAddTaskUI;
-import com.scrumzilla.client.taskcontribution.ScrumzillaTaskDisplayUI;
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskTypeContribution;
 
-public class StoryPanel extends Composite {
+public class StoryPanel extends Composite implements AddTaskEventHandler, RemovedTaskFromStoryEventHandler {
 
 	private final ScrumzillaController fController;
 	private final ScrumzillaTaskTypeRegistry fTaskTypeRegistry;
 	
-	private Story fStory;
+	public final Story fStory;
 	private HorizontalPanel fPanel;
 	private Label fStoryLabel;
 	private Button fAddTaskButton;
@@ -45,10 +48,13 @@ public class StoryPanel extends Composite {
 		fPanel = new HorizontalPanel();
 		initWidget(fPanel);
 		
-		initComponent();
+		initUI();
+		
+		fController.getHandlerManager().addHandler(AddedTaskEvent.TYPE, this);
+		fController.getHandlerManager().addHandler(RemovedTaskFromStoryEvent.TYPE, this);
 	}
 
-	private void initComponent() {
+	private void initUI() {
 
 		fStoryLabel = new Label(fStory.getStoryName());
 		fPanel.add(fStoryLabel);
@@ -83,32 +89,19 @@ public class StoryPanel extends Composite {
 		//show the task UI for each task
 		
 		for (Task task : tasksForStory) {
-			ScrumzillaTaskTypeContribution lookupTaskType = fTaskTypeRegistry.lookupTaskType(task.getTaskType());
-			if(lookupTaskType != null){
-				ScrumzillaTaskDisplayUI taskDisplayUI = lookupTaskType.getTaskTypeUI().getTaskDisplayUI();
-				fPanel.add(getTaskWrapper(taskDisplayUI, task));
-			}
+			addTaskToUI(task);
 		}
 	}
 
-	private Widget getTaskWrapper(ScrumzillaTaskDisplayUI taskDisplayUI, final Task task) {
-		//TODO: replace with Task D&D wrapper
-		VerticalPanel vp = new VerticalPanel();
-		vp.add(taskDisplayUI.getSimpleTaskDisplayUI(task));
-		HorizontalPanel buttonPanel = new HorizontalPanel();
-		Button remove = new Button("X");
-		remove.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				fController.removeTaskFromModel(task, new ScrumzillaControllerErrorHandlerAdapter() {
-					public void taskDoesNotExist(Task task) {
-						Window.alert("Task doesn't exist");
-					};
-				});
-			}
-		});
-		buttonPanel.add(remove);
-		vp.add(buttonPanel);
-		return vp;
+	private void addTaskToUI(Task task) {
+		ScrumzillaTaskTypeContribution taskTypeContribution = fTaskTypeRegistry.lookupTaskType(task.getTaskType());
+		if(taskTypeContribution != null){
+			fPanel.add(getTaskWrapper(taskTypeContribution, task));
+		}
+	}
+
+	private TaskPanel getTaskWrapper(ScrumzillaTaskTypeContribution taskTypeContribution, final Task task) {
+		return new TaskPanel(fController, task, taskTypeContribution);
 	}
 
 	protected void addTaskClicked() {
@@ -162,12 +155,12 @@ public class StoryPanel extends Composite {
 			public void onClick(ClickEvent event) {
 				try {
 					Task t = addTaskUI.createTask();
+					t.setStory(fStory);
 					fController.addTask(t, new ScrumzillaControllerErrorHandlerAdapter() {
 						public void taskExists(Task t) {
 							Window.alert("Task already exists!");
 						};
 					});
-					fController.moveTaskToStory(fStory, t);
 				} catch (TaskCreationException e) {
 					Window.alert(e.getMessage());
 				} finally {
@@ -183,6 +176,27 @@ public class StoryPanel extends Composite {
 	private void resetAddTaskPanel() {
 		fAddTaskPanel.clear();
 		fAddTaskPanel.add(fAddTaskButton);
+	}
+
+	public void addedTask(AddedTaskEvent addTaskEvent) {
+		Task t = addTaskEvent.fTask;
+		if(t.getStory().equals(fStory)){
+			addTaskToUI(t);
+		}		
+	}
+
+	public void removedTaskFromStory(RemovedTaskFromStoryEvent e) {
+		if(e.fStoryRemovedFrom.equals(fStory)){
+			for(int i = 0; i < fPanel.getWidgetCount(); i++){
+				Widget widget = fPanel.getWidget(i);
+				if(widget instanceof TaskPanel){
+					if(((TaskPanel)widget).getTask().equals(e.fTask)){
+						fPanel.remove(widget);
+						return;
+					}
+				}
+			}
+		}
 	}
 	
 

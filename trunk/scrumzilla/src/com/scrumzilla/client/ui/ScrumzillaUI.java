@@ -4,14 +4,18 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.scrumzilla.client.ScrumzillaTaskTypeRegistry;
-import com.scrumzilla.client.controller.IScrumzillaChangeListener;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
+import com.scrumzilla.client.events.AddedStoryEvent;
+import com.scrumzilla.client.events.AddedStoryEventHandler;
+import com.scrumzilla.client.events.RemovedStoryEvent;
+import com.scrumzilla.client.events.RemovedStoryEventHandler;
 import com.scrumzilla.client.model.Story;
 
-public class ScrumzillaUI extends Composite implements IScrumzillaChangeListener {
+public class ScrumzillaUI extends Composite implements AddedStoryEventHandler, RemovedStoryEventHandler{
 	
 	private final ScrumzillaController fController;
 	private final ScrumzillaTaskTypeRegistry fTaskTypeRegistry;
@@ -29,24 +33,33 @@ public class ScrumzillaUI extends Composite implements IScrumzillaChangeListener
 		
 		fVerticalPanel = new VerticalPanel();
 		initWidget(fVerticalPanel);
-		
-		fController.addChangeListener(this);
-		
 		initComponents();
+		
+		fController.getHandlerManager().addHandler(AddedStoryEvent.TYPE, this);
+		fController.getHandlerManager().addHandler(RemovedStoryEvent.TYPE, this);
+
 		
 	}
 
 	private void initComponents() {
-		List<Story> sprintStories = fController.getModel().getSprintStories();
-		for (Story story : sprintStories) {
-			fVerticalPanel.add(new StoryPanel(fController, fTaskTypeRegistry, story));
-		}
-
-		
 		fAddStoryPanel = new AddStoryPanel(fController);
 		fVerticalPanel.add(fAddStoryPanel);
+
+		List<Story> sprintStories = fController.getModel().getSprintStories();
 		
+		addStoryPanel(Story.UNASSIGNED_STORY);
+
+		for (Story story : sprintStories) {
+			addStoryPanel(story);
+		}
+
 	}
+	private void addStoryPanel(Story story) {
+		int count = fVerticalPanel.getWidgetCount();
+		//count >= 1, 1 is the add story button
+		fVerticalPanel.insert(new StoryPanel(fController, fTaskTypeRegistry, story), count - 1);
+	}
+
 
 	protected void addStory() {
 		Story s = new Story();
@@ -55,9 +68,22 @@ public class ScrumzillaUI extends Composite implements IScrumzillaChangeListener
 		});
 	}
 
-	public void modelChanged() {
-		fVerticalPanel.clear();
-		initComponents();
+	public void addedStory(AddedStoryEvent e) {
+		addStoryPanel(e.fStory);
 	}
+
+	public void storyRemoved(RemovedStoryEvent e) {
+		for(int i = 0; i < fVerticalPanel.getWidgetCount(); i++){
+			Widget w = fVerticalPanel.getWidget(i);
+			if(w instanceof StoryPanel){
+				StoryPanel sp = (StoryPanel)w;
+				if(sp.fStory.equals(e.fStory)){
+					fVerticalPanel.remove(w);
+					return;
+				}
+			}
+		}
+	}
+
 
 }

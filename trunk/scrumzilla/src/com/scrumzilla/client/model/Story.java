@@ -1,7 +1,19 @@
 package com.scrumzilla.client.model;
 
+
 public class Story {
+	
+	public static final Story UNASSIGNED_STORY = new Story("Unassigned");
+	
 	private String fStoryName;
+
+	public Story(String storyName) {
+		this();
+		setStoryName(storyName);
+	}
+
+	public Story() {
+	}
 
 	public String getStoryName() {
 		return fStoryName;
