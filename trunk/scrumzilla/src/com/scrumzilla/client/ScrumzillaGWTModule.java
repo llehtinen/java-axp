@@ -4,14 +4,14 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.scrumzilla.client.controller.ScrumzillaController;
-import com.scrumzilla.client.model.InMemoryScrumzillaModel;
+import com.scrumzilla.client.datalayer.inmemory.InMemoryScrumzillaModel;
 import com.scrumzilla.client.taskcontribution.local.ScrumzillaLocalTaskTypeContribution;
 import com.scrumzilla.client.ui.ScrumzillaUI;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Scrumzilla implements EntryPoint {
+public class ScrumzillaGWTModule implements EntryPoint {
 	
 //	private final ScrumzillaInjector injector = GWT.create(ScrumzillaInjector.class);
 

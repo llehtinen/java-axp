@@ -1,6 +1,9 @@
-package com.scrumzilla.client.model;
+package com.scrumzilla.client.datalayer;
 
 import java.util.List;
+
+import com.scrumzilla.client.model.Story;
+import com.scrumzilla.client.model.Task;
 
 public interface ScrumzillaModel {
 	

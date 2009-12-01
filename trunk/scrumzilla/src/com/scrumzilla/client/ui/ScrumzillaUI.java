@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 import com.scrumzilla.client.ScrumzillaTaskTypeRegistry;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
@@ -26,7 +25,7 @@ public class ScrumzillaUI extends Composite implements AddedStoryEventHandler, R
 	
 
 
-	@Inject()
+//	@Inject()
 	public ScrumzillaUI(ScrumzillaController controller, ScrumzillaTaskTypeRegistry registry){
 		fController = controller;
 		fTaskTypeRegistry = registry;
