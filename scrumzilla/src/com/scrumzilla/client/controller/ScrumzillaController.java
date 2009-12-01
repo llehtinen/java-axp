@@ -1,16 +1,15 @@
 package com.scrumzilla.client.controller;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.inject.Inject;
+import com.scrumzilla.client.datalayer.ScrumzillaModel;
+import com.scrumzilla.client.datalayer.ScrumzillaModel.AsynchResult;
 import com.scrumzilla.client.events.AddedStoryEvent;
 import com.scrumzilla.client.events.AddedTaskEvent;
 import com.scrumzilla.client.events.EditedTaskEvent;
 import com.scrumzilla.client.events.RemovedStoryEvent;
 import com.scrumzilla.client.events.RemovedTaskFromStoryEvent;
-import com.scrumzilla.client.model.ScrumzillaModel;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
-import com.scrumzilla.client.model.ScrumzillaModel.AsynchResult;
 
 /*
  * - Expose operations to UI
@@ -26,7 +25,7 @@ public class ScrumzillaController {
 	private final ScrumzillaModel fModel;
 	private final HandlerManager fHandlerManager;
 
-	@Inject
+//	@Inject
 	public ScrumzillaController(ScrumzillaModel model, HandlerManager scrumzillaHandlerManager){
 		fModel = model;
 		fHandlerManager = scrumzillaHandlerManager;

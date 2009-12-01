@@ -1,7 +1,12 @@
-package com.scrumzilla.client.model;
+package com.scrumzilla.client.datalayer.inmemory;
 
 import java.util.List;
 import java.util.Vector;
+
+import com.scrumzilla.client.datalayer.ScrumzillaModel;
+import com.scrumzilla.client.datalayer.ScrumzillaModel.AsynchResult;
+import com.scrumzilla.client.model.Story;
+import com.scrumzilla.client.model.Task;
 
 public class InMemoryScrumzillaModel implements ScrumzillaModel {
 
