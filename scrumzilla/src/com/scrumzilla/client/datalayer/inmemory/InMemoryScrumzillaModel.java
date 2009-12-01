@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Vector;
 
 import com.scrumzilla.client.datalayer.ScrumzillaModel;
-import com.scrumzilla.client.datalayer.ScrumzillaModel.AsynchResult;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
 

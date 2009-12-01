@@ -17,4 +17,16 @@ class WaveStory extends JavaScriptObject {
 		return new Story(getStoryName());
 	}
 
+	public final void fromStory(Story s) {
+		setStoryName(s.getStoryName());
+	}
+
+	
+	public static final native JavaScriptObject createWaveStory() /*-{
+//		return @com.scrumzilla.client.datalayer.wave.WaveStory::new()()
+		return new Object();
+		
+		}-*/;
+
+
 }
