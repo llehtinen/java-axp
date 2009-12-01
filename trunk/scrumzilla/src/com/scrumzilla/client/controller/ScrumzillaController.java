@@ -58,7 +58,6 @@ public class ScrumzillaController {
 	
 
 	public void addStory(final Story s, final ScrumzillaControllerErrorHandler handler) {
-
 		if(s.getStoryName() == null || s.getStoryName().trim().length() == 0){
 			handler.invalidStoryName(s.getStoryName());
 		} else {

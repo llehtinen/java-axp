@@ -2,6 +2,9 @@ package com.scrumzilla.client.model;
 
 public class Task {
 	
+	/*
+	 * Warning! Changing these enum constants could affect wave state -> java mapping
+	 */
 	public static enum TaskState {
 		TODO,
 		IN_PROGRESS,

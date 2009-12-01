@@ -21,6 +21,6 @@
 
   <!-- Specify the app entry point class.                         -->
   <!--  <entry-point class='com.scrumzilla.client.ScrumzillaGWTModule'/> -->
-  <entry-point class='com.scrumzilla.client.ScrumzillaWaveGadget'/>
+  <entry-point class='com.scrumzilla.client.wave.ScrumzillaWaveGadget'/>
   
 </module>

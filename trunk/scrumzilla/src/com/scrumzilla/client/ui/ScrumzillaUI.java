@@ -2,6 +2,8 @@ package com.scrumzilla.client.ui;
 
 import java.util.List;
 
+import org.cobogw.gwt.waveapi.gadget.client.ModeChangeEvent;
+
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,11 +12,13 @@ import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
 import com.scrumzilla.client.events.AddedStoryEvent;
 import com.scrumzilla.client.events.AddedStoryEventHandler;
+import com.scrumzilla.client.events.ModelChangedEvent;
+import com.scrumzilla.client.events.ModelChangedEventHandler;
 import com.scrumzilla.client.events.RemovedStoryEvent;
 import com.scrumzilla.client.events.RemovedStoryEventHandler;
 import com.scrumzilla.client.model.Story;
 
-public class ScrumzillaUI extends Composite implements AddedStoryEventHandler, RemovedStoryEventHandler{
+public class ScrumzillaUI extends Composite implements ModelChangedEventHandler, AddedStoryEventHandler, RemovedStoryEventHandler{
 	
 	private final ScrumzillaController fController;
 	private final ScrumzillaTaskTypeRegistry fTaskTypeRegistry;
@@ -32,15 +36,17 @@ public class ScrumzillaUI extends Composite implements AddedStoryEventHandler, R
 		
 		fVerticalPanel = new VerticalPanel();
 		initWidget(fVerticalPanel);
-		initComponents();
+		initUI();
 		
 		fController.getHandlerManager().addHandler(AddedStoryEvent.TYPE, this);
 		fController.getHandlerManager().addHandler(RemovedStoryEvent.TYPE, this);
+		fController.getHandlerManager().addHandler(ModelChangedEvent.TYPE, this);
 
+		
 		
 	}
 
-	private void initComponents() {
+	private void initUI() {
 		fAddStoryPanel = new AddStoryPanel(fController);
 		fVerticalPanel.add(fAddStoryPanel);
 
@@ -83,6 +89,12 @@ public class ScrumzillaUI extends Composite implements AddedStoryEventHandler, R
 			}
 		}
 	}
+
+	public void modelChanged(ModelChangedEvent modelChangedEvent) {
+		fVerticalPanel.clear();
+		initUI();
+	}
+
 
 
 }

@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.datalayer.inmemory.InMemoryScrumzillaModel;
+import com.scrumzilla.client.datalayer.wave.ScrumzillaWaveModel;
 import com.scrumzilla.client.taskcontribution.local.ScrumzillaLocalTaskTypeContribution;
 import com.scrumzilla.client.ui.ScrumzillaUI;
 
@@ -24,6 +25,7 @@ public class ScrumzillaGWTModule implements EntryPoint {
 		HandlerManager scrumzillaHandlerManager = new HandlerManager(this);
 		
 		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new InMemoryScrumzillaModel(), scrumzillaHandlerManager), registry);
+//		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new ScrumzillaWaveModel(), scrumzillaHandlerManager), registry);
 		RootPanel.get().add(scrumzillaUI);
 	}
 }
