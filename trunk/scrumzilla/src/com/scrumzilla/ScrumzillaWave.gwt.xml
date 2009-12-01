@@ -14,17 +14,13 @@
   <!-- Other module inherits                                      -->
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
   
-  <!--
   <inherits name='com.google.gwt.gadgets.Gadgets'/>
-  <inherits name='org.cobogw.gwt.waveapi.gadget.WaveGadget' />
-  <entry-point class='com.scrumzilla.client.ScrumzillaWaveGadget'/>  
-  -->  
+  <inherits name='org.cobogw.gwt.waveapi.gadget.WaveGadget' />  
   
   
-  <entry-point class='com.scrumzilla.client.ScrumzillaGWTModule'/>
 
   <!-- Specify the app entry point class.                         -->
-  
-
+  <!--  <entry-point class='com.scrumzilla.client.ScrumzillaGWTModule'/> -->
+  <entry-point class='com.scrumzilla.client.ScrumzillaWaveGadget'/>
   
 </module>
