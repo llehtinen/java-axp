@@ -22,7 +22,7 @@ class WaveStory extends JavaScriptObject {
 	}
 
 	
-	public static final native JavaScriptObject createWaveStory() /*-{
+	public static final native JavaScriptObject newWaveStory() /*-{
 //		return @com.scrumzilla.client.datalayer.wave.WaveStory::new()()
 		return new Object();
 		
