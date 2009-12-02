@@ -1,4 +1,4 @@
-package com.scrumzilla.client.datalayer;
+package com.scrumzilla.client;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ public interface ScrumzillaModel {
 	
 	public List<Story> getSprintStories();
 	public List<Task> getTasksForStory(Story story);
-	public void addTask(Task t, Runnable onSuccessCallback);
-	public void addStory(Story s, Runnable onSuccessCallback);
+	public void addTask(Task t);
+	public void addStory(Story s);
 
-	public void taskModified(Task task, Runnable runnable);
+	public void taskModified(Task task);
 
 	
-	public void removeTask(Task task, Runnable onSuccessCallback);
-	public void removeStory(Story story, Runnable onSuccessCallback);
+	public void removeTask(Task task);
+	public void removeStory(Story story);
 
 	
 	public void doesTaskExist(Task t, AsynchResult<Boolean> asynchResult);

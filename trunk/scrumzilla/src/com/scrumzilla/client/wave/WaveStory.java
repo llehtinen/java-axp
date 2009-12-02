@@ -1,4 +1,4 @@
-package com.scrumzilla.client.datalayer.wave;
+package com.scrumzilla.client.wave;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.scrumzilla.client.model.Story;

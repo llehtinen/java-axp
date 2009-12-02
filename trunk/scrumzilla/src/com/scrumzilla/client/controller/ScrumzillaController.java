@@ -1,13 +1,9 @@
 package com.scrumzilla.client.controller;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.scrumzilla.client.datalayer.ScrumzillaModel;
-import com.scrumzilla.client.datalayer.ScrumzillaModel.AsynchResult;
-import com.scrumzilla.client.events.AddedStoryEvent;
-import com.scrumzilla.client.events.AddedTaskEvent;
-import com.scrumzilla.client.events.EditedTaskEvent;
-import com.scrumzilla.client.events.RemovedStoryEvent;
-import com.scrumzilla.client.events.RemovedTaskFromStoryEvent;
+import com.scrumzilla.client.ScrumzillaModel;
+import com.scrumzilla.client.ScrumzillaModel.AsynchResult;
+import com.scrumzilla.client.events.ScrumzillaEventDispatcher;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
 
@@ -23,11 +19,13 @@ public class ScrumzillaController {
 	
 	
 	private final ScrumzillaModel fModel;
-	private final HandlerManager fHandlerManager;
+	private final ScrumzillaEventDispatcher fEventDispatcher;
+	private HandlerManager fHandlerManager;
 
 //	@Inject
-	public ScrumzillaController(ScrumzillaModel model, HandlerManager scrumzillaHandlerManager){
+	public ScrumzillaController(ScrumzillaModel model, HandlerManager scrumzillaHandlerManager, ScrumzillaEventDispatcher eventDispatcher){
 		fModel = model;
+		fEventDispatcher = eventDispatcher;
 		fHandlerManager = scrumzillaHandlerManager;
 	}
 	
@@ -46,11 +44,8 @@ public class ScrumzillaController {
 				if(taskExists){
 					errorHandler.taskExists(t);
 				} else {
-					fModel.addTask(t, new Runnable() {
-						public void run() {
-							fHandlerManager.fireEvent(new AddedTaskEvent(t));
-						}
-					});
+					fModel.addTask(t);
+					fEventDispatcher.taskAdded(t);
 				}
 			}
 		});
@@ -66,11 +61,8 @@ public class ScrumzillaController {
 					if(storyExists){
 						handler.storyExists(s);
 					} else {
-						fModel.addStory(s, new Runnable() {
-							public void run() {
-								fHandlerManager.fireEvent(new AddedStoryEvent(s));
-							}
-						});
+						fModel.addStory(s);
+						fEventDispatcher.storyAdded(s);
 					}
 				}
 			});
@@ -83,11 +75,8 @@ public class ScrumzillaController {
 				if(!storyExists){
 					handler.storyDoesNotExist(story);
 				} else {
-					fModel.removeStory(story, new Runnable() {
-						public void run() {
-							fHandlerManager.fireEvent(new RemovedStoryEvent(story));
-						}
-					});
+					fModel.removeStory(story);
+					fEventDispatcher.storyRemoved(story);
 				}
 			}
 		});
@@ -101,20 +90,17 @@ public class ScrumzillaController {
 		
 		Story originalStory = task.getStory();
 		task.setStory(story);
-		fHandlerManager.fireEvent(new RemovedTaskFromStoryEvent(task, originalStory));
-		fHandlerManager.fireEvent(new AddedTaskEvent(task));
+		fModel.taskModified(task);
+		fEventDispatcher.removedTaskFromStory(task, originalStory);
+		fEventDispatcher.taskAdded(task);
+		
 	}
 	
 	
 	public void changeTaskDescription(final Task task, String newDescription) {
 		task.setDescription(newDescription);
-		fModel.taskModified(task, new Runnable() {
-			public void run() {
-				fHandlerManager.fireEvent(new EditedTaskEvent(task));
-			}
-		});
-		
-		
+		fModel.taskModified(task);
+		fEventDispatcher.taskModified(task);
 	}
 	
 	public void removeTaskFromModel(final Task task, final ScrumzillaControllerErrorHandler handler) {
@@ -123,11 +109,8 @@ public class ScrumzillaController {
 				if(!taskExists){
 					handler.taskDoesNotExist(task);
 				} else {
-					fModel.removeTask(task, new Runnable() {
-						public void run() {
-							fHandlerManager.fireEvent(new RemovedTaskFromStoryEvent(task, task.getStory()));
-						}
-					});
+					fModel.removeTask(task);
+					fEventDispatcher.removedTaskFromStory(task, task.getStory());
 				}
 			}
 		});

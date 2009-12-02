@@ -3,7 +3,7 @@ package com.scrumzilla.client.datalayer.inmemory;
 import java.util.List;
 import java.util.Vector;
 
-import com.scrumzilla.client.datalayer.ScrumzillaModel;
+import com.scrumzilla.client.ScrumzillaModel;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
 
@@ -37,21 +37,18 @@ public class InMemoryScrumzillaModel implements ScrumzillaModel {
 	}
 
 
-	public void addTask(Task t, Runnable onSuccessCallback) {
+	public void addTask(Task t) {
 		fWaveTasks.add(t);
-		onSuccessCallback.run();
 	}
 	
-	public void addStory(Story s, Runnable onSuccessCallback) {
+	public void addStory(Story s) {
 		fWaveStories.add(s);
-		onSuccessCallback.run();
 	}
 
 
 
-	public void removeTask(Task task, Runnable onSuccessCallback) {
+	public void removeTask(Task task) {
 		fWaveTasks.remove(task);
-		onSuccessCallback.run();
 	}
 
 
@@ -78,15 +75,13 @@ public class InMemoryScrumzillaModel implements ScrumzillaModel {
 	}
 
 
-	public void removeStory(Story story, Runnable onSuccessCallback) {
+	public void removeStory(Story story) {
 		fWaveStories.remove(story);
-		onSuccessCallback.run();
 	}
 
 
-	public void taskModified(Task task, Runnable onSuccessCallback) {
+	public void taskModified(Task task) {
 		//nothing to do
-		onSuccessCallback.run();
 	}
 	
 
