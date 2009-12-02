@@ -19,13 +19,12 @@ public class ScrumzillaWaveGadget extends WaveGadget<UserPreferences> {
 
 	@Override
 	protected void init(UserPreferences preferences) {
-		consoleWrite("In init");
 		ScrumzillaTaskTypeRegistry registry = new ScrumzillaTaskTypeRegistry();
 		registry.registerTaskType(new ScrumzillaLocalTaskTypeContribution());
 		HandlerManager scrumzillaHandlerManager = new HandlerManager(this);
 		
 		ScrumzillaEventDispatcher ed = new WaveEventDispatcher();
-		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new ScrumzillaWaveModel(new WaveStateWrapper(State.getState())), scrumzillaHandlerManager, ed), registry);
+		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new ScrumzillaWaveModel(new WaveStateWrapper()), scrumzillaHandlerManager, ed), registry);
 		
 		getWave().addStateUpdateEventHandler(new ScrumzillaWaveStateUpdateHandler(scrumzillaHandlerManager));
 		
