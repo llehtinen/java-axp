@@ -25,9 +25,7 @@ public class ScrumzillaWaveGadget extends WaveGadget<UserPreferences> {
 		HandlerManager scrumzillaHandlerManager = new HandlerManager(this);
 		
 		ScrumzillaEventDispatcher ed = new WaveEventDispatcher();
-
-		
-		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new ScrumzillaWaveModel(State.getState()), scrumzillaHandlerManager, ed), registry);
+		ScrumzillaUI scrumzillaUI = new ScrumzillaUI(new ScrumzillaController(new ScrumzillaWaveModel(new WaveStateWrapper(State.getState())), scrumzillaHandlerManager, ed), registry);
 		
 		getWave().addStateUpdateEventHandler(new ScrumzillaWaveStateUpdateHandler(scrumzillaHandlerManager));
 		

@@ -10,7 +10,7 @@ import com.google.gwt.core.client.JsArrayString;
 /**
  * State class for managing the gadget state.
  */
-public class State extends JavaScriptObject implements WaveState {
+public class State extends JavaScriptObject {
 
 	/**
 	 * JavaScript version of map.
@@ -109,7 +109,7 @@ public class State extends JavaScriptObject implements WaveState {
 	 * 
 	 * @return JavaScriptObject of the wave state
 	 */
-	public static native WaveState getState() /*-{
+	public static native State getState() /*-{
 		return $wnd.wave.getState();
 	}-*/;
 
