@@ -2,8 +2,6 @@ package com.scrumzilla.client.ui;
 
 import java.util.List;
 
-import org.cobogw.gwt.waveapi.gadget.client.ModeChangeEvent;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;

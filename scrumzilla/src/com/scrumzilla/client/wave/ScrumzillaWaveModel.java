@@ -1,4 +1,4 @@
-package com.scrumzilla.client.datalayer.wave;
+package com.scrumzilla.client.wave;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.scrumzilla.client.datalayer.ScrumzillaModel;
+import com.scrumzilla.client.ScrumzillaModel;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
 
@@ -16,13 +16,18 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 	//must be able to generate wave delta
 	private static final String STORY_LIST_STATE_KEY = "scrumzilla.state.StoryList";
 	public static final String TASK_LIST_STATE_KEY = "scrumzilla.state.TaskList";
+	
+	private final WaveState fWaveState;
+	
+	public ScrumzillaWaveModel(WaveState waveState) {
+		fWaveState = waveState;
+	}
 
-	public void addStory(Story s, Runnable onSuccessCallback) {
+	public void addStory(Story s) {
 		//generate wave delta for story addition
 		//ie. get list of stories, add to it, propgate new value of story list property
 
-		State waveState = State.getState();
-		String string = waveState.get(STORY_LIST_STATE_KEY);
+		String string = fWaveState.get(STORY_LIST_STATE_KEY);
 
 		//represents JSON-encoded array
 		if(string == null || string.trim().length() == 0){
@@ -36,8 +41,6 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 			JSONArray array = storyListJSONValue.isArray();
 			int size = array.size();
 			
-//			ScrumzillaWaveGadget.consoleWrite("num stories: " + size);
-			
 			//get and populate the wave that will be added to the list
 			WaveStory waveStory = (WaveStory)WaveStory.createWaveStory();
 			waveStory.fromStory(s);
@@ -48,24 +51,22 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 			HashMap<String, String> delta = new HashMap<String, String>();
 			String storyListJSON = array.toString();
 			delta.put(STORY_LIST_STATE_KEY, storyListJSON);
-			waveState.submitDelta(delta);
+			fWaveState.submitDelta(delta);
 		}
-		
-//		onSuccessCallback.run();
 	}
 
-	public void addTask(Task t, Runnable onSuccessCallback) {
+	public void addTask(Task t) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	
-	public void removeStory(Story story, Runnable onSuccessCallback) {
+	public void removeStory(Story story) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void removeTask(Task task, Runnable onSuccessCallback) {
+	public void removeTask(Task task) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -97,13 +98,8 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 	public List<Story> getSprintStories() {
 		List<Story> toReturn = new ArrayList<Story>();
 
-		State waveState = State.getState();
 		
-		if(waveState == null){
-			return toReturn;
-		}
-		
-		String string = waveState.get(STORY_LIST_STATE_KEY);
+		String string = fWaveState.get(STORY_LIST_STATE_KEY);
 		
 		
 		//represents JSON-encoded array
@@ -132,13 +128,8 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 
 		//to build tasks, the stories must be available
 		List<Story> stories = getSprintStories();
-
-		State waveState = State.getState();
-		if(waveState == null){
-			return toReturn;
-		}
 		
-		String string = waveState.get(TASK_LIST_STATE_KEY);
+		String string = fWaveState.get(TASK_LIST_STATE_KEY);
 
 		//represents JSON-encoded array
 		if(string == null || string.trim().length() == 0){
@@ -171,5 +162,20 @@ public class ScrumzillaWaveModel implements ScrumzillaModel {
 			}
 		}
 		return toReturn;
+	}
+
+	public void doesStoryExist(Story s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doesTaskExist(Task t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void taskModified(Task task) {
+		// TODO Auto-generated method stub
+		
 	}
 }

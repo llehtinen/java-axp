@@ -1,4 +1,4 @@
-package com.scrumzilla.client.datalayer.wave;
+package com.scrumzilla.client.wave;
 
 import java.util.List;
 
