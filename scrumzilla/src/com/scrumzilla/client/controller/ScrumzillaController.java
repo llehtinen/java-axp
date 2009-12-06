@@ -6,6 +6,7 @@ import com.scrumzilla.client.ScrumzillaModel.AsynchResult;
 import com.scrumzilla.client.events.ScrumzillaEventDispatcher;
 import com.scrumzilla.client.model.Story;
 import com.scrumzilla.client.model.Task;
+import com.scrumzilla.client.model.Task.TaskState;
 
 /*
  * - Expose operations to UI
@@ -103,6 +104,13 @@ public class ScrumzillaController {
 		fEventDispatcher.taskModified(task);
 	}
 	
+	public void changeTaskState(Task task, TaskState taskState) {
+		task.setTaskState(taskState);
+		fModel.taskModified(task);
+		fEventDispatcher.taskModified(task);
+	}
+
+	
 	public void removeTaskFromModel(final Task task, final ScrumzillaControllerErrorHandler handler) {
 		fModel.doesTaskExist(task, new AsynchResult<Boolean>() {
 			public void result(Boolean taskExists) {
@@ -115,6 +123,7 @@ public class ScrumzillaController {
 			}
 		});
 	}
+
 	
 	
 	

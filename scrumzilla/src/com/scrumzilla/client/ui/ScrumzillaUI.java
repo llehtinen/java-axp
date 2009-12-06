@@ -3,7 +3,8 @@ package com.scrumzilla.client.ui;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.scrumzilla.client.ScrumzillaTaskTypeRegistry;
 import com.scrumzilla.client.controller.ScrumzillaController;
@@ -15,6 +16,7 @@ import com.scrumzilla.client.events.ModelChangedEventHandler;
 import com.scrumzilla.client.events.RemovedStoryEvent;
 import com.scrumzilla.client.events.RemovedStoryEventHandler;
 import com.scrumzilla.client.model.Story;
+import com.scrumzilla.client.model.Task.TaskState;
 
 public class ScrumzillaUI extends Composite implements ModelChangedEventHandler, AddedStoryEventHandler, RemovedStoryEventHandler{
 	
@@ -22,8 +24,9 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 	private final ScrumzillaTaskTypeRegistry fTaskTypeRegistry;
 	
 	
-	private VerticalPanel fVerticalPanel;
+//	private VerticalPanel fVerticalPanel;
 	private AddStoryPanel fAddStoryPanel;
+	private FlexTable fScrumzillaUITable;
 	
 
 
@@ -32,21 +35,32 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		fController = controller;
 		fTaskTypeRegistry = registry;
 		
-		fVerticalPanel = new VerticalPanel();
-		initWidget(fVerticalPanel);
+		
+		fScrumzillaUITable = new FlexTable();
+		
+//		fVerticalPanel = new VerticalPanel();
+		initWidget(fScrumzillaUITable);
 		initUI();
 		
 		fController.getHandlerManager().addHandler(AddedStoryEvent.TYPE, this);
 		fController.getHandlerManager().addHandler(RemovedStoryEvent.TYPE, this);
 		fController.getHandlerManager().addHandler(ModelChangedEvent.TYPE, this);
-
-		
-		
 	}
 
 	private void initUI() {
+		fScrumzillaUITable.insertRow(0);
+		fScrumzillaUITable.setWidget(0, 0, new Label("Story"));
+		fScrumzillaUITable.setWidget(0, 1, new Label(""));
+		int column = 2;
+		for(TaskState ts : TaskState.values()){
+			fScrumzillaUITable.setWidget(0, column++, new Label(ts.toString()));	
+		}
+		
+		
+		
 		fAddStoryPanel = new AddStoryPanel(fController);
-		fVerticalPanel.add(fAddStoryPanel);
+		fScrumzillaUITable.insertRow(1);
+		fScrumzillaUITable.setWidget(1, 0, fAddStoryPanel);
 
 		List<Story> sprintStories = fController.getModel().getSprintStories();
 		
@@ -58,9 +72,22 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 
 	}
 	private void addStoryPanel(Story story) {
-		int count = fVerticalPanel.getWidgetCount();
+		int count = fScrumzillaUITable.getRowCount();
+		int row = count - 1;
+		fScrumzillaUITable.insertRow(row);
+		
+		//insert story panels
+		fScrumzillaUITable.setWidget(row, 0, new StoryTitlePanel(story, fController));
+		
+		fScrumzillaUITable.setWidget(row, 1, new AddTaskToStoryPanel(story, fController, fTaskTypeRegistry));
+		
+		fController.getModel().getTasksForStory(story);
+		int column = 2;
+		for(TaskState taskState : TaskState.values()){
+			fScrumzillaUITable.setWidget(row, column++, new TasksInStatePanel(story, taskState, fController, fTaskTypeRegistry));
+		}
+		
 		//count >= 1, 1 is the add story button
-		fVerticalPanel.insert(new StoryPanel(fController, fTaskTypeRegistry, story), count - 1);
 	}
 
 
@@ -76,12 +103,12 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 	}
 
 	public void storyRemoved(RemovedStoryEvent e) {
-		for(int i = 0; i < fVerticalPanel.getWidgetCount(); i++){
-			Widget w = fVerticalPanel.getWidget(i);
-			if(w instanceof StoryPanel){
-				StoryPanel sp = (StoryPanel)w;
+		for(int i = 0; i < fScrumzillaUITable.getRowCount(); i++){
+			Widget w = fScrumzillaUITable.getWidget(i, 0);
+			if(w instanceof StoryTitlePanel){
+				StoryTitlePanel sp = (StoryTitlePanel)w;
 				if(sp.fStory.equals(e.fStory)){
-					fVerticalPanel.remove(w);
+					fScrumzillaUITable.removeRow(i);
 					return;
 				}
 			}
@@ -89,7 +116,10 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 	}
 
 	public void modelChanged(ModelChangedEvent modelChangedEvent) {
-		fVerticalPanel.clear();
+		while(fScrumzillaUITable.getRowCount() > 0){
+			fScrumzillaUITable.removeRow(0);	
+		}
+		
 		initUI();
 	}
 

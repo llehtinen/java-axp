@@ -1,17 +1,21 @@
 package com.scrumzilla.client.ui;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
 import com.scrumzilla.client.events.EditedTaskEvent;
 import com.scrumzilla.client.events.EditedTaskEventHandler;
 import com.scrumzilla.client.model.Task;
+import com.scrumzilla.client.model.Task.TaskState;
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskDisplayUI;
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskTypeContribution;
 
@@ -22,6 +26,7 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 
 	private VerticalPanel fMainPanel;
 	private final ScrumzillaTaskTypeContribution fTaskTypeContribution;
+	private ListBox fTaskStateSelector;
 
 	
 	public TaskPanel(ScrumzillaController controller, Task task, ScrumzillaTaskTypeContribution taskTypeContribution) {
@@ -48,6 +53,25 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 		});
 		buttonPanel.add(remove);
 		fMainPanel.add(buttonPanel);
+		
+		//add task state selector
+		fTaskStateSelector = new ListBox(false);
+		for(TaskState ts : TaskState.values()){
+			fTaskStateSelector.addItem(ts.toString());
+		}
+		fMainPanel.add(fTaskStateSelector);
+		fTaskStateSelector.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				int i = fTaskStateSelector.getSelectedIndex();
+				if(i >= 0){
+					fController.changeTaskState(fTask, TaskState.values()[i]);	
+				}
+				
+				
+			}
+		});
+		
+		
 	}
 	
 	private void removeTaskClicked(Task task) {
