@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.scrumzilla.client.events.ModelChangedEvent;
 
 //forward wave change events to the standard event handling logic
+//This should be improved to provide more granular events - ModelChangedEvent is a cop-out
 public class ScrumzillaWaveStateUpdateHandler implements StateUpdateEventHandler {
 
 	private HandlerManager fApplicationHandlerManager;
