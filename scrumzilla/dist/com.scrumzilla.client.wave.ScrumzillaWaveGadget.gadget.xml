@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Module><ModulePrefs scrolling="true" title="Scrumzilla"><Require feature="dynamic-height"/><Require feature="wave"/></ModulePrefs><Content type="html"><![CDATA[<script>function scrumzilla(){
-  var $intern_0 = '', $intern_9 = '" for "gwt:onLoadErrorFn"', $intern_11 = '" for "gwt:onPropertyErrorFn"', $intern_30 = '">', $intern_43 = '"><\/script>', $intern_17 = '&', $intern_45 = '.cache.js', $intern_44 = '.cache.js$', $intern_6 = '/', $intern_3 = '1.5', $intern_36 = '4DC9847F50EF2FB846584CAFFFFA9115.cache.js', $intern_38 = '7EFC6017CB8E38FF65715BB6395F70DB.cache.js', $intern_29 = '<link rel="stylesheet" href="', $intern_42 = '<script language="javascript" src="', $intern_46 = '<script src="', $intern_13 = '=', $intern_35 = 'A0664EB4BAB109F0FD9E06EAB65B9267.cache.js', $intern_8 = 'Bad handler "', $intern_40 = 'DA883B521C1BDBD520C39C1C99AD47E1.cache.js', $intern_39 = 'DBAB1DB036579AA75C9E0AC071C1BF39.cache.js', $intern_37 = 'DDD3B437AEA531697D16818452C23F92.cache.js', $intern_16 = '_', $intern_15 = 'country', $intern_4 = 'external.gwtOnLoad failed: ', $intern_25 = 'gecko', $intern_26 = 'gecko1_8', $intern_31 = 'gwt-dnd.css', $intern_1 = 'gwt.hybrid', $intern_28 = 'gwt/standard/standard.css', $intern_7 = 'gwt:onLoadErrorFn', $intern_10 = 'gwt:onPropertyErrorFn', $intern_12 = 'gwt:property', $intern_41 = 'http://wave-api.appspot.com/public/wave.js', $intern_24 = 'ie6', $intern_23 = 'ie8', $intern_14 = 'lang', $intern_33 = 'moduleStartup', $intern_22 = 'msie', $intern_34 = 'onModuleLoadStart', $intern_19 = 'opera', $intern_21 = 'safari', $intern_2 = 'scrumzilla', $intern_32 = 'startup', $intern_27 = 'unknown', $intern_5 = 'url', $intern_18 = 'user.agent', $intern_20 = 'webkit';
+<Module><ModulePrefs scrolling="true" title="Scrumzilla"><Require feature="dynamic-height"/><Require feature="wave"/></ModulePrefs><Content type="html"><![CDATA[
+<style type="text/css">
+.scrumzilla-storyUI-storyLabel {
+ 	text-align:center;
+	margin-top:20px;
+	margin-bottom:10px;
+ 	
+ 	width:100%;
+ 	color: grey;
+}
+
+.scrumzilla-storyUI-removeStoryButton {
+  	width:200px;
+  	margin-top:5px;
+	margin-bottom:2px;
+ 	color: DarkRed;
+}
+
+.scrumzilla-taskUI-addTaskButton {
+  	width:200px;
+  	margin-top:5px;
+	margin-bottom:2px;
+ 	color: DarkRed;
+}
+
+.scrumzilla-taskUI-addTaskConfirmButton {
+  	width:200px;
+  	margin-top:5px;
+	margin-bottom:2px;
+ 	color: DarkRed;
+}
+
+.scrumzilla-taskUI-addTaskCancelButton {
+  	width:200px;
+  	margin-top:5px;
+	margin-bottom:2px;
+ 	color: DarkRed;
+}
+
+
+
+.scrumzilla-taskUI-addTaskPanel {
+	height:100%;
+	background-color: green;
+}
+
+.scrumzilla-taskUI-addTaskLabel {
+	height:100%;
+	background-color: green;
+}
+
+.scrumzilla-storyUI-taskInStateList {
+	height:90%;
+	border-style:solid;
+	border-color: black;
+	border-width: 1px;
+}
+</style>
+
+<script>function scrumzilla(){
+  var $intern_0 = '', $intern_9 = '" for "gwt:onLoadErrorFn"', $intern_11 = '" for "gwt:onPropertyErrorFn"', $intern_30 = '">', $intern_43 = '"><\/script>', $intern_17 = '&', $intern_45 = '.cache.js', $intern_44 = '.cache.js$', $intern_6 = '/', $intern_38 = '0ED60D769707C64373A5C0AD61F3E15C.cache.js', $intern_3 = '1.5', $intern_36 = '41B0652645E7D94F8F0E6E8047E9BECC.cache.js', $intern_40 = '7966E88E647E6D2E9519AD45DC89D963.cache.js', $intern_29 = '<link rel="stylesheet" href="', $intern_42 = '<script language="javascript" src="', $intern_46 = '<script src="', $intern_13 = '=', $intern_8 = 'Bad handler "', $intern_37 = 'C43AA5ADDE27D2E90A24B0E22287C5EA.cache.js', $intern_39 = 'E220A7979718D7D12E310EC53607378C.cache.js', $intern_35 = 'F5065E244C1C702AFDFC8BDD8113DE8C.cache.js', $intern_16 = '_', $intern_15 = 'country', $intern_4 = 'external.gwtOnLoad failed: ', $intern_25 = 'gecko', $intern_26 = 'gecko1_8', $intern_31 = 'gwt-dnd.css', $intern_1 = 'gwt.hybrid', $intern_28 = 'gwt/standard/standard.css', $intern_7 = 'gwt:onLoadErrorFn', $intern_10 = 'gwt:onPropertyErrorFn', $intern_12 = 'gwt:property', $intern_41 = 'http://wave-api.appspot.com/public/wave.js', $intern_24 = 'ie6', $intern_23 = 'ie8', $intern_14 = 'lang', $intern_33 = 'moduleStartup', $intern_22 = 'msie', $intern_34 = 'onModuleLoadStart', $intern_19 = 'opera', $intern_21 = 'safari', $intern_2 = 'scrumzilla', $intern_32 = 'startup', $intern_27 = 'unknown', $intern_5 = 'url', $intern_18 = 'user.agent', $intern_20 = 'webkit';
   var $wnd = window, $doc = document, external = $wnd.external, gwtOnLoad, bodyDone, base = $intern_0, metaProps = {}, values = [], providers = [], answers = [], onLoadErrorFunc, propertyErrorFunc, $stats = $wnd.__gwtStatsEvent?function(a){
     return $wnd.__gwtStatsEvent(a);
   }
