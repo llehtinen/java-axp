@@ -1,21 +1,20 @@
 package com.scrumzilla.client.ui;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.scrumzilla.client.controller.ScrumzillaController;
 import com.scrumzilla.client.controller.ScrumzillaControllerErrorHandlerAdapter;
 import com.scrumzilla.client.events.EditedTaskEvent;
 import com.scrumzilla.client.events.EditedTaskEventHandler;
 import com.scrumzilla.client.model.Task;
-import com.scrumzilla.client.model.Task.TaskState;
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskDisplayUI;
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskTypeContribution;
 
@@ -27,6 +26,7 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 	private VerticalPanel fMainPanel;
 	private final ScrumzillaTaskTypeContribution fTaskTypeContribution;
 	private ListBox fTaskStateSelector;
+	private Label fDragHandle;
 
 	
 	public TaskPanel(ScrumzillaController controller, Task task, ScrumzillaTaskTypeContribution taskTypeContribution) {
@@ -38,10 +38,16 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 		initUI();
 		
 		fController.getHandlerManager().addHandler(EditedTaskEvent.TYPE, this);
-		
+	
+		setStyleName("scrumzilla-taskUI-taskPanel");
 	}
 
 	private void initUI() {
+		fDragHandle = new Label("Drag Label");
+		fDragHandle.setStyleName("scrumzilla-taskUI-dragLabel");
+		
+		fMainPanel.add(fDragHandle);
+		
 		ScrumzillaTaskDisplayUI taskDisplayUI = fTaskTypeContribution.getTaskTypeUI().getTaskDisplayUI();
 		fMainPanel.add(taskDisplayUI.getSimpleTaskDisplayUI(fTask));
 		HorizontalPanel buttonPanel = new HorizontalPanel();
@@ -53,25 +59,6 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 		});
 		buttonPanel.add(remove);
 		fMainPanel.add(buttonPanel);
-		
-		//add task state selector
-		fTaskStateSelector = new ListBox(false);
-		for(TaskState ts : TaskState.values()){
-			fTaskStateSelector.addItem(ts.toString());
-		}
-		fMainPanel.add(fTaskStateSelector);
-		fTaskStateSelector.addChangeHandler(new ChangeHandler() {
-			public void onChange(ChangeEvent event) {
-				int i = fTaskStateSelector.getSelectedIndex();
-				if(i >= 0){
-					fController.changeTaskState(fTask, TaskState.values()[i]);	
-				}
-				
-				
-			}
-		});
-		
-		
 	}
 	
 	private void removeTaskClicked(Task task) {
@@ -96,5 +83,15 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 			fMainPanel.clear();
 			initUI();
 		}
+	}
+	
+	public Widget getDragHandle() {
+		return fDragHandle;
+	}
+	
+	@Override
+	protected void onDetach() {
+		fController.getHandlerManager().removeHandler(EditedTaskEvent.TYPE, this);
+		super.onDetach();
 	}
 }
