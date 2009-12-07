@@ -2,9 +2,11 @@ package com.scrumzilla.client.ui;
 
 import java.util.List;
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.scrumzilla.client.ScrumzillaTaskTypeRegistry;
 import com.scrumzilla.client.controller.ScrumzillaController;
@@ -27,6 +29,7 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 //	private VerticalPanel fVerticalPanel;
 	private AddStoryPanel fAddStoryPanel;
 	private FlexTable fScrumzillaUITable;
+	private PickupDragController fDragController;
 	
 
 
@@ -36,11 +39,15 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		fTaskTypeRegistry = registry;
 		
 		
+		fDragController = new PickupDragController(RootPanel.get(), false);
+		
 		fScrumzillaUITable = new FlexTable();
 		
 //		fVerticalPanel = new VerticalPanel();
 		initWidget(fScrumzillaUITable);
 		initUI();
+		
+		
 		
 		fController.getHandlerManager().addHandler(AddedStoryEvent.TYPE, this);
 		fController.getHandlerManager().addHandler(RemovedStoryEvent.TYPE, this);
@@ -84,7 +91,7 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		fController.getModel().getTasksForStory(story);
 		int column = 2;
 		for(TaskState taskState : TaskState.values()){
-			fScrumzillaUITable.setWidget(row, column++, new TasksInStatePanel(story, taskState, fController, fTaskTypeRegistry));
+			fScrumzillaUITable.setWidget(row, column++, new TasksInStatePanel(story, taskState, fDragController, fController, fTaskTypeRegistry));
 		}
 		
 		//count >= 1, 1 is the add story button
@@ -121,6 +128,15 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		}
 		
 		initUI();
+	}
+	
+	@Override
+	protected void onDetach() {
+		fController.getHandlerManager().removeHandler(AddedStoryEvent.TYPE, this);
+		fController.getHandlerManager().removeHandler(RemovedStoryEvent.TYPE, this);
+		fController.getHandlerManager().removeHandler(ModelChangedEvent.TYPE, this);
+		
+		super.onDetach();
 	}
 
 

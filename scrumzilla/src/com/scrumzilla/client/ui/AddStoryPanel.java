@@ -16,7 +16,7 @@ import com.scrumzilla.client.model.Story;
 
 public class AddStoryPanel extends Composite {
 
-	private ScrumzillaController fController;
+	private final ScrumzillaController fController;
 	private VerticalPanel fMainPanel;
 	private Button fAddStoryButton;
 	private TextBox fStoryName;
@@ -27,11 +27,11 @@ public class AddStoryPanel extends Composite {
 		fMainPanel = new VerticalPanel();
 		initWidget(fMainPanel);
 		
-		layoutWidget();
+		initUI();
 		
 	}
 
-	private void layoutWidget() {
+	private void initUI() {
 		switchToNonEditMode();
 	}
 

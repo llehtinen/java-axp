@@ -12,6 +12,10 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <inherits name='com.google.gwt.json.JSON'/>
+  <!-- Inherit gwt-dnd support                   -->
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+  
+  
   <!--
   <inherits name='com.google.gwt.gadgets.Gadgets'/>
   <inherits name='org.cobogw.gwt.waveapi.gadget.WaveGadget' />

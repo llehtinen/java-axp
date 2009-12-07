@@ -136,4 +136,6 @@ public class AddTaskToStoryPanel extends Composite {
 		fAddTaskPanel.clear();
 		fAddTaskPanel.add(fAddTaskButton);
 	}
+	
+	
 }
