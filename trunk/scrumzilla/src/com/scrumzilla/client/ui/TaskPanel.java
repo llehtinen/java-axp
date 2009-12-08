@@ -25,7 +25,6 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 
 	private VerticalPanel fMainPanel;
 	private final ScrumzillaTaskTypeContribution fTaskTypeContribution;
-	private ListBox fTaskStateSelector;
 	private Label fDragHandle;
 
 	
@@ -34,12 +33,13 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 		fTaskTypeContribution = taskTypeContribution;
 		fController = controller;
 		fMainPanel = new VerticalPanel();
+		fMainPanel.setStyleName("scrumzilla-taskUI-taskPanel");
+
 		initWidget(fMainPanel);
 		initUI();
 		
 		fController.getHandlerManager().addHandler(EditedTaskEvent.TYPE, this);
 	
-		setStyleName("scrumzilla-taskUI-taskPanel");
 	}
 
 	private void initUI() {
@@ -52,6 +52,7 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 		fMainPanel.add(taskDisplayUI.getSimpleTaskDisplayUI(fTask));
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		Button remove = new Button("X");
+		remove.setStyleName("scrumzilla-taskUI-removeTaskButton");
 		remove.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				removeTaskClicked(fTask);
@@ -88,10 +89,9 @@ public class TaskPanel extends Composite implements EditedTaskEventHandler{
 	public Widget getDragHandle() {
 		return fDragHandle;
 	}
+
 	
-	@Override
-	protected void onDetach() {
-		fController.getHandlerManager().removeHandler(EditedTaskEvent.TYPE, this);
-		super.onDetach();
+	public void cleanupTaskPanel() {
+		fController.getHandlerManager().removeHandler(EditedTaskEvent.TYPE, this);	
 	}
 }

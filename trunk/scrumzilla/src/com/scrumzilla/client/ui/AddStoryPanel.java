@@ -25,10 +25,11 @@ public class AddStoryPanel extends Composite {
 		fController = controller;
 		
 		fMainPanel = new VerticalPanel();
+		fMainPanel.setStyleName("scrumzilla-storyUI-addStoryPanel");
 		initWidget(fMainPanel);
 		
-		initUI();
 		
+		initUI();
 	}
 
 	private void initUI() {
@@ -38,6 +39,7 @@ public class AddStoryPanel extends Composite {
 	private void switchToNonEditMode() {
 		fMainPanel.clear();
 		fAddStoryButton = new Button("Add Story");
+		fAddStoryButton.setStyleName("scrumzilla-storyUI-addStoryButton");
 		fAddStoryButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				switchToEditMode();
@@ -56,11 +58,13 @@ public class AddStoryPanel extends Composite {
 				}				
 			}
 		});
+		fStoryName.setStyleName("scrumzilla-storyUI-addStoryNameText");
 		fMainPanel.add(fStoryName);
 		
 		
 		HorizontalPanel hp = new HorizontalPanel();
 		Button cancelButton = new Button("Cancel");
+		cancelButton.setStyleName("scrumzilla-storyUI-addStoryCancelButton");
 		cancelButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				switchToNonEditMode();
@@ -70,6 +74,8 @@ public class AddStoryPanel extends Composite {
 		
 	
 		Button okButton = new Button("Ok");
+		okButton.setStyleName("scrumzilla-storyUI-addStoryOkButton");
+
 		okButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				addStory();

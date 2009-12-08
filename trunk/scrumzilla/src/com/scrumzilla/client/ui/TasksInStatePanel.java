@@ -67,6 +67,7 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 		fStory = story;
 		
 		fPanel = new HorizontalPanel();
+		fPanel.setStyleName("scrumzilla-taskUI-tasksInStatePanel");
 		initWidget(fPanel);
 		
 		fDragController = dragController;
@@ -80,7 +81,6 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 		fController.getHandlerManager().addHandler(AddedTaskEvent.TYPE, this);
 		fController.getHandlerManager().addHandler(RemovedTaskFromStoryEvent.TYPE, this);
 		
-		fPanel.setStyleName("scrumzilla-storyUI-taskInStateList");
 
 		
 	}
@@ -98,12 +98,15 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 		}
 		
 		if(!addedTask){
-			fPanel.setSize("200px", "200px");
+			fPanel.setStyleName("scrumzilla-taskUI-emptyTaskList");
+		} else {
+			fPanel.setStyleName("scrumzilla-taskUI-taskList");
 		}
 	}
 
 	public void editedTask(EditedTaskEvent e) {
 		if(e.fTask.getStory().equals(fStory)){
+			cleanupTasksPanel();
 			fPanel.clear();
 			initUI();
 		}
@@ -111,6 +114,7 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 
 	public void addedTask(AddedTaskEvent addTaskEvent) {
 		if(addTaskEvent.fTask.getStory().equals(fStory)){
+			cleanupTasksPanel();
 			fPanel.clear();
 			initUI();
 		}
@@ -118,6 +122,7 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 
 	public void removedTaskFromStory(RemovedTaskFromStoryEvent e) {
 		if(e.fStoryRemovedFrom.equals(fStory)){
+			cleanupTasksPanel();
 			fPanel.clear();
 			initUI();
 		}		
@@ -126,13 +131,7 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 	@Override
 	protected void onDetach() {
 		
-		//clean up D&D listeners
-		for(int i = 0; i < fPanel.getWidgetCount(); i++){
-			Widget w = fPanel.getWidget(i);
-			if(w instanceof TaskPanel){
-				fDragController.makeNotDraggable(w);
-			}
-		}
+		cleanupTasksPanel();
 		fDragController.unregisterDropController(fDropController);
 		
 		
@@ -146,6 +145,17 @@ public class TasksInStatePanel extends Composite implements EditedTaskEventHandl
 		
 		
 		
+	}
+
+	private void cleanupTasksPanel() {
+		//clean up D&D listeners
+		for(int i = 0; i < fPanel.getWidgetCount(); i++){
+			Widget w = fPanel.getWidget(i);
+			if(w instanceof TaskPanel){
+				fDragController.makeNotDraggable(w);
+				((TaskPanel)w).cleanupTaskPanel();
+			}
+		}
 	}
 	
 
