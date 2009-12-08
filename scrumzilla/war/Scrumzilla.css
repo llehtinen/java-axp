@@ -1,0 +1,114 @@
+.scrumzilla-ui-storyTable{
+	border:1px solid grey;
+	background-color:	LemonChiffon;
+}
+
+.scrumzilla-ui-storyColumnHeader {
+	background-color:	SlateGray;
+	text-align:			center;
+}
+
+.scrumzilla-ui-taskStateHeader{
+	background-color:	SlateGray;
+	text-align:			center;
+}
+
+.scrumzilla-storyUI-addStoryPanel {
+	width:				100%;
+	background-color:	Khaki;
+	padding-right:		20px;
+	padding-left:		20px;
+	padding-top:		5px;
+	padding-bottom:		5px;
+}
+
+.scrumzilla-storyUI-addStoryButton {
+
+}
+
+.scrumzilla-storyUI-addStoryNameText{
+
+}
+
+.scrumzilla-storyUI-addStoryCancelButton {
+
+}
+
+.scrumzilla-storyUI-addStoryOkButton {
+
+}
+
+.scrumzilla-storyUI-storyTitlePanel {
+	height:				100%;
+	background-color:	Khaki;
+	padding-right:		20px;
+	padding-left:		20px;
+	padding-top:		5px;
+	padding-bottom:		5px;
+}
+
+.scrumzilla-storyUI-storyLabel {
+
+}
+
+.scrumzilla-storyUI-removeStoryButton {
+
+}
+
+.scrumzilla-taskUI-addTaskPanel {
+	height:				100%;
+	width:				100%;
+	background-color:	Beige;
+}
+
+.scrumzilla-taskUI-addTaskButton {
+
+}
+
+.scrumzilla-taskUI-addTaskLabel {
+
+}
+
+.scrumzilla-taskUI-addTaskCancelButton {
+
+}
+
+.scrumzilla-taskUI-addTaskConfirmButton {
+
+}
+
+.scrumzilla-taskUI-taskList {
+	background-color: 	LightSteelBlue;
+	padding:			3px;
+}
+
+.scrumzilla-taskUI-emptyTaskList {
+	width:	120px;
+	height:	80px;
+}
+
+.scrumzilla-taskUI-taskPanel{
+	margin-right: 		5px;
+	margin-left: 		5px;
+	background-color:	Ivory;
+}
+
+.scrumzilla-taskUI-dragLabel{
+	background-color:	LightSlateGray;
+	padding:			2px;
+	margin:				2px;
+}
+.scrumzilla-taskUI-removeTaskButton {
+
+}
+
+.scrumzilla-localTaskUI-taskLabel {
+	margin:				2px;
+}
+
+.scrumzilla-localTaskUI-taskDescription {
+	margin:				2px;
+}
+
+
+

@@ -26,7 +26,6 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 	private final ScrumzillaTaskTypeRegistry fTaskTypeRegistry;
 	
 	
-//	private VerticalPanel fVerticalPanel;
 	private AddStoryPanel fAddStoryPanel;
 	private FlexTable fScrumzillaUITable;
 	private PickupDragController fDragController;
@@ -42,8 +41,8 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		fDragController = new PickupDragController(RootPanel.get(), false);
 		
 		fScrumzillaUITable = new FlexTable();
+		fScrumzillaUITable.setStyleName("scrumzilla-ui-storyTable");
 		
-//		fVerticalPanel = new VerticalPanel();
 		initWidget(fScrumzillaUITable);
 		initUI();
 		
@@ -56,11 +55,15 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 
 	private void initUI() {
 		fScrumzillaUITable.insertRow(0);
-		fScrumzillaUITable.setWidget(0, 0, new Label("Story"));
+		Label storyColumnHeaderLabel = new Label("Story");
+		storyColumnHeaderLabel.setStyleName("scrumzilla-ui-storyColumnHeader");
+		fScrumzillaUITable.setWidget(0, 0, storyColumnHeaderLabel);
 		fScrumzillaUITable.setWidget(0, 1, new Label(""));
 		int column = 2;
 		for(TaskState ts : TaskState.values()){
-			fScrumzillaUITable.setWidget(0, column++, new Label(ts.toString()));	
+			Label taskStateColumnHeaderLabel = new Label(ts.toString());
+			taskStateColumnHeaderLabel.setStyleName("scrumzilla-ui-taskStateHeader");
+			fScrumzillaUITable.setWidget(0, column++, taskStateColumnHeaderLabel);	
 		}
 		
 		
@@ -85,7 +88,7 @@ public class ScrumzillaUI extends Composite implements ModelChangedEventHandler,
 		
 		//insert story panels
 		fScrumzillaUITable.setWidget(row, 0, new StoryTitlePanel(story, fController));
-		
+
 		fScrumzillaUITable.setWidget(row, 1, new AddTaskToStoryPanel(story, fController, fTaskTypeRegistry));
 		
 		fController.getModel().getTasksForStory(story);

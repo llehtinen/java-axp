@@ -83,8 +83,13 @@ import com.scrumzilla.client.taskcontribution.ScrumzillaTaskEditingUI;
 
 	public Widget getSimpleTaskDisplayUI(Task task) {
 		VerticalPanel vp = new VerticalPanel();
-		vp.add(new Label("Local Task"));
-		vp.add(new Label(task.getDescription()));
+		vp.setStyleName("scrumzilla-taskUI-localTaskPanel");
+		Label localTaskTitle = new Label("Local Task");
+		localTaskTitle.setStyleName("scrumzilla-localTaskUI-taskLabel");
+		vp.add(localTaskTitle);
+		Label localTaskDescription = new Label(task.getDescription());
+		localTaskDescription.setStyleName("scrumzilla-localTaskUI-taskDescription");
+		vp.add(localTaskDescription);
 		return vp;
 	}
 
