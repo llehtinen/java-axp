@@ -1,65 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module><ModulePrefs scrolling="true" title="Scrumzilla"><Require feature="dynamic-height"/><Require feature="wave"/></ModulePrefs><Content type="html"><![CDATA[
+
 <style type="text/css">
+.scrumzilla-ui-storyTable{
+	border:1px solid grey;
+	background-color:	LemonChiffon;
+}
+
+.scrumzilla-ui-storyColumnHeader {
+	background-color:	SlateGray;
+	text-align:			center;
+}
+
+.scrumzilla-ui-taskStateHeader{
+	background-color:	SlateGray;
+	text-align:			center;
+}
+
+.scrumzilla-storyUI-addStoryPanel {
+	width:				100%;
+	background-color:	Khaki;
+	padding-right:		20px;
+	padding-left:		20px;
+	padding-top:		5px;
+	padding-bottom:		5px;
+}
+
+.scrumzilla-storyUI-addStoryButton {
+
+}
+
+.scrumzilla-storyUI-addStoryNameText{
+
+}
+
+.scrumzilla-storyUI-addStoryCancelButton {
+
+}
+
+.scrumzilla-storyUI-addStoryOkButton {
+
+}
+
+.scrumzilla-storyUI-storyTitlePanel {
+	height:				100%;
+	background-color:	Khaki;
+	padding-right:		20px;
+	padding-left:		20px;
+	padding-top:		5px;
+	padding-bottom:		5px;
+}
+
 .scrumzilla-storyUI-storyLabel {
- 	text-align:center;
-	margin-top:20px;
-	margin-bottom:10px;
- 	
- 	width:100%;
- 	color: grey;
+
 }
 
 .scrumzilla-storyUI-removeStoryButton {
-  	width:200px;
-  	margin-top:5px;
-	margin-bottom:2px;
- 	color: DarkRed;
+
+}
+
+.scrumzilla-taskUI-addTaskPanel {
+	height:				100%;
+	width:				100%;
+	background-color:	Beige;
 }
 
 .scrumzilla-taskUI-addTaskButton {
-  	width:200px;
-  	margin-top:5px;
-	margin-bottom:2px;
- 	color: DarkRed;
-}
 
-.scrumzilla-taskUI-addTaskConfirmButton {
-  	width:200px;
-  	margin-top:5px;
-	margin-bottom:2px;
- 	color: DarkRed;
-}
-
-.scrumzilla-taskUI-addTaskCancelButton {
-  	width:200px;
-  	margin-top:5px;
-	margin-bottom:2px;
- 	color: DarkRed;
-}
-
-
-
-.scrumzilla-taskUI-addTaskPanel {
-	height:100%;
-	background-color: green;
 }
 
 .scrumzilla-taskUI-addTaskLabel {
-	height:100%;
-	background-color: green;
+
 }
 
-.scrumzilla-storyUI-taskInStateList {
-	height:90%;
-	border-style:solid;
-	border-color: black;
-	border-width: 1px;
+.scrumzilla-taskUI-addTaskCancelButton {
+
+}
+
+.scrumzilla-taskUI-addTaskConfirmButton {
+
+}
+
+.scrumzilla-taskUI-taskList {
+	background-color: 	LightSteelBlue;
+	padding:			3px;
+}
+
+.scrumzilla-taskUI-emptyTaskList {
+	width:	120px;
+	height:	80px;
+}
+
+.scrumzilla-taskUI-taskPanel{
+	margin-right: 		5px;
+	margin-left: 		5px;
+	background-color:	Ivory;
+}
+
+.scrumzilla-taskUI-dragLabel{
+	background-color:	LightSlateGray;
+	padding:			2px;
+	margin:				2px;
+}
+.scrumzilla-taskUI-removeTaskButton {
+
+}
+
+.scrumzilla-localTaskUI-taskLabel {
+	margin:				2px;
+}
+
+.scrumzilla-localTaskUI-taskDescription {
+	margin:				2px;
 }
 </style>
 
 <script>function scrumzilla(){
-  var $intern_0 = '', $intern_9 = '" for "gwt:onLoadErrorFn"', $intern_11 = '" for "gwt:onPropertyErrorFn"', $intern_30 = '">', $intern_43 = '"><\/script>', $intern_17 = '&', $intern_45 = '.cache.js', $intern_44 = '.cache.js$', $intern_6 = '/', $intern_38 = '0ED60D769707C64373A5C0AD61F3E15C.cache.js', $intern_3 = '1.5', $intern_36 = '41B0652645E7D94F8F0E6E8047E9BECC.cache.js', $intern_40 = '7966E88E647E6D2E9519AD45DC89D963.cache.js', $intern_29 = '<link rel="stylesheet" href="', $intern_42 = '<script language="javascript" src="', $intern_46 = '<script src="', $intern_13 = '=', $intern_8 = 'Bad handler "', $intern_37 = 'C43AA5ADDE27D2E90A24B0E22287C5EA.cache.js', $intern_39 = 'E220A7979718D7D12E310EC53607378C.cache.js', $intern_35 = 'F5065E244C1C702AFDFC8BDD8113DE8C.cache.js', $intern_16 = '_', $intern_15 = 'country', $intern_4 = 'external.gwtOnLoad failed: ', $intern_25 = 'gecko', $intern_26 = 'gecko1_8', $intern_31 = 'gwt-dnd.css', $intern_1 = 'gwt.hybrid', $intern_28 = 'gwt/standard/standard.css', $intern_7 = 'gwt:onLoadErrorFn', $intern_10 = 'gwt:onPropertyErrorFn', $intern_12 = 'gwt:property', $intern_41 = 'http://wave-api.appspot.com/public/wave.js', $intern_24 = 'ie6', $intern_23 = 'ie8', $intern_14 = 'lang', $intern_33 = 'moduleStartup', $intern_22 = 'msie', $intern_34 = 'onModuleLoadStart', $intern_19 = 'opera', $intern_21 = 'safari', $intern_2 = 'scrumzilla', $intern_32 = 'startup', $intern_27 = 'unknown', $intern_5 = 'url', $intern_18 = 'user.agent', $intern_20 = 'webkit';
+  var $intern_0 = '', $intern_9 = '" for "gwt:onLoadErrorFn"', $intern_11 = '" for "gwt:onPropertyErrorFn"', $intern_30 = '">', $intern_43 = '"><\/script>', $intern_17 = '&', $intern_45 = '.cache.js', $intern_44 = '.cache.js$', $intern_6 = '/', $intern_3 = '1.5', $intern_35 = '1AA0870126D128CD590F6344531479DC.cache.js', $intern_38 = '3B7FADEA831EEB37F9F4F9D3103FC409.cache.js', $intern_37 = '444E7AEB969E1BB643DD67EF005955F9.cache.js', $intern_36 = '811EE89C2FD0EA89369102D3331F782D.cache.js', $intern_29 = '<link rel="stylesheet" href="', $intern_42 = '<script language="javascript" src="', $intern_46 = '<script src="', $intern_13 = '=', $intern_39 = 'AB455B673335FD9C84976AE8ED31D761.cache.js', $intern_8 = 'Bad handler "', $intern_40 = 'E529FB4C47920912C7903947120F15FC.cache.js', $intern_16 = '_', $intern_15 = 'country', $intern_4 = 'external.gwtOnLoad failed: ', $intern_25 = 'gecko', $intern_26 = 'gecko1_8', $intern_31 = 'gwt-dnd.css', $intern_1 = 'gwt.hybrid', $intern_28 = 'gwt/standard/standard.css', $intern_7 = 'gwt:onLoadErrorFn', $intern_10 = 'gwt:onPropertyErrorFn', $intern_12 = 'gwt:property', $intern_41 = 'http://wave-api.appspot.com/public/wave.js', $intern_24 = 'ie6', $intern_23 = 'ie8', $intern_14 = 'lang', $intern_33 = 'moduleStartup', $intern_22 = 'msie', $intern_34 = 'onModuleLoadStart', $intern_19 = 'opera', $intern_21 = 'safari', $intern_2 = 'scrumzilla', $intern_32 = 'startup', $intern_27 = 'unknown', $intern_5 = 'url', $intern_18 = 'user.agent', $intern_20 = 'webkit';
   var $wnd = window, $doc = document, external = $wnd.external, gwtOnLoad, bodyDone, base = $intern_0, metaProps = {}, values = [], providers = [], answers = [], onLoadErrorFunc, propertyErrorFunc, $stats = $wnd.__gwtStatsEvent?function(a){
     return $wnd.__gwtStatsEvent(a);
   }
