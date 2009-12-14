@@ -15,6 +15,11 @@ public class MockWaveState implements WaveState {
 		fHandlerManager = handerManager;
 	}
 	
+	public MockWaveState(HandlerManager handlerManager, Map<String, String> state){
+		this(handlerManager);
+		fMap = state;
+	}
+	
 	public String get(String key) {
 		return fMap.get(key);
 	}

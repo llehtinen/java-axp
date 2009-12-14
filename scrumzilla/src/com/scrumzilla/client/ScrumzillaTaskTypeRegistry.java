@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.scrumzilla.client.taskcontribution.ScrumzillaTaskTypeContribution;
+import com.scrumzilla.client.taskcontribution.local.ScrumzillaLocalTaskTypeContribution;
 
 public class ScrumzillaTaskTypeRegistry {
 
@@ -19,7 +20,7 @@ public class ScrumzillaTaskTypeRegistry {
 				return registeredContrubution;
 			}
 		}
-		return null;
+		return new ScrumzillaLocalTaskTypeContribution();
 	}
 	
 	public void registerTaskType(ScrumzillaTaskTypeContribution contribution){
