@@ -15,7 +15,7 @@ import com.scrumzilla.client.model.Task;
 
 public class ScrumzillaWaveModel implements ScrumzillaModel {
 	//must be able to generate wave delta
-	private static final String STORY_LIST_STATE_KEY = "scrumzilla.state.StoryList";
+	public static final String STORY_LIST_STATE_KEY = "scrumzilla.state.StoryList";
 	public static final String TASK_LIST_STATE_KEY = "scrumzilla.state.TaskList";
 	
 	private final WaveState fWaveState;
