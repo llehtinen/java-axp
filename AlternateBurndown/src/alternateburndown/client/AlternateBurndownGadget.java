@@ -8,12 +8,23 @@ import com.google.gwt.gadgets.client.Gadget.ModulePrefs;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.visualization.client.Query;
+import com.google.gwt.visualization.client.VisualizationUtils;
 
 @ModulePrefs(title = "SimpleGadget", author = "yournamehere", author_email = "yournamehere@gmail.com")
-public class AlternateBurndownGadget extends Gadget<UserPreferences> {
+public class AlternateBurndownGadget extends Gadget<VisualizationGadgetPreferences> {
 
 	@Override
-	protected void init(UserPreferences preferences) {
+	protected void init(final VisualizationGadgetPreferences preferences) {
+		
+	    Runnable onLoadCallback = new Runnable() {
+	        public void run() {
+	        	handleVisualizationLoad(preferences);
+	        }
+	      };
+		VisualizationUtils.loadVisualizationApi(onLoadCallback);
+
+		
 	    Button simpleButton = new Button("SimpleGadget");
 	    simpleButton.addClickHandler(new ClickHandler() {
 	      public void onClick(ClickEvent event) {
@@ -21,6 +32,10 @@ public class AlternateBurndownGadget extends Gadget<UserPreferences> {
 	      }
 	    });
 	    RootPanel.get().add(simpleButton);
+	}
+
+	protected void handleVisualizationLoad(VisualizationGadgetPreferences preferences) {
+		Query q = Query.create(preferences._table_query_url().toString());
 	}
 
 }

@@ -12,6 +12,7 @@
 
 	<!-- Other module inherits                                      -->
 	<inherits name='com.google.gwt.gadgets.Gadgets' />
+	<inherits name='com.google.gwt.visualization.Visualization'/>
 
 
 
