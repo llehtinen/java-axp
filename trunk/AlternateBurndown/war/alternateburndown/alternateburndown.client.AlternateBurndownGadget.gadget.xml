@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><Module><ModulePrefs author="yournamehere" author_email="yournamehere@gmail.com" title="SimpleGadget"/><Content type="html"><![CDATA[<script>function alternateburndown(){
-  var $intern_0 = '', $intern_8 = '" for "gwt:onLoadErrorFn"', $intern_10 = '" for "gwt:onPropertyErrorFn"', $intern_29 = '">', $intern_44 = '"><\/script>', $intern_16 = '&', $intern_42 = '.cache.js', $intern_41 = '.cache.js$', $intern_5 = '/', $intern_34 = '05DDDDE57F2FF1167EA3C0300A96F6C4', $intern_33 = '2.0', $intern_35 = '48FF02EC9E44B66CDE783E3EA72AA90B', $intern_36 = '4E0AB5887F750172B8E7964BBD5FD3FF', $intern_37 = '58707DD551CDCE33C51FC699B7619317', $intern_38 = '8B6F798C27ABE5EBB306A1108FE3C78E', $intern_40 = ':', $intern_28 = '<link rel="stylesheet" href="', $intern_43 = '<script src="', $intern_12 = '=', $intern_7 = 'Bad handler "', $intern_39 = 'FA28C396DFF8890BFE186792ECB85EFF', $intern_15 = '_', $intern_2 = 'alternateburndown', $intern_14 = 'country', $intern_3 = 'external.gwtOnLoad failed: ', $intern_24 = 'gecko', $intern_25 = 'gecko1_8', $intern_1 = 'gwt.hybrid', $intern_27 = 'gwt/standard/standard.css', $intern_6 = 'gwt:onLoadErrorFn', $intern_9 = 'gwt:onPropertyErrorFn', $intern_11 = 'gwt:property', $intern_23 = 'ie6', $intern_22 = 'ie8', $intern_13 = 'lang', $intern_31 = 'moduleStartup', $intern_21 = 'msie', $intern_32 = 'onModuleLoadStart', $intern_18 = 'opera', $intern_20 = 'safari', $intern_30 = 'startup', $intern_26 = 'unknown', $intern_4 = 'url', $intern_17 = 'user.agent', $intern_19 = 'webkit';
+<?xml version="1.0" encoding="UTF-8"?><Module><ModulePrefs author="yournamehere" author_email="yournamehere@gmail.com" title="SimpleGadget"/><UserPref datatype="string" display_name="Data source url" name="_table_query_url" required="true"/><Content type="html"><![CDATA[<script>function alternateburndown(){
+  var $intern_0 = '', $intern_8 = '" for "gwt:onLoadErrorFn"', $intern_10 = '" for "gwt:onPropertyErrorFn"', $intern_29 = '">', $intern_44 = '"><\/script>', $intern_16 = '&', $intern_42 = '.cache.js', $intern_41 = '.cache.js$', $intern_5 = '/', $intern_34 = '13E932F7189D4FFC340C18BFC3DF47FB', $intern_33 = '2.0', $intern_35 = '516A92E2D474605093BAFBFE490F2349', $intern_36 = '640AB21C03E6BE15F7329F46E4EED31D', $intern_37 = '6D51DA8B073EF83119762D87A289C7D2', $intern_38 = '7D15EF80EAC65E7AFABA6389342906F7', $intern_40 = ':', $intern_28 = '<link rel="stylesheet" href="', $intern_43 = '<script src="', $intern_12 = '=', $intern_39 = 'A9DF67CE75FDB490AEA2A34F0B16B8E3', $intern_7 = 'Bad handler "', $intern_15 = '_', $intern_2 = 'alternateburndown', $intern_14 = 'country', $intern_3 = 'external.gwtOnLoad failed: ', $intern_24 = 'gecko', $intern_25 = 'gecko1_8', $intern_1 = 'gwt.hybrid', $intern_27 = 'gwt/standard/standard.css', $intern_6 = 'gwt:onLoadErrorFn', $intern_9 = 'gwt:onPropertyErrorFn', $intern_11 = 'gwt:property', $intern_23 = 'ie6', $intern_22 = 'ie8', $intern_13 = 'lang', $intern_31 = 'moduleStartup', $intern_21 = 'msie', $intern_32 = 'onModuleLoadStart', $intern_18 = 'opera', $intern_20 = 'safari', $intern_30 = 'startup', $intern_26 = 'unknown', $intern_4 = 'url', $intern_17 = 'user.agent', $intern_19 = 'webkit';
   var $wnd = window, $doc = document, external = $wnd.external, gwtOnLoad, bodyDone, base = $intern_0, metaProps = {}, values = [], providers = [], answers = [], softPermutationId = 0, onLoadErrorFunc, propertyErrorFunc, $stats = $wnd.__gwtStatsEvent?function(a){
     return $wnd.__gwtStatsEvent(a);
   }
@@ -207,12 +207,12 @@
    else {
     var strongName;
     try {
-      unflattenKeylistIntoAnswers([$intern_24], $intern_34);
-      unflattenKeylistIntoAnswers([$intern_22], $intern_35);
-      unflattenKeylistIntoAnswers([$intern_18], $intern_36);
-      unflattenKeylistIntoAnswers([$intern_20], $intern_37);
-      unflattenKeylistIntoAnswers([$intern_25], $intern_38);
-      unflattenKeylistIntoAnswers([$intern_23], $intern_39);
+      unflattenKeylistIntoAnswers([$intern_25], $intern_34);
+      unflattenKeylistIntoAnswers([$intern_20], $intern_35);
+      unflattenKeylistIntoAnswers([$intern_24], $intern_36);
+      unflattenKeylistIntoAnswers([$intern_18], $intern_37);
+      unflattenKeylistIntoAnswers([$intern_23], $intern_38);
+      unflattenKeylistIntoAnswers([$intern_22], $intern_39);
       strongName = answers[computePropValue($intern_17)];
       var idx = strongName.indexOf($intern_40);
       if (idx != -1) {
