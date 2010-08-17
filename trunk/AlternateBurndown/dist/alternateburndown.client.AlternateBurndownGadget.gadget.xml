@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><Module><ModulePrefs author="yournamehere" author_email="yournamehere@gmail.com" title="SimpleGadget"/><UserPref datatype="string" display_name="Data source url" name="_table_query_url" required="true"/><Content type="html"><![CDATA[<script>function alternateburndown(){
-  var $intern_0 = '', $intern_8 = '" for "gwt:onLoadErrorFn"', $intern_10 = '" for "gwt:onPropertyErrorFn"', $intern_29 = '">', $intern_44 = '"><\/script>', $intern_16 = '&', $intern_42 = '.cache.js', $intern_41 = '.cache.js$', $intern_5 = '/', $intern_34 = '10E5D72420335DBBCBA622340F546D52', $intern_35 = '152DF885DF07A5C3AB3100E152B46663', $intern_36 = '19874C1DBFB362EA48E9E79C56CE528D', $intern_33 = '2.0', $intern_37 = '56BCC4E72197BC99A1CFB6E1AAC9A5CC', $intern_38 = '8852C1601698E19A6B93094AB036C147', $intern_40 = ':', $intern_28 = '<link rel="stylesheet" href="', $intern_43 = '<script src="', $intern_12 = '=', $intern_7 = 'Bad handler "', $intern_39 = 'E9E5B4D7C91BF5EC4FEB921CB2B46048', $intern_15 = '_', $intern_2 = 'alternateburndown', $intern_14 = 'country', $intern_3 = 'external.gwtOnLoad failed: ', $intern_24 = 'gecko', $intern_25 = 'gecko1_8', $intern_1 = 'gwt.hybrid', $intern_27 = 'gwt/standard/standard.css', $intern_6 = 'gwt:onLoadErrorFn', $intern_9 = 'gwt:onPropertyErrorFn', $intern_11 = 'gwt:property', $intern_23 = 'ie6', $intern_22 = 'ie8', $intern_13 = 'lang', $intern_31 = 'moduleStartup', $intern_21 = 'msie', $intern_32 = 'onModuleLoadStart', $intern_18 = 'opera', $intern_20 = 'safari', $intern_30 = 'startup', $intern_26 = 'unknown', $intern_4 = 'url', $intern_17 = 'user.agent', $intern_19 = 'webkit';
+<?xml version="1.0" encoding="UTF-8"?><Module><ModulePrefs author="yournamehere" author_email="yournamehere@gmail.com" title="SimpleGadget"/><UserPref datatype="string" display_name="Data source url" name="_table_query_url" required="true"/><UserPref datatype="string" display_name="Initial Backlog Size" name="initialBacklogSize"/><UserPref datatype="string" display_name="Sprint Length" name="sprintLength"/><UserPref datatype="string" display_name="Sprint Start Date" name="sprintStartDate"/><Content type="html"><![CDATA[<script>function alternateburndown(){
+  var $intern_0 = '', $intern_8 = '" for "gwt:onLoadErrorFn"', $intern_10 = '" for "gwt:onPropertyErrorFn"', $intern_29 = '">', $intern_44 = '"><\/script>', $intern_16 = '&', $intern_42 = '.cache.js', $intern_41 = '.cache.js$', $intern_5 = '/', $intern_33 = '2.0', $intern_34 = '5288D93741BE16A8B279AE9856B7FABE', $intern_35 = '6590A848FF202BB65FC71CFE7F17D2E7', $intern_40 = ':', $intern_28 = '<link rel="stylesheet" href="', $intern_43 = '<script src="', $intern_12 = '=', $intern_36 = 'B0A8DE04AA69177C6A9C28E6CC038325', $intern_7 = 'Bad handler "', $intern_37 = 'C53EE1414AB262FE8E6BC82D46E1A229', $intern_38 = 'D68958D8CD24DEF2AB2FDBB2FB717D82', $intern_39 = 'DD1DC41918E7840896FEC957E0E8EFB8', $intern_15 = '_', $intern_2 = 'alternateburndown', $intern_14 = 'country', $intern_3 = 'external.gwtOnLoad failed: ', $intern_24 = 'gecko', $intern_25 = 'gecko1_8', $intern_1 = 'gwt.hybrid', $intern_27 = 'gwt/standard/standard.css', $intern_6 = 'gwt:onLoadErrorFn', $intern_9 = 'gwt:onPropertyErrorFn', $intern_11 = 'gwt:property', $intern_23 = 'ie6', $intern_22 = 'ie8', $intern_13 = 'lang', $intern_31 = 'moduleStartup', $intern_21 = 'msie', $intern_32 = 'onModuleLoadStart', $intern_18 = 'opera', $intern_20 = 'safari', $intern_30 = 'startup', $intern_26 = 'unknown', $intern_4 = 'url', $intern_17 = 'user.agent', $intern_19 = 'webkit';
   var $wnd = window, $doc = document, external = $wnd.external, gwtOnLoad, bodyDone, base = $intern_0, metaProps = {}, values = [], providers = [], answers = [], softPermutationId = 0, onLoadErrorFunc, propertyErrorFunc, $stats = $wnd.__gwtStatsEvent?function(a){
     return $wnd.__gwtStatsEvent(a);
   }
@@ -207,12 +207,12 @@
    else {
     var strongName;
     try {
-      unflattenKeylistIntoAnswers([$intern_24], $intern_34);
-      unflattenKeylistIntoAnswers([$intern_20], $intern_35);
-      unflattenKeylistIntoAnswers([$intern_25], $intern_36);
-      unflattenKeylistIntoAnswers([$intern_22], $intern_37);
-      unflattenKeylistIntoAnswers([$intern_18], $intern_38);
-      unflattenKeylistIntoAnswers([$intern_23], $intern_39);
+      unflattenKeylistIntoAnswers([$intern_20], $intern_34);
+      unflattenKeylistIntoAnswers([$intern_24], $intern_35);
+      unflattenKeylistIntoAnswers([$intern_18], $intern_36);
+      unflattenKeylistIntoAnswers([$intern_23], $intern_37);
+      unflattenKeylistIntoAnswers([$intern_25], $intern_38);
+      unflattenKeylistIntoAnswers([$intern_22], $intern_39);
       strongName = answers[computePropValue($intern_17)];
       var idx = strongName.indexOf($intern_40);
       if (idx != -1) {
