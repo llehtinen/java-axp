@@ -1,0 +1,2 @@
+serviceClass: com.psoriasis.canvas.client.GreetingService
+path: 02E3B39F82A0E65F86673890308BA2F0.gwt.rpc
